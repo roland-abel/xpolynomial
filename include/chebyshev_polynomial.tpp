@@ -1,6 +1,7 @@
-//
-// Created by abel on 23.08.2023.
-//
+/// @file chebyshev_polynomial.tpp
+///
+/// @author Roland Abel
+/// @date 08.10.2023
 
 #include "chebyshev_polynomial.h"
 

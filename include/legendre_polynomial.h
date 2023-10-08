@@ -1,6 +1,7 @@
-//
-// Created by abel on 18.08.2023.
-//
+/// @file legendre_polynomial.h
+///
+/// @author Roland Abel
+/// @date 08.10.2023
 
 #ifndef LEGENDRE_POLYNOMIAL_H_
 #define LEGENDRE_POLYNOMIAL_H_

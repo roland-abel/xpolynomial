@@ -1,6 +1,7 @@
-//
-// Created by abel on 26.08.2023.
-//
+/// @file real_polynomial_root_finder.h
+///
+/// @author Roland Abel
+/// @date 19.08.2023
 
 #ifndef REAL_POLYNOMIAL_ROOT_FINDER_H_
 #define REAL_POLYNOMIAL_ROOT_FINDER_H_

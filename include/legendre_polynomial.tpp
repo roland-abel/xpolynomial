@@ -1,6 +1,7 @@
-//
-// Created by abel on 18.08.2023.
-//
+/// @file legendre_polynomial.tpp
+///
+/// @author Roland Abel
+/// @date 08.10.2023
 
 #include "utils.h"
 #include "legendre_polynomial.h"

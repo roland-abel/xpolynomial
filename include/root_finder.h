@@ -1,6 +1,7 @@
-//
-// Created by abel on 26.08.2023.
-//
+/// @file root_finder.h
+///
+/// @author Roland Abel
+/// @date 08.10.2023
 
 #ifndef ROOT_FINDER_H_
 #define ROOT_FINDER_H_

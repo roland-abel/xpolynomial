@@ -1,6 +1,7 @@
-//
-// Created by abel on 02.09.2023.
-//
+/// @file euclidean_algorithm.tpp
+///
+/// @author Roland Abel
+/// @date 08.10.2023
 
 #include "euclidean_algorithm.h"
 
