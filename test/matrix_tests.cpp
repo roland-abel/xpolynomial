@@ -1,6 +1,7 @@
-//
-// Created by abel on 19.08.2023.
-//
+/// @file matrix_tests.h
+///
+/// @author Roland Abel
+/// @date 08.10.2023
 
 #include <gtest/gtest.h>
 #include <numeric>

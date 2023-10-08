@@ -1,8 +1,7 @@
-/// @file polynomial_test.cpp
-/// @brief This file contains unit tests for the Polynomial class and related functions.
+/// @file root_finder_tests.h
 ///
 /// @author Roland Abel
-/// @date 19.08.2023
+/// @date 08.10.2023
 
 #include <gtest/gtest.h>
 #include <cmath>

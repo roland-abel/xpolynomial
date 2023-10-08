@@ -1,6 +1,7 @@
-//
-// Created by abel on 06.10.2023.
-//
+/// @file square_free_decomposition.tpp
+///
+/// @author Roland Abel
+/// @date 08.10.2023
 
 #include "euclidean_algorithm.h"
 #include "square_free_decomposition.h"

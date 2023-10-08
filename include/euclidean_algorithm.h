@@ -1,6 +1,7 @@
-//
-// Created by abel on 02.09.2023.
-//
+/// @file euclidean_algorithm.h
+///
+/// @author Roland Abel
+/// @date 08.10.2023
 
 #ifndef EUCLIDEAN_ALGORITHM_H_
 #define EUCLIDEAN_ALGORITHM_H_

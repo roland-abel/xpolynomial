@@ -1,6 +1,7 @@
-//
-// Created by abel on 26.08.2023.
-//
+/// @file root_finder.tpp
+///
+/// @author Roland Abel
+/// @date 08.10.2023
 
 #include <limits>
 #include <valarray>

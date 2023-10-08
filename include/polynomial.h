@@ -1,5 +1,5 @@
 /// @file polynomial.h
-/// @brief This file contains the declaration of the Polynomial class and related functions.
+/// @brief This file contains the declaration of the polynomial class and related functions.
 ///
 /// @author Roland Abel
 /// @date 19.08.2023

@@ -1,6 +1,7 @@
-//
-// Created by abel on 06.10.2023.
-//
+/// @file square_free_decomposition.h
+///
+/// @author Roland Abel
+/// @date 08.10.2023
 
 #ifndef SQUARE_FREE_DECOMPOSITION_H_
 #define SQUARE_FREE_DECOMPOSITION_H_

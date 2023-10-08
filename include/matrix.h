@@ -1,6 +1,7 @@
-//
-// Created by abel on 19.08.2023.
-//
+/// @file matrix.h
+///
+/// @author Roland Abel
+/// @date 08.10.2023
 
 #ifndef MATRIX_H_
 #define MATRIX_H_

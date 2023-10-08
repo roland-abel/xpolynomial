@@ -1,6 +1,7 @@
-//
-// Created by abel on 18.08.2023.
-//
+/// @file gauss_legendre.h
+///
+/// @author Roland Abel
+/// @date 08.10.2023
 
 #ifndef GAUSS_LEGENDRE_H_
 #define GAUSS_LEGENDRE_H_
