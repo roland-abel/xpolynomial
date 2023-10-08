@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.26)
 project(math
-    VERSION 1.0.0
-    DESCRIPTION "Math C++ template library for polynomial and matrices calculation."
-    LANGUAGES CXX)
+        VERSION 1.0.0
+        DESCRIPTION "Math C++ template library for polynomial and matrices calculation."
+        LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -17,8 +17,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(google-test)
 
 set(PROJECT_NAME xpolynomial)
-set(LIBRARY_NAME xmath)
 set(UNIT_TEST_NAME unit-tests)
 
-add_subdirectory(src)
+add_subdirectory(examples)
 add_subdirectory(test)
