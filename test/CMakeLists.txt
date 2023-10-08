@@ -10,8 +10,8 @@ add_executable(${UNIT_TEST_NAME}
         square_free_decomposition_test.cpp
 )
 
+target_include_directories(${UNIT_TEST_NAME} PUBLIC ../include)
 target_link_libraries(${UNIT_TEST_NAME}
-        ${LIBRARY_NAME}
         gtest
         gtest_main
 )
