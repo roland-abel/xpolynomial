@@ -6,4 +6,4 @@ Math C++ template library for polynomial and matrices calculation.
 
 This software is available under the following licenses:
 
-See [MIT License (MIT)](license.txt)
+See [MIT License (MIT)](LICENSE)
