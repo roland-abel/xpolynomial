@@ -1,9 +1,3 @@
-
-#include_directories(
-#        ../lib/google-test/googletest/include
-#        ../lib/google-test/googletest/src
-#)
-
 enable_testing()
 
 add_executable(${UNIT_TEST_NAME}
