@@ -12,8 +12,7 @@
 using namespace xmath;
 
 namespace {
-    using Polynomial = polynomial<double>;
-    Polynomial X = Polynomial::monomial(1, 1.0);
+    auto X = polynomial<double>::monomial(1, 1.0);
 }
 
 int main() {
