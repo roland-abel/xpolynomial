@@ -185,8 +185,17 @@ TEST(RealPolynomialRootFinderTests, RootIsolationTest) {
 
 TEST(RealPolynomialRootFinderTests, FindRootsTest) {
     auto p = Polynomial::from_roots({-2.5, -1.15, 0., .5, 1.25, 4.125, 6.5});
-    auto roots = RootFinder::find_roots(p, 1e-5);
+    auto [roots, _] = RootFinder::find_roots(p, 1e-5);
 
     EXPECT_EQ(roots.size(), 7);
     EXPECT_TRUE(p.has_roots(roots));
+}
+
+TEST(RealPolynomialRootFinderTests, FindRootsForPolynomialWithMultipleRootsTest) {
+    auto p = Polynomial::from_roots({-2.5, -1.15, 1.15, .5, .5, .5});
+    auto [roots, multiplicities] = RootFinder::find_roots(p, 1e-5);
+
+    EXPECT_EQ(roots.size(), 4);
+    EXPECT_TRUE(p.has_roots(roots));
+    EXPECT_EQ(multiplicities, std::vector<unsigned short>({ 1, 1, 1, 3 }));
 }

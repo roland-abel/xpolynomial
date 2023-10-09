@@ -19,6 +19,8 @@ namespace xmath {
     public:
         using value_type = polynomial<T>::value_type;
         using polynomial_sequence = std::vector<polynomial<T>>;
+        using roots_type = std::vector<value_type>;
+        using multiplicities_type = std::vector<unsigned short>;
 
         /// @brief Computes the roots of a quadratic polynomial using the quadratic formula.
         /// @param p The quadratic polynomial for which the roots are to be computed.
@@ -88,7 +90,7 @@ namespace xmath {
         static int number_distinct_roots(const polynomial<T> &p);
 
         /// @brief Gets disjoint intervals, such that each one contains extract one real root, and together
-        /// they contains all's the roots of the  given polynomial.
+        /// they contains all the roots of the given polynomial.
         /// @param p The polynomial.
         /// @return The list of the disjoint intervals.
         static std::vector<interval<T>> root_isolation(const polynomial<T> &p);
@@ -97,7 +99,8 @@ namespace xmath {
         /// @param p
         /// @param tolerance
         /// @return
-        static std::vector<value_type> find_roots(const polynomial<T> &p, value_type tolerance = polynomial<T>::tolerance);
+        static std::tuple<roots_type, multiplicities_type>
+        find_roots(const polynomial<T> &p, value_type tolerance = polynomial<T>::tolerance);
     };
 }
 
