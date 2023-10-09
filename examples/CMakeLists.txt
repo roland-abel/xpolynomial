@@ -1,9 +1,11 @@
 # Creates example executables
 
-set(EXAMPLE_1 exsample1.exe)
-add_executable(${EXAMPLE_1} example1.cpp)
-target_include_directories(${EXAMPLE_1} PRIVATE ../include)
+add_executable(quadratic_roots quadratic_roots.cpp)
+target_include_directories(quadratic_roots PRIVATE ../include)
 
-set(EXAMPLE_2 exsample2.exe)
-add_executable(${EXAMPLE_2} example2.cpp)
-target_include_directories(${EXAMPLE_2} PRIVATE ../include)
+add_executable(cubic_roots cubic_roots.cpp)
+target_include_directories(cubic_roots PRIVATE ../include)
+
+add_executable(evaluate evaluate.cpp)
+target_include_directories(evaluate PRIVATE ../include)
+
