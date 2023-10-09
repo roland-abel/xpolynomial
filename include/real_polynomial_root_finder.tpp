@@ -248,15 +248,24 @@ namespace xmath {
     }
 
     template<typename T>
-    std::vector<typename polynomial<T>::value_type> real_polynomial_root_finder<T>::find_roots(
+    std::tuple<typename real_polynomial_root_finder<T>::roots_type, typename real_polynomial_root_finder<T>::multiplicities_type>
+    real_polynomial_root_finder<T>::find_roots(
             const polynomial<T> &p,
             value_type tolerance) {
-        auto roots = std::vector<typename polynomial<T>::value_type>();
-        auto intervals = root_isolation(p);
 
-        for (auto I: intervals) {
-            roots.push_back(root_finder<T>::bisection(p, I, 1e-9));
+        auto roots = std::vector<value_type>();
+        auto multiplicities = std::vector<unsigned short>();
+
+        auto decomposition = square_free_decomposition<T>::yun_algorithm(p);
+        for (int k = 0; k < decomposition.size(); ++k) {
+            auto q = decomposition[k];
+            auto intervals = root_isolation(q);
+
+            for (auto I: intervals) {
+                multiplicities.push_back(k + 1);
+                roots.push_back(root_finder<T>::bisection(q, I, 1e-9));
+            }
         }
-        return roots;
+        return std::make_tuple(roots, multiplicities);
     }
 }
