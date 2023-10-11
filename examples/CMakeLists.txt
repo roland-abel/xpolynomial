@@ -9,3 +9,5 @@ target_include_directories(cubic_roots PRIVATE ../include)
 add_executable(evaluate evaluate.cpp)
 target_include_directories(evaluate PRIVATE ../include)
 
+add_executable(sturm_sequence sturm_sequence.cpp)
+target_include_directories(sturm_sequence PRIVATE ../include)
