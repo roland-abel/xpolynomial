@@ -5,7 +5,6 @@
 
 #include <gtest/gtest.h>
 #include <cmath>
-#include <sstream>
 #include "polynomial.h"
 
 using namespace xmath;
@@ -18,12 +17,6 @@ namespace {
     Polynomial zero = Polynomial::zero();
     Polynomial one = Polynomial::one();
     Polynomial X = Polynomial::monomial(1, 1.0);
-
-    std::string to_string(const Polynomial &p) {
-        std::stringstream os;
-        os << p;
-        return os.str();
-    }
 }
 
 // Tests for the default constructor.
@@ -121,18 +114,18 @@ TEST(PolynomialTests, MonomialTest) {
 }
 
 TEST(PolynomialTests, OperatorStreamOutTest) {
-    EXPECT_EQ(to_string(zero), "0");
-    EXPECT_EQ(to_string(one), "1");
-    EXPECT_EQ(to_string(-one), "-1");
-    EXPECT_EQ(to_string(X), "x");
-    EXPECT_EQ(to_string(-X), "-x");
-    EXPECT_EQ(to_string(-X.pow(12) - 1), "-x^12 - 1");
-    EXPECT_EQ(to_string(-X.pow(12) + X - 1), "-x^12 + x - 1");
-    EXPECT_EQ(to_string(X.pow(2)), "x^2");
-    EXPECT_EQ(to_string(-X.pow(3)), "-x^3");
-    EXPECT_EQ(to_string(-X.pow(3) + X.pow(2)), "-x^3 + x^2");
-    EXPECT_EQ(to_string(-X.pow(3) - 2.4 * X.pow(2)), "-x^3 - 2.4x^2");
-    EXPECT_EQ(to_string(-3.2*X.pow(6) - 1.4 * X.pow(2) - 1), "-3.2x^6 - 1.4x^2 - 1");
+    EXPECT_EQ(zero.to_string(), "0");
+    EXPECT_EQ(one.to_string(), "1");
+    EXPECT_EQ((-one).to_string(), "-1");
+    EXPECT_EQ(X.to_string(), "x");
+    EXPECT_EQ((-X).to_string(), "-x");
+    EXPECT_EQ((-X.pow(12) - 1).to_string(), "-x^12 - 1");
+    EXPECT_EQ((-X.pow(12) + X - 1).to_string(), "-x^12 + x - 1");
+    EXPECT_EQ((X.pow(2)).to_string(), "x^2");
+    EXPECT_EQ((-X.pow(3)).to_string(), "-x^3");
+    EXPECT_EQ((-X.pow(3) + X.pow(2)).to_string(), "-x^3 + x^2");
+    EXPECT_EQ((-X.pow(3) - 2.4 * X.pow(2)).to_string(), "-x^3 - 2.4x^2");
+    EXPECT_EQ((-3.2 * X.pow(6) - 1.4 * X.pow(2) - 1).to_string(), "-3.2x^6 - 1.4x^2 - 1");
 }
 
 // Tests for the equal operator.

@@ -282,6 +282,8 @@ namespace xmath {
         /// @return True if the polynomial has all the given roots; otherwise false.
         bool has_roots(const values_type &values) const;
 
+        std::string to_string() const;
+
     private:
         /// @brief Constructor that creates a zero polynomial of a given degree.
         explicit polynomial<T>(size_type degree);
