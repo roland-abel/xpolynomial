@@ -11,3 +11,6 @@ target_include_directories(evaluate PRIVATE ../include)
 
 add_executable(sturm_sequence sturm_sequence.cpp)
 target_include_directories(sturm_sequence PRIVATE ../include)
+
+add_executable(root_finder root_finder.cpp)
+target_include_directories(root_finder PRIVATE ../include)
