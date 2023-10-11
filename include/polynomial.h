@@ -295,5 +295,6 @@ namespace xmath {
 }
 
 #include "polynomial.tpp"
+#include "polynomial.ostream.tpp"
 
 #endif // POLYNOMIAL_H_
