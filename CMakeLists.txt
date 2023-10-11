@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26)
-project(math
+project(xpolynomial
         VERSION 1.0.0
         DESCRIPTION "Math C++ template library for polynomial and matrices calculation."
         LANGUAGES CXX)
