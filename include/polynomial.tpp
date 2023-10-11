@@ -405,13 +405,4 @@ namespace xmath {
         }
         return std::make_tuple(quotient, remainder);
     }
-
-    template<typename C>
-    std::ostream &operator<<(std::ostream &os, const polynomial <C> &p) {
-        for (auto coeff: p.coeffs_) {
-            os << coeff << ' ';
-        }
-        os << std::endl;
-        return os;
-    }
 }
