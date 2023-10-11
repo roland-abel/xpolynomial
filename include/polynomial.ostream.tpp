@@ -2,11 +2,19 @@
 /// @brief Implementation of operator<< for the polynomial class.
 ///
 /// @author Roland Abel
-/// @date 111.10.2023.
+/// @date 11.10.2023.
 
+#include <sstream>
 #include "polynomial.h"
 
 namespace xmath {
+
+    template<typename T>
+    std::string polynomial<T>::to_string() const {
+        std::stringstream os;
+        os << *this;
+        return os.str();
+    }
 
     template<typename T>
     std::ostream &operator<<(std::ostream &os, const polynomial<T> &p) {
