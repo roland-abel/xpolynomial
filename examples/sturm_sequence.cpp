@@ -21,12 +21,12 @@ int main() {
     auto canonical_seq = RootFinder::sturm_sequence(p);
     auto number_roots = RootFinder::number_distinct_roots(p);
 
-    cout << "Polynomial: " << p
+    cout << "Polynomial: " << p << endl << endl
          << "Number of roots: " << number_roots << endl
          << "Canonical polynomial sequence:" << endl;
 
-    for (auto q: canonical_seq) {
-        cout << q;
+    for (const auto& q: canonical_seq) {
+        cout << q << endl;
     }
     return 0;
 }
