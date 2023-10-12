@@ -65,9 +65,13 @@ namespace xmath {
         /// @return True if the polynomial is quadratic, false otherwise.
         bool is_quadratic() const;
 
-        /// @brief
-        /// @return
+        /// @brief Checks if the polynomial is a cubic (degree 3) polynomial.
+        /// @return True if the polynomial is cubic, false otherwise.
         bool is_cubic() const;
+
+        /// @brief Checks if the polynomial is normalized, i.e. the leading coefficient is equal to 1.
+        /// @return True if the polynomial is normalized, false otherwise.
+        bool is_normalized() const;
 
         /// @brief Returns the degree of the polynomial.
         /// @return The degree of the polynomial.
@@ -77,7 +81,7 @@ namespace xmath {
         /// @return The leading coefficient.
         coeff_type leading_coefficient() const;
 
-        /// @brief Returns the coefficients of th polynomial.
+        /// @brief Returns the coefficients of the polynomial.
         /// @return The coefficients.
         const coeffs_type &coefficients() const;
 
@@ -86,32 +90,32 @@ namespace xmath {
         /// @return The result of the evaluation.
         value_type evaluate(value_type x) const;
 
-        /// @brief Creates a zero polynomial.
-        /// @return A zero polynomial.
+        /// @brief Creates the zero polynomial.
+        /// @return The zero polynomial.
         static polynomial<T> zero();
 
-        /// @brief Creates a polynomial representing the constant 1.
-        /// @return A polynomial representing 1.
+        /// @brief Creates the polynomial representing the constant 1.
+        /// @return The polynomial representing 1.
         static polynomial<T> one();
 
         /// @brief Creates a monomial of the given degree.
         /// @param degree The degree of the monomial.
         /// @param coeff The coefficient.
-        /// @return
+        /// @return The polynomial which representing the monomial coeff X^degree.
         static polynomial<T> monomial(size_type degree, coeff_type coeff = (coeff_type) 1);
 
-        /// @brief Constructs a polynomial from with the given roots.
+        /// @brief Constructs a polynomial from the given roots.
         /// @param roots The vector of roots of the polynomial.
-        /// @return The polynomial with the given roots.
+        /// @return The normalized minimal polynomial which  has the given roots.
         static polynomial<T> from_roots(const values_type &roots);
 
-        /// @brief
-        /// @return
+        /// @brief Normalize the polynomial, i.e. the coefficients are divided by the leading coefficient.
+        /// @return The normalized polynomial.
         polynomial<T> normalize() const;
 
-        /// @brief
-        /// @param p
-        /// @return
+        /// @brief Assignment operator (=) for the polynomial class.
+        /// @param p The polynomial to assign values from.
+        /// @return The polynomial to the current polynomial after assignment.
         polynomial<T> &operator=(const polynomial<T> &p) = default;
 
         /// @brief Access operator for coefficient at a given index.
@@ -141,30 +145,30 @@ namespace xmath {
 
         /// @brief Adds a scalar to the polynomial.
         /// @param scalar The scalar value to be added.
-        /// @return The polynomial resulting from adding the scalar to each coefficient.
+        /// @return The polynomial resulting from adding the scalar to the constant coefficient.
         polynomial<T> operator+(value_type scalar) const;
 
-        /// @brief
-        /// @return
+        /// @brief Unary plus operator (+) for the polynomial.
+        /// @return A copy of the current polynomial with the same coefficients.
         polynomial<T> operator+() const;
 
         /// @brief Adds a scalar to the this polynomial.
-        /// @param scalar
-        /// @return The modified this polynomial.
+        /// @param scalar The scalar value to be added to the constant coefficient.
+        /// @return The modified polynomial which is given by adding the scalar to the constant coefficient.
         polynomial<T> &operator+=(value_type scalar);
 
         /// @brief Subtracts a scalar from the polynomial.
-        /// @param scalar The scalar value to be subtracted.
-        /// @return The polynomial resulting from subtracting the scalar from each coefficient.
+        /// @param scalar The scalar value to subtracted from the constant coefficient.
+        /// @return The polynomial resulting from subtracting the scalar from the constant coefficient.
         polynomial<T> operator-(value_type scalar) const;
 
-        /// @brief
-        /// @return
+        /// @brief Unary minus operator (-) for the polynomial.
+        /// @return A copy of the current polynomial negated coefficients.
         polynomial<T> operator-() const;
 
         /// @brief Subtracts a scalar to the this polynomial.
-        /// @param scalar The scalar value to be subtracted.
-        /// @return The modified this polynomial. .
+        /// @param scalar The scalar value to be subtracted from the constant coefficient.
+        /// @return The modified polynomial which is given by subtraction from the constant coefficient.
         polynomial<T> &operator-=(value_type scalar);
 
         /// @brief Multiplies the polynomial by a scalar.
@@ -172,78 +176,75 @@ namespace xmath {
         /// @return The polynomial resulting from multiplying each coefficient by the scalar.
         polynomial<T> operator*(value_type scalar) const;
 
-        /// @brief Multiplies the polynomial by a scalar.
+        /// @brief Divides the polynomial with a scalar.
         /// @param scalar The scalar value to be multiplied with.
-        /// @return The modified this polynomial.
+        /// @return The modified polynomial resulting from multiplication of each coefficient by the scalar.
         polynomial<T> &operator*=(value_type scalar);
 
-        /// @brief
-        /// @param scalar
-        /// @return
+        /// @brief Divides the polynomial with a scalar.
+        /// @param scalar The scalar value with which to divide.
+        /// @return The modified polynomial given by dividing the individual coefficients by the scalar.
         polynomial<T> operator/(value_type scalar) const;
 
-        /// @brief
-        /// @param scalar
-        /// @return The modified this polynomial.
+        /// @brief Divides the polynomial with a scalar.
+        /// @param scalar The scalar value with which to divide.
+        /// @return The polynomial that results from dividing each coefficient by the scalar.
         polynomial<T> &operator/=(value_type scalar);
 
         /// @brief Adds two polynomials.
         /// @param p The polynomial to be added.
-        /// @return The polynomial resulting from adding the coefficients of this polynomial
-        /// and the input polynomial.
+        /// @return The polynomial resulting from adding the current polynomial with the given polynomial.
         polynomial<T> operator+(const polynomial<T> &p) const;
 
         /// @brief Subtracts a polynomial from another polynomial.
         /// @param p The polynomial to be subtracted.
-        /// @return The polynomial resulting from subtracting the coefficients of the input polynomial
-        /// from this polynomial.
+        /// @return The polynomial resulting from subtracting the current polynomial with the given polynomial.
         polynomial<T> operator-(const polynomial<T> &p) const;
 
         /// @brief Multiplies two polynomials.
         /// @param p The polynomial to be multiplied with.
-        /// @return The polynomial resulting from multiplying the coefficients of this polynomial
-        /// and the input polynomial.
+        /// @return The polynomial resulting from multiplying the current polynomial with the given polynomial.
         polynomial<T> operator*(const polynomial<T> &p) const;
 
-        /// @brief
-        /// @param p
-        /// @return
+        /// @brief Addition assignment operator (+=) for the polynomial.
+        /// @param p The polynomial to add to the current polynomial.
+        /// @return The polynomial that represents the result of the addition.
         polynomial<T> &operator+=(const polynomial<T> &p);
 
-        /// @brief
-        /// @param p
-        /// @return
+        /// @brief Subtraction assignment operator (+=) for the polynomial class.
+        /// @param p The polynomial to subtract from the current polynomial.
+        /// @return The polynomial that represents the result of the subtraction.
         polynomial<T> &operator-=(const polynomial<T> &p);
 
-        /// @brief
-        /// @param p
-        /// @return
+        /// @brief Multiplication assignment operator (*) for the polynomial class.
+        /// @param p The polynomial to multiply with the current polynomial.
+        /// @return The polynomial that represents the result of the multiplication.
         polynomial<T> &operator*=(const polynomial<T> &p);
 
-        /// @brief
-        /// @param p
-        /// @return The modified this polynomial.
+        /// @brief Division operator (/) for the polynomial class.
+        /// @param p The polynomial to divide with the current polynomial.
+        /// @return The polynomial that represents the quotient of the division.
         polynomial<T> operator/(const polynomial<T> &p) const;
 
-        /// @brief
-        /// @param p
-        /// @return
+        /// @brief  Division assignment operator (/=) for the polynomial .
+        /// @param p The polynomial to divide with the current polynomial.
+        /// @return The polynomial that represents the quotient of the division.
         polynomial<T> &operator/=(const polynomial<T> &p);
 
-        /// @brief
-        /// @param p
-        /// @return The modified this polynomial.
+        /// @brief Modulo operator (%) for the polynomial.
+        /// @param p The polynomial to divide with the current polynomial.
+        /// @return The polynomial that represents the remainder of the division.
         polynomial<T> operator%(const polynomial<T> &p) const;
 
-        /// @brief
-        /// @param p
-        /// @return
+        /// @brief Modulo assignment operator (%=) for the polynomial.
+        /// @param p The polynomial to divide with the current polynomial.
+        /// @return The polynomial that represents the remainder of the division.
         polynomial<T> &operator%=(const polynomial<T> &p);
 
-        /// @brief
-        /// @param os
-        /// @param obj
-        /// @return
+        /// @brief Output stream operator (<<) for the polynomial
+        /// @param os  The output stream to write the polynomial to.
+        /// @param p The polynomial to be written to the output stream.
+        /// @return The output stream after writing the polynomial.
         template<typename C>
         friend std::ostream &operator<<(std::ostream &os, const polynomial<C> &p);
 
@@ -282,6 +283,8 @@ namespace xmath {
         /// @return True if the polynomial has all the given roots; otherwise false.
         bool has_roots(const values_type &values) const;
 
+        /// @brief Convert the polynomial to a string representation.
+        /// @return The string representation of the polynomial.
         std::string to_string() const;
 
     private:
