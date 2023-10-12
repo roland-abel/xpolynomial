@@ -23,7 +23,9 @@ namespace xmath {
         /// @param func The function for which the zero point needs to be found.
         /// @param I The interval.
         /// @param tolerance The desired accuracy for the root approximation (default is 1e-15).
-        /// @return The approximate zero point of the function within the given interval.
+        /// @return The approximate zero point of the function within the given interval,
+        /// or NaN if the Intermediate Value Theorem conditions are not met (The function has the same sign at both
+        /// interval boundaries).
         static value_type bisection(
                 const std::function<value_type(value_type)> &func,
                 const interval<value_type> &I,
@@ -34,18 +36,24 @@ namespace xmath {
         /// @param I The interval.
         /// @param tolerance The desired accuracy for the root approximation (default is 1e-15).
         /// @return The approximate zero point of the function within the given interval.
+        ///
+        /// @note If no solution is found, an undefined value may be returned (NaN).
+        /// It is recommended to check the validity of the result.
         static value_type regula_falsi(
                 const std::function<value_type(value_type)> &func,
                 const interval<value_type> &I,
                 value_type tolerance = 1e-5);
 
-        /// @brief
-        /// @param func
-        /// @param derive
-        /// @param initial
-        /// @param max_iterations
-        /// @param tolerance
-        /// @return
+        /// @brief Computes an approximation of a root for an equation using the Newton-Raphson method.
+        /// @param func The function for which to find the root.
+        /// @param derive The derivative of the func function.
+        /// @param initial The initial value for the iteration.
+        /// @param max_iterations The maximum number of iterations (default: 100).
+        /// @param tolerance The tolerance for the approximation to the root (default: 1e-5).
+        /// @return The approximation of the solution for the equation.
+        ///
+        /// @note If no solution is found, an undefined value may be returned (NaN).
+        /// It is recommended to check the validity of the result.
         static value_type newton_raphson(
                 const std::function<value_type(value_type)> &func,
                 const std::function<value_type(value_type)> &derive,
