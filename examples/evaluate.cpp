@@ -1,4 +1,4 @@
-/// @file example1.cpp
+/// @file evaluate.cpp.cpp
 /// @brief
 ///
 /// @author Roland Abel
@@ -9,6 +9,7 @@
 #include <iostream>
 #include "polynomial.h"
 
+using namespace std;
 using namespace xmath;
 
 namespace {
@@ -21,11 +22,11 @@ int main() {
     auto p = 3 * X.pow(4) - 2.5 * X.pow(3) + X.pow(2) - X + 1;
 
     // Evaluate the polynomial for a range of values
-    std::vector<double> values(10);
-    std::iota(values.begin(), values.end(), 1);
+    vector<double> values(10);
+    iota(values.begin(), values.end(), 1);
 
     for (auto x: values) {
-        std::cout << "p(" << x << ") = " << p(x) << std::endl;
+        cout << "p(" << x << ") = " << p(x) << endl;
     }
     return 0;
 }
