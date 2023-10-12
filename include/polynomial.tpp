@@ -99,6 +99,11 @@ namespace xmath {
     }
 
     template<typename T>
+    bool polynomial<T>::is_normalized() const {
+        return nearly_equal(leading_coefficient(), (value_type) 1);
+    }
+
+    template<typename T>
     polynomial<T>::coeff_type polynomial<T>::leading_coefficient() const {
         return coeffs_.back();
     }
@@ -370,7 +375,7 @@ namespace xmath {
         for (auto root: roots) {
             polynomial = polynomial * (monomial(1) - root);
         }
-        return polynomial;
+        return polynomial.normalize();
     }
 
     template<typename T>
