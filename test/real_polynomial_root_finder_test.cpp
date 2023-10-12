@@ -173,6 +173,13 @@ TEST(RealPolynomialRootFinderTests, NonSquareFreePolynomialTest) {
     EXPECT_EQ(RootFinder::number_distinct_roots(p), std::numeric_limits<int>::quiet_NaN());
 }
 
+TEST(RealPolynomialRootFinderTests, NonSquareRootIsolationTest) {
+    auto p = (X - 2).pow(3); // non square-free polynomial
+    auto intervals = RootFinder::root_isolation(p);
+
+    EXPECT_TRUE(intervals.empty());
+}
+
 TEST(RealPolynomialRootFinderTests, RootIsolationTest) {
     auto p = Polynomial::from_roots({-2.5, -1.15, 0., .5, 1.25, 4.125, 6.5}); // 7 roots (is square-free polynomial)
     auto intervals = RootFinder::root_isolation(p);
@@ -185,7 +192,7 @@ TEST(RealPolynomialRootFinderTests, RootIsolationTest) {
 
 TEST(RealPolynomialRootFinderTests, FindRootsTest) {
     auto p = Polynomial::from_roots({-2.5, -1.15, 0., .5, 1.25, 4.125, 6.5});
-    auto [roots, _] = RootFinder::find_roots(p, 1e-5);
+    auto [roots, _] = RootFinder::find_roots(p);
 
     EXPECT_EQ(roots.size(), 7);
     EXPECT_TRUE(p.has_roots(roots));
@@ -193,7 +200,7 @@ TEST(RealPolynomialRootFinderTests, FindRootsTest) {
 
 TEST(RealPolynomialRootFinderTests, FindRootsForPolynomialWithMultipleRootsTest) {
     auto p = Polynomial::from_roots({-2.5, -1.15, 1.15, .5, .5, .5});
-    auto [roots, multiplicities] = RootFinder::find_roots(p, 1e-5);
+    auto [roots, multiplicities] = RootFinder::find_roots(p);
 
     EXPECT_EQ(roots.size(), 4);
     EXPECT_TRUE(p.has_roots(roots));
