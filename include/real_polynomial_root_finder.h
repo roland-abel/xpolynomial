@@ -24,24 +24,25 @@ namespace xmath {
 
         /// @brief Computes the roots of a quadratic polynomial using the quadratic formula.
         /// @param p The quadratic polynomial for which the roots are to be computed.
-        /// @return std::pair contains the two roots of the quadratic polynomial, or
-        ///         std::pair(std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN())
-        ///         if the polynomial has no real roots or is not quadratic.
+        /// @return std::pair contains the two roots of the quadratic polynomial, or (NaN, NaN) if the polynomial
+        /// has no real roots or is not quadratic.
         static std::tuple<value_type, value_type> quadratic_roots(const polynomial<T> &p);
 
-        /// @brief
-        /// @param p
-        /// @return
+        /// @brief Checks if a given polynomial has a cubic normal form. A cubic normal form is given if the polynomial
+        /// can be expressed in the following from: p = X^3 + aX + b.
+        /// @param p The polynomial to be checked for a cubic normal form.
+        /// @return True if the given polynomial has a cubic normal form; false otherwise.
         static bool has_cubic_normal_form(const polynomial<T> &p);
 
         /// @brief Finds the real roots of the cubic polynomial given in the normal form p = X^3 + aX + b.
         /// @param p The cubic polynomial in normal form.
-        /// @return The real roots of the polynomial.
+        /// @return A tuple containing the real roots of the polynomial,
+        /// or the tuple (NaN, NaN, NaN) if no valid real roots are found.
         static std::tuple<value_type, value_type, value_type> cubic_normal_form_roots(const polynomial<T> &p);
 
-        /// @brief
-        /// @param p
-        /// @return
+        /// @brief Finds the real roots of a cubic polynomial.
+        /// @param p The cubic polynomial to find the roots of.
+        /// @return A tuple containing the real roots of the polynomial.
         static std::tuple<value_type, value_type, value_type> cubic_roots(const polynomial<T> &p);
 
         /// @brief Find a root of a polynomial using Newton's method, starting from a given initial guess.
@@ -61,9 +62,9 @@ namespace xmath {
         /// @return The number of sign changes.
         static size_t sign_changes(const polynomial<T> &p);
 
-        /// @brief
-        /// @param p
-        /// @return
+        /// @brief Calculates the Cauchy bound for the real roots of a polynomial
+        /// @param p The polynomial for which to determine the Cauchy bound.
+        /// @return The calculated Cauchy bound for the real roots.
         static value_type cauchy_bound(const polynomial<T> &p);
 
         /// @brief Gets the Sturm's polynomial sequence.
@@ -77,30 +78,30 @@ namespace xmath {
         /// @return Sequence of sign variations.
         static std::vector<short> sign_variations(const polynomial_sequence &seq, const value_type &x);
 
-        /// @brief Gets the number of distinct real roots of p within the interval I, if the given square-free polynomial p.
-        /// @return The number of distinct real roots of p,
+        /// @brief Counts the number of distinct real roots of a polynomial within a specified interval,
+        /// if the given polynomial is square-free polynomial.
         /// @param p The square-free polynomial for which the number of roots are to determined.
         /// @param I The real interval in which to find the roots of p.
-        /// @return
+        /// @return The number of distinct real roots within the specified interval,
+        /// or NaN if the polynomial p is not square-free.
         static int number_distinct_roots(const polynomial<T> &p, const interval<T> &I);
 
-        /// @brief Gets the number of distinct real roots of p, if the given square-free polynomial p.
+        /// @brief Counts the number of distinct real roots of a square-free polynomial.
         /// @param p The square-free polynomial for which the number of roots are to determined.
-        /// @return The number of distinct real roots of p,
+        /// @return The number of distinct real roots, or NaN if the polynomial p is not square-free.
         static int number_distinct_roots(const polynomial<T> &p);
 
-        /// @brief Gets disjoint intervals, such that each one contains extract one real root, and together
-        /// they contains all the roots of the given polynomial.
-        /// @param p The polynomial.
-        /// @return The list of the disjoint intervals.
+        /// @brief Isolates the real roots of a polynomial within specified intervals.
+        /// @param p The polynomial for which to isolate the real roots.
+        /// @return A vector of intervals containing the isolated real roots
+        /// or an empty vector if no roots are found or if polynomial is not square-free.
         static std::vector<interval<T>> root_isolation(const polynomial<T> &p);
 
-        /// @brief
-        /// @param p
+        /// @brief Finds the roots of a polynomial.
+        /// @param p The polynomial for which to find the roots.
         /// @param tolerance
-        /// @return
-        static std::tuple<roots_type, multiplicities_type>
-        find_roots(const polynomial<T> &p, value_type tolerance = polynomial<T>::tolerance);
+        /// @return A tuple containing the roots and their multiplicities.
+        static std::tuple<roots_type, multiplicities_type> find_roots(const polynomial<T> &p);
     };
 }
 
