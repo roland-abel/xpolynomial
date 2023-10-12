@@ -299,11 +299,18 @@ TEST(PolynomialTests, CompoundAssignmentPolynomialMultiplicationOperatorTest) {
     EXPECT_EQ(p, Polynomial({2, 6, 10, 14, 8, 0})); // 2 + 6x + 10x^2 + 14x^3 + 8x^4
 }
 
+TEST(PolynomialTests, IsNormalizeTest) {
+    auto p = 1 + 2 * X + 3 * X.pow(2) + X.pow(3);
+    EXPECT_TRUE(p.is_normalized());
+    EXPECT_TRUE(!(4.3 * p).is_normalized());
+}
+
 TEST(PolynomialTests, NormalizeTest) {
     auto p = 1 + 2 * X + 3 * X.pow(2) + 4 * X.pow(3);
     const auto q = p.normalize();
 
     EXPECT_EQ(q.leading_coefficient(), 1.0);
+    EXPECT_TRUE(q.is_normalized());
     EXPECT_EQ(q, (1. / 4.) + (1. / 2.) * X + (3. / 4.) * X.pow(2) + X.pow(3));
 }
 
@@ -374,21 +381,25 @@ TEST(PolynomialTests, FromRootsTest) {
     values_type roots = {-3};
     p = Polynomial::from_roots(roots);
     EXPECT_TRUE(p.has_roots(roots));
+    EXPECT_TRUE(p.is_normalized());
     EXPECT_EQ(p.degree(), 1);
 
     roots = {-1, 0, 1};
     p = Polynomial::from_roots(roots);
     EXPECT_TRUE(p.has_roots(roots));
+    EXPECT_TRUE(p.is_normalized());
     EXPECT_EQ(p.degree(), 3);
 
     roots = {1.2, 1.5, -2.4, 6.3};
     p = Polynomial::from_roots(roots);
     EXPECT_TRUE(p.has_roots(roots));
+    EXPECT_TRUE(p.is_normalized());
     EXPECT_EQ(p.degree(), 4);
 
     roots = {-1.3, 0.2, 1.0, 4.1, 3.1, 8.12};
     p = Polynomial::from_roots(roots);
-    EXPECT_TRUE(p.has_roots(roots));
+    EXPECT_TRUE((1.2 * p).has_roots(roots));
+    EXPECT_TRUE(p.is_normalized());
     EXPECT_EQ(p.degree(), 6);
 }
 
