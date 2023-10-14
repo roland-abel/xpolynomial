@@ -45,6 +45,18 @@ namespace xmath {
         /// @brief Destructor.
         ~polynomial() = default;
 
+    public:
+        using iterator = std::vector<T>::iterator;
+        using const_iterator = std::vector<T>::const_iterator;
+
+        inline iterator begin() { return coeffs_.begin(); }
+
+        iterator end() { return coeffs_.end(); }
+
+        const_iterator cbegin() const { return coeffs_.cbegin(); }
+
+        const_iterator cend() const { return coeffs_.cend(); }
+
         /// @brief Checks if the polynomial is the zero polynomial.
         /// @return True if the polynomial is zero, false otherwise.
         bool is_zero() const;
