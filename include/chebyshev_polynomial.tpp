@@ -19,6 +19,12 @@ namespace xmath {
                         2 * X.pow(2) - 1,
                         4 * X.pow(3) - 3 * X,
                         8 * X.pow(4) - 8 * X.pow(2) + 1,
+                        16 * X.pow(5) - 20 * X.pow(3) + 5 * X,
+                        32 * X.pow(6) - 48 * X.pow(4) + 18 * X.pow(2) - 1,
+                        64 * X.pow(7) - 112 * X.pow(5) + 56 * X.pow(3) - 7 * X,
+                        128 * X.pow(8) - 256 * X.pow(6) + 160 * X.pow(4) - 32 * X.pow(2) + 1,
+                        256 * X.pow(9) - 576 * X.pow(7) + 432 * X.pow(5) - 120 * X.pow(3) + 9 * X,
+                        512 * X.pow(10) - 1280 * X.pow(8) + 1120 * X.pow(6) - 400 * X.pow(4) + 50 * X.pow(2) - 1,
                 });
     }
 
