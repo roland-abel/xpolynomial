@@ -35,7 +35,7 @@ namespace xmath {
             auto is_first_term = true;
             for (int k = p.degree(); k >= 0; --k) {
                 auto coeff = to_string(p[k]);
-                if (nearly_zero(coeff, eps)) {
+                if (nearly_zero<T>(coeff, eps)) {
                     continue;
                 }
 
@@ -50,7 +50,7 @@ namespace xmath {
                 }
 
                 auto abs_coeff = std::fabs(coeff);
-                auto is_one = nearly_equal(abs_coeff, 1.0, eps);
+                auto is_one = nearly_equal<T>(abs_coeff, 1.0, eps);
 
                 if (k == 0 || !is_one) {
                     os << abs_coeff;
