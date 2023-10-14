@@ -11,25 +11,19 @@
 
 namespace xmath {
 
+    /// @brief Provides methods useful for dealing with Legendre polynomials.
     template<typename T>
-    class legendre_polynomial : public polynomial<T> {
+    class legendre_polynomial {
     public:
-        using value_t = polynomial<T>::value_type;
+        using polynomial_sequence = std::vector<polynomial<T>>;
 
-    public:
-        explicit legendre_polynomial(size_t order);
-
-    public:
-        const std::vector<value_t> &weights() const;
-
-        const std::vector<value_t> &roots() const;
-
-    private:
+        /// @brief Creates the Legendre polynomial P_n for the given order.
+        /// @param order The order of the polynomial.
+        /// @return The Legendre polynomial P_n for the given order.
         static polynomial<T> create(size_t order);
 
     private:
-        std::vector<value_t> weight_;
-        std::vector<value_t> roots_;
+        static polynomial_sequence legendre_polynomial_;
     };
 }
 
