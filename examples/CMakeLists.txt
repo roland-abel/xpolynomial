@@ -14,3 +14,6 @@ target_include_directories(sturm_sequence PRIVATE ../include)
 
 add_executable(root_finder root_finder.cpp)
 target_include_directories(root_finder PRIVATE ../include)
+
+add_executable(chebyshev_1st chebyshev_1st.cpp)
+target_include_directories(chebyshev_1st PRIVATE ../include)
