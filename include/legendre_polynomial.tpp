@@ -10,8 +10,9 @@ namespace xmath {
 
     template<typename T>
     std::vector<polynomial<T>> create_legendre_polynomials() {
-        auto one = polynomial<T>::one();
-        auto X = polynomial<T>::monomial(1);
+        const auto &one = polynomial<T>::one();
+        const auto &X = polynomial<T>::monomial(1);
+
         return std::vector<polynomial<T>>(
                 {
                         one,
@@ -27,46 +28,34 @@ namespace xmath {
     }
 
     template<typename T>
-    auto legendre_polynomials = create_legendre_polynomials<T>();
-
-    template<typename T>
-    legendre_polynomial<T>::legendre_polynomial(size_t order)
-            : polynomial<T>(create(order)) {
-    }
-
-    template<typename T>
-    const std::vector<typename polynomial<T>::value_type> &legendre_polynomial<T>::weights() const {
-        return weight_;
-    }
-
-    template<typename T>
-    const std::vector<typename polynomial<T>::value_type> &legendre_polynomial<T>::roots() const {
-        return roots_;
-    }
+    legendre_polynomial<T>::polynomial_sequence
+            legendre_polynomial<T>::legendre_polynomial_ = create_legendre_polynomials<T>();
 
     template<typename T>
     polynomial<T> legendre_polynomial<T>::create(size_t order) {
         static auto zero = polynomial<T>::zero();
         static auto X = polynomial<T>::monomial(1);
 
-        if (order < legendre_polynomials<T>.size()) {
-            return legendre_polynomials<T>[order];
+        auto &legendre = legendre_polynomial<T>::legendre_polynomial_;
+
+        if (order < legendre.size()) {
+            return legendre[order];
         }
 
-        auto pnm2 = legendre_polynomials<T>[order - 2]; // P_{n-2}
-        auto pnm1 = legendre_polynomials<T>[order - 1]; // P_{n-1}
+        auto P_nm1 = legendre[order - 1]; // P_{n-1}
+        auto P_nm2 = legendre[order - 2]; // P_{n-2}
 
-        auto pn = zero;
-        for (size_t i = legendre_polynomials<T>.size(); i <= order; ++i) {
-            auto n = static_cast<double >(order);
+        auto P_n = zero;   // P_n
+        for (size_t i = legendre.size(); i <= order; ++i) {
+            const auto n = static_cast<double>(order);
 
-            pn = ((2. * n - 1.) / n) * X * pnm1 - ((n - 1.) / n) * pnm2;
-            legendre_polynomials<T>.push_back(pn);
+            P_n = ((2. * n - 1.) / n) * X * P_nm1 - ((n - 1.) / n) * P_nm2;
+            legendre.push_back(P_n);
 
-            pnm2 = pnm1;
-            pnm1 = pn;
+            P_nm1 = P_n;
+            P_nm2 = P_nm1;
         }
 
-        return pn;
+        return P_n;
     }
 }
