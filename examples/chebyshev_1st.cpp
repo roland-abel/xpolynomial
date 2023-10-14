@@ -10,7 +10,7 @@ using namespace std;
 using namespace xmath;
 
 namespace {
-    using ChebyshvPolynomial = chebyshev_polynomial<float>;
+    using ChebyshevPolynomial = chebyshev_polynomial<float>;
     auto X = polynomial<double>::monomial(1, 1.0);
 }
 
@@ -19,7 +19,7 @@ int main() {
 
     cout << "Chebyshev Polynomials of 1st kind: " << endl;
     for (int n = 0; n <= max_order; ++n) {
-        auto T_n = ChebyshvPolynomial::create_1st_kind(n);
+        auto T_n = ChebyshevPolynomial::create_1st_kind(n);
         cout << "T_" << n << ": " << T_n << endl;
     }
     return 0;
