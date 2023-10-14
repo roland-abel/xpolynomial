@@ -232,9 +232,9 @@ TEST(PolynomialTests, DivisionWithScalarTest) {
 
 // Tests polynomial addition.
 TEST(PolynomialTests, PolynomialAdditionTest) {
-    const auto p = Polynomial({1, 2, 3, 4});
-    const auto q = Polynomial({2, 2, 0});
-    EXPECT_EQ(p + q, Polynomial({3, 4, 3, 4}));
+    const auto p = Polynomial({1, 2, 4, 6});
+    const auto q = Polynomial({2, 2, 1});
+    EXPECT_EQ(p + q, Polynomial({3, 4, 5, 6}));
 }
 
 TEST(PolynomialTests, CompoundAssignmentOperatorScalarAdditionTest) {
