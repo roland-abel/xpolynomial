@@ -15,14 +15,12 @@ namespace xmath {
     template<typename T>
     class chebyshev_polynomial {
     public:
-        using coeffs_type = std::vector<T>;
-        using values_type = std::vector<T>;
         using polynomial_sequence = std::vector<polynomial<T>>;
 
-        /// @brief Gets first kind Chebyshev polynomial T_n for order n.
-        /// @param n The order of the polynomial.
+        /// @brief Creates first kind Chebyshev polynomial T_n for the given order.
+        /// @param order The order of the polynomial.
         /// @return The Chebyshev polynomial T_n of the first kind.
-        static polynomial<T> create_1st_kind(size_t n);
+        static polynomial<T> create_1st_kind(size_t order);
 
     private:
         static polynomial_sequence chebyshev_1st_kind_polynomials_;
