@@ -75,7 +75,7 @@ namespace xmath {
 
     template<typename T>
     bool polynomial<T>::is_one() const {
-        return degree() == 0 && nearly_equal(leading_coefficient(), 1., tolerance);
+        return degree() == 0 && nearly_equal<value_type>(leading_coefficient(), 1., tolerance);
     }
 
     template<typename T>
@@ -100,7 +100,7 @@ namespace xmath {
 
     template<typename T>
     bool polynomial<T>::is_normalized() const {
-        return nearly_equal(leading_coefficient(), (value_type) 1);
+        return nearly_equal<value_type>(leading_coefficient(), (value_type) 1);
     }
 
     template<typename T>
@@ -125,14 +125,9 @@ namespace xmath {
 
     template<typename T>
     bool polynomial<T>::operator==(const polynomial<T> &p) const {
+        auto is_equal = [](coeff_type a, coeff_type b) { return nearly_equal<value_type>(a, b, tolerance); };
         return (p.degree() == degree())
-               && std::equal(
-                coeffs_.cbegin(),
-                coeffs_.cend(),
-                p.coeffs_.cbegin(),
-                [](coeff_type a, coeff_type b) {
-                    return nearly_equal<value_type>(a, b, tolerance);
-                });
+               && std::equal(cbegin(), cend(), p.cbegin(), is_equal);
     }
 
     template<typename T>
@@ -182,35 +177,35 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> polynomial<T>::operator*(value_type scalar) const {
-        auto result = polynomial<T>(coeffs_);
-        for (auto &coefficient: result.coeffs_) {
-            coefficient *= scalar;
-        }
-        return result;
+        auto q = polynomial<T>(coeffs_);
+        std::for_each(q.begin(), q.end(), [&](value_type &c) {
+            c *= scalar;
+        });
+        return q;
     }
 
     template<typename T>
     polynomial<T> &polynomial<T>::operator*=(value_type scalar) {
-        for (auto &coefficient: coeffs_) {
-            coefficient *= scalar;
-        }
+        std::for_each(begin(), end(), [&](value_type &c) {
+            c *= scalar;
+        });
         return *this;
     }
 
     template<typename T>
     polynomial<T> polynomial<T>::operator/(value_type scalar) const {
-        auto result = polynomial<T>(coeffs_);
-        for (auto &coefficient: result.coeffs_) {
-            coefficient /= scalar;
-        }
-        return result;
+        auto q = polynomial<T>(coeffs_);
+        std::for_each(q.begin(), q.end(), [&](value_type &c) {
+            c /= scalar;
+        });
+        return q;
     }
 
     template<typename T>
     polynomial<T> &polynomial<T>::operator/=(value_type scalar) {
-        for (auto &coefficient: coeffs_) {
-            coefficient /= scalar;
-        }
+        std::for_each(begin(), end(), [&](value_type &c) {
+            c /= scalar;
+        });
         return *this;
     }
 
