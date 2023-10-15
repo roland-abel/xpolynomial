@@ -10,6 +10,7 @@
 #include <utility>
 #include <iostream>
 #include <vector>
+#include <ranges>
 #include "matrix.h"
 
 namespace xmath {
@@ -37,6 +38,10 @@ namespace xmath {
         /// @brief Constructor that takes a list of coefficients.
         /// @param coeffs The coefficients of the polynomial in descending order.
         explicit polynomial(coeffs_type coeffs);
+
+        /// @brief
+        /// @param range
+        explicit polynomial(const std::ranges::range auto &range);
 
         /// @brief Copy constructor.
         /// @param p The polynomial to be copied.
@@ -310,6 +315,7 @@ namespace xmath {
         coeffs_type coeffs_;
     };
 }
+
 
 #include "polynomial.tpp"
 #include "polynomial.ostream.tpp"
