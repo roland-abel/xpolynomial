@@ -6,6 +6,7 @@
 
 #include <utility>
 #include <limits>
+#include <ranges>
 #include <algorithm>
 #include <iostream>
 #include "utils.h"
@@ -33,6 +34,11 @@ namespace xmath {
     template<typename T>
     polynomial<T>::polynomial(size_type degree)
             : coeffs_(std::max(static_cast<size_type>(1), degree + 1)) {
+    }
+
+    template<typename T>
+    polynomial<T>::polynomial(const std::ranges::range auto &range)
+            : polynomial<T>(std::vector<T>{range.begin(), range.end()}) {
     }
 
     template<typename T>
@@ -177,16 +183,14 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> polynomial<T>::operator*(value_type scalar) const {
-        auto q = polynomial<T>(coeffs_);
-        std::for_each(q.begin(), q.end(), [&](value_type &c) {
-            c *= scalar;
-        });
-        return q;
+        return polynomial<T>(coeffs_ | std::ranges::views::transform([&](const T &c) {
+            return c * scalar;
+        }));
     }
 
     template<typename T>
     polynomial<T> &polynomial<T>::operator*=(value_type scalar) {
-        std::for_each(begin(), end(), [&](value_type &c) {
+        std::ranges::for_each(coeffs_, [&](value_type &c) {
             c *= scalar;
         });
         return *this;
@@ -194,16 +198,14 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> polynomial<T>::operator/(value_type scalar) const {
-        auto q = polynomial<T>(coeffs_);
-        std::for_each(q.begin(), q.end(), [&](value_type &c) {
-            c /= scalar;
-        });
-        return q;
+        return polynomial<T>(coeffs_ | std::ranges::views::transform([&](const T &c) {
+            return c / scalar;
+        }));
     }
 
     template<typename T>
     polynomial<T> &polynomial<T>::operator/=(value_type scalar) {
-        std::for_each(begin(), end(), [&](value_type &c) {
+        std::ranges::for_each(coeffs_, [&](value_type &c) {
             c /= scalar;
         });
         return *this;
