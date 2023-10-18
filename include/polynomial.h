@@ -21,8 +21,8 @@ namespace xmath {
     public:
         using value_type = std::vector<T>::value_type;
         using size_type = std::vector<T>::size_type;
-
         using coeffs_type = std::vector<T>;
+        using values_type = std::vector<T>;
         using iterator = std::vector<T>::iterator;
         using const_iterator = std::vector<T>::const_iterator;
 
@@ -122,7 +122,7 @@ namespace xmath {
         /// @brief Constructs a polynomial from the given roots.
         /// @param roots The vector of roots of the polynomial.
         /// @return The normalized minimal polynomial which  has the given roots.
-        static polynomial<T> from_roots(const values_type &roots);
+        static polynomial<T> from_roots(const coeffs_type &roots);
 
         /// @brief Normalize the polynomial, i.e. the coefficients are divided by the leading coefficient.
         /// @return The normalized polynomial.
