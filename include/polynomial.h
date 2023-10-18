@@ -19,13 +19,12 @@ namespace xmath {
     template<typename T>
     class polynomial {
     public:
-        using coeffs_type = std::vector<T>;
-        using values_type = std::vector<T>;
+        using value_type = std::vector<T>::value_type;
+        using size_type = std::vector<T>::size_type;
 
+        using coeffs_type = std::vector<T>;
         using iterator = std::vector<T>::iterator;
         using const_iterator = std::vector<T>::const_iterator;
-        using value_type = values_type::value_type;
-        using size_type = coeffs_type::size_type;
 
         static constexpr value_type tolerance = 1e-5;
 
