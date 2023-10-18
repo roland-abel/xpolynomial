@@ -120,13 +120,23 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::coeff_type polynomial<T>::operator[](size_type index) const {
+    inline polynomial<T>::coeff_type polynomial<T>::at(size_type index) const {
         return index > degree() ? (coeff_type) 0.0 : coeffs_[index];
     }
 
     template<typename T>
-    polynomial<T>::coeff_type &polynomial<T>::operator[](size_type index) {
+    inline polynomial<T>::coeff_type &polynomial<T>::at(size_type index) {
         return coeffs_[index];
+    }
+
+    template<typename T>
+    inline polynomial<T>::coeff_type polynomial<T>::operator[](size_type index) const {
+        return at(index);
+    }
+
+    template<typename T>
+    inline polynomial<T>::coeff_type &polynomial<T>::operator[](size_type index) {
+        return at(index);
     }
 
     template<typename T>
@@ -321,23 +331,39 @@ namespace xmath {
         }
 
         auto derivative = polynomial<T>(degree() - 1);
-        for (auto i = 0; i < derivative.degree() + 1; ++i) {
-            derivative[i] = (coeff_type)(i + 1) * coeffs_[i + 1];
-        }
+        auto index_coeff_pairs =
+                std::views::iota((size_t) 1, degree() + 1) | std::views::transform([&](int index) {
+                    return std::make_pair(index, coeffs_[index]);
+                });
+
+        auto derive = [&](const auto &index_value) {
+            auto [exponent, coeff] = index_value;
+            derivative[exponent - 1] = exponent * coeff;
+        };
+
+        std::ranges::for_each(index_coeff_pairs, derive);
         return derivative.trim_coefficients();
     }
 
     template<typename T>
     polynomial<T> polynomial<T>::integrate() const {
         if (is_constant()) {
-            return zero();
+            return {0, at(0)};
         }
 
-        auto integral = polynomial<T>(degree() + 1);
-        for (auto i = 1; i < integral.degree() + 1; ++i) {
-            integral[i] = (coeff_type)(1. / i) * coeffs_[i - 1];
-        }
-        return integral;
+        auto primitive = polynomial<T>(degree() + 1);
+        auto index_coeff_pairs =
+                std::views::iota((size_t) 1, primitive.degree() + 1) | std::views::transform([&](int index) {
+                    return std::make_pair(index, coeffs_[index - 1]);
+                });
+
+        auto anti_derive = [&](const auto &index_value) {
+            auto [exponent, coeff] = index_value;
+            primitive[exponent] = (coeff_type)(1. / exponent) * coeffs_[exponent - 1];
+        };
+
+        std::ranges::for_each(index_coeff_pairs, anti_derive);
+        return primitive;
     }
 
     template<typename T>

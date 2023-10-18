@@ -135,7 +135,17 @@ namespace xmath {
         /// @return The polynomial to the current polynomial after assignment.
         polynomial<T> &operator=(const polynomial<T> &p) = default;
 
-        /// @brief Access operator for coefficient at a given index.
+        /// @brief Gets the coefficient at the given index.
+        /// @param index The index of the coefficient.
+        /// @return The coefficient at the specified index.
+        coeff_type at(size_type index) const;
+
+        /// @brief Gets the coefficient at the given index for modification.
+        /// @param index The index of the coefficient.
+        /// @return A reference to the coefficient at the specified index.
+        coeff_type &at(size_type index);
+
+        /// @brief Access operator for coefficient at the given index.
         /// @param index The index of the coefficient.
         /// @return The coefficient at the specified index.
         coeff_type operator[](size_type index) const;
@@ -315,7 +325,6 @@ namespace xmath {
         coeffs_type coeffs_;
     };
 }
-
 
 #include "polynomial.tpp"
 #include "polynomial.ostream.tpp"
