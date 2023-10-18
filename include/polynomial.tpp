@@ -43,12 +43,12 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> polynomial<T>::zero() {
-        return {0};
+        return {spec::zero};
     }
 
     template<typename T>
     polynomial<T> polynomial<T>::one() {
-        return {1};
+        return {spec::one};
     }
 
     template<typename T>
@@ -106,7 +106,7 @@ namespace xmath {
 
     template<typename T>
     bool polynomial<T>::is_normalized() const {
-        return nearly_equal<value_type>(leading_coefficient(), (value_type) 1);
+        return nearly_equal<value_type>(leading_coefficient(), (value_type) spec::one);
     }
 
     template<typename T>
@@ -121,7 +121,7 @@ namespace xmath {
 
     template<typename T>
     inline polynomial<T>::value_type polynomial<T>::at(size_type index) const {
-        return index > degree() ? (value_type) 0.0 : coeffs_[index];
+        return index > degree() ? spec::zero : coeffs_[index];
     }
 
     template<typename T>
@@ -391,7 +391,7 @@ namespace xmath {
         if (num_roots == 0) {
             return one();
         } else if (num_roots == 1) {
-            return polynomial<T>({-roots.front(), 1});
+            return polynomial<T>({-roots.front(), spec::one});
         }
 
         auto polynomial = one();
@@ -425,7 +425,9 @@ namespace xmath {
 
         long delta = static_cast<long>(remainder.degree() - divisor.degree());
         while (remainder != zero() && delta >= 0) {
-            auto divider = (remainder.leading_coefficient() / divisor.leading_coefficient()) * monomial(delta, 1.0);
+            auto divider =
+                    (remainder.leading_coefficient() / divisor.leading_coefficient()) * monomial(delta, spec::one);
+
             quotient = quotient + divider;
             remainder = remainder - divisor * divider;
 

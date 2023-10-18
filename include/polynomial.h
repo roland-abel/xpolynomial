@@ -15,9 +15,34 @@
 
 namespace xmath {
 
+    template<typename T>
+    struct polynomial_specification {
+        static constexpr T tolerance = 1e-5;
+        static constexpr double one = 1.0;
+        static constexpr double zero = 0.0;
+    };
+
+    template<>
+    struct polynomial_specification<double> {
+        static constexpr double tolerance = 1e-5;
+        static constexpr double one = 1.0;
+        static constexpr double zero = 0.0;
+    };
+
+    template<>
+    struct polynomial_specification<float> {
+        static constexpr double tolerance = 1e-5;
+        static constexpr double one = 1.0f;
+        static constexpr double zero = 0.0f;
+    };
+
+    template<typename T, typename S = polynomial_specification<T>>
+    class polynomial {
+    };
+
     /// @brief Represents a polynomial with coefficients from template parameter type T.
     template<typename T>
-    class polynomial {
+    class polynomial<T, polynomial_specification<T>> {
     public:
         using value_type = std::vector<T>::value_type;
         using size_type = std::vector<T>::size_type;
@@ -26,7 +51,8 @@ namespace xmath {
         using iterator = std::vector<T>::iterator;
         using const_iterator = std::vector<T>::const_iterator;
 
-        static constexpr value_type tolerance = 1e-5;
+        using spec = polynomial_specification<T>;
+        static constexpr value_type tolerance = spec::tolerance;
 
     public:
         /// @brief Default constructor. Creates a zero polynomial.
@@ -122,7 +148,7 @@ namespace xmath {
         /// @brief Constructs a polynomial from the given roots.
         /// @param roots The vector of roots of the polynomial.
         /// @return The normalized minimal polynomial which  has the given roots.
-        static polynomial<T> from_roots(const coeffs_type &roots);
+        static polynomial<T> from_roots(const values_type &roots);
 
         /// @brief Normalize the polynomial, i.e. the coefficients are divided by the leading coefficient.
         /// @return The normalized polynomial.
