@@ -115,7 +115,7 @@ namespace xmath {
     }
 
     template<typename T>
-    const polynomial<T>::coeffs_type &polynomial<T>::coefficients() const {
+    inline const polynomial<T>::coeffs_type &polynomial<T>::coefficients() const {
         return coeffs_;
     }
 
@@ -171,7 +171,7 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> &polynomial<T>::operator+=(value_type scalar) {
-        coeffs_[0] += scalar;
+        at(0) += scalar;
         return *this;
     }
 
@@ -187,7 +187,7 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> &polynomial<T>::operator-=(value_type scalar) {
-        coeffs_[0] -= scalar;
+        at(0) -= scalar;
         return *this;
     }
 
@@ -208,7 +208,7 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> polynomial<T>::operator/(value_type scalar) const {
-        return polynomial<T>(coeffs_ | std::ranges::views::transform([&](const T &c) {
+        return polynomial<T>(coefficients() | std::ranges::views::transform([&](const T &c) {
             return c / scalar;
         }));
     }
@@ -225,7 +225,7 @@ namespace xmath {
     polynomial<T> polynomial<T>::operator+(const polynomial<T> &p) const {
         auto sum = polynomial<T>(std::max(p.degree(), degree()));
         for (auto i = 0; i < sum.degree() + 1; ++i) {
-            sum[i] = operator[](i) + p[i];
+            sum[i] = at(i) + p[i];
         }
         return sum.trim_coefficients();
     }
@@ -240,7 +240,7 @@ namespace xmath {
         auto product = polynomial<T>(p.degree() + degree());
         for (auto i = 0; i < p.degree() + 1; ++i) {
             for (auto j = 0; j < degree() + 1; ++j) {
-                product[i + j] += p[i] * coeffs_[j];
+                product[i + j] += p[i] * at(j);
             }
         }
         return product.trim_coefficients();
@@ -250,7 +250,7 @@ namespace xmath {
     polynomial<T> &polynomial<T>::operator+=(const polynomial<T> &p) {
         coeffs_.resize(std::max(p.degree(), degree()) + 1);
         for (auto i = 0; i < coeffs_.size() + 1; ++i) {
-            coeffs_[i] += p[i];
+            at(i) += p[i];
         }
         return trim_coefficients();
     }
@@ -259,7 +259,7 @@ namespace xmath {
     polynomial<T> &polynomial<T>::operator-=(const polynomial<T> &p) {
         coeffs_.resize(std::max(p.degree(), degree()) + 1);
         for (auto i = 0; i < coeffs_.size() + 1; ++i) {
-            coeffs_[i] -= p[i];
+            at(i) -= p[i];
         }
         return trim_coefficients();
     }
@@ -296,7 +296,7 @@ namespace xmath {
     polynomial<T> polynomial<T>::compose(const polynomial<T> &q) const {
         auto composition = zero();
         for (size_t i = 0; i < degree() + 1; ++i) {
-            composition = composition + coeffs_[i] * q.pow(i);
+            composition = composition + at(i) * q.pow(i);
         }
         return composition;
     }
@@ -333,7 +333,7 @@ namespace xmath {
         auto derivative = polynomial<T>(degree() - 1);
         auto index_coeff_pairs =
                 std::views::iota((size_t) 1, degree() + 1) | std::views::transform([&](int index) {
-                    return std::make_pair(index, coeffs_[index]);
+                    return std::make_pair(index, at(index));
                 });
 
         auto derive = [&](const auto &index_value) {
@@ -354,12 +354,12 @@ namespace xmath {
         auto primitive = polynomial<T>(degree() + 1);
         auto index_coeff_pairs =
                 std::views::iota((size_t) 1, primitive.degree() + 1) | std::views::transform([&](int index) {
-                    return std::make_pair(index, coeffs_[index - 1]);
+                    return std::make_pair(index, at(index - 1));
                 });
 
         auto anti_derive = [&](const auto &index_value) {
             auto [exponent, coeff] = index_value;
-            primitive[exponent] = (coeff_type)(1. / exponent) * coeffs_[exponent - 1];
+            primitive[exponent] = (coeff_type)(1. / exponent) * at(exponent - 1);
         };
 
         std::ranges::for_each(index_coeff_pairs, anti_derive);
@@ -370,7 +370,7 @@ namespace xmath {
     polynomial<T>::value_type polynomial<T>::evaluate(value_type x) const {
         auto value = leading_coefficient();
         for (long i = static_cast<long>(degree()) - 1; i >= 0; --i) {
-            value = value * x + coeffs_[i];
+            value = value * x + at(i);
         }
         return value;
     }
