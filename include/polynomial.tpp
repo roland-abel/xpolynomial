@@ -20,7 +20,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::polynomial(std::initializer_list<coeff_type> coeffs)
+    polynomial<T>::polynomial(std::initializer_list<value_type> coeffs)
             : coeffs_(coeffs) {
         trim_coefficients();
     }
@@ -52,7 +52,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T> polynomial<T>::monomial(size_type degree, coeff_type coeff) {
+    polynomial<T> polynomial<T>::monomial(size_type degree, value_type coeff) {
         coeffs_type coeffs(degree + 1);
         coeffs[degree] = coeff;
 
@@ -110,7 +110,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::coeff_type polynomial<T>::leading_coefficient() const {
+    polynomial<T>::value_type polynomial<T>::leading_coefficient() const {
         return coeffs_.back();
     }
 
@@ -120,34 +120,34 @@ namespace xmath {
     }
 
     template<typename T>
-    inline polynomial<T>::coeff_type polynomial<T>::at(size_type index) const {
-        return index > degree() ? (coeff_type) 0.0 : coeffs_[index];
+    inline polynomial<T>::value_type polynomial<T>::at(size_type index) const {
+        return index > degree() ? (value_type) 0.0 : coeffs_[index];
     }
 
     template<typename T>
-    inline polynomial<T>::coeff_type &polynomial<T>::at(size_type index) {
+    inline polynomial<T>::value_type &polynomial<T>::at(size_type index) {
         return coeffs_[index];
     }
 
     template<typename T>
-    inline polynomial<T>::coeff_type polynomial<T>::operator[](size_type index) const {
+    inline polynomial<T>::value_type polynomial<T>::operator[](size_type index) const {
         return at(index);
     }
 
     template<typename T>
-    inline polynomial<T>::coeff_type &polynomial<T>::operator[](size_type index) {
+    inline polynomial<T>::value_type &polynomial<T>::operator[](size_type index) {
         return at(index);
     }
 
     template<typename T>
     bool polynomial<T>::operator==(const polynomial<T> &p) const {
-        auto is_equal = [](coeff_type a, coeff_type b) { return nearly_equal<value_type>(a, b, tolerance); };
+        auto is_equal = [](value_type a, value_type b) { return nearly_equal<value_type>(a, b, tolerance); };
         return (p.degree() == degree())
                && std::equal(cbegin(), cend(), p.cbegin(), is_equal);
     }
 
     template<typename T>
-    polynomial<T>::coeff_type polynomial<T>::operator()(coeff_type x) const {
+    polynomial<T>::value_type polynomial<T>::operator()(value_type x) const {
         return evaluate(x);
     }
 
@@ -157,7 +157,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T> polynomial<T>::operator+(coeff_type scalar) const {
+    polynomial<T> polynomial<T>::operator+(value_type scalar) const {
         auto coeffs = coefficients();
         coeffs[0] += scalar;
 
@@ -193,7 +193,7 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> polynomial<T>::operator*(value_type scalar) const {
-        return polynomial<T>(coeffs_ | std::ranges::views::transform([&](const T &c) {
+        return polynomial<T>(coefficients() | std::ranges::views::transform([&](const T &c) {
             return c * scalar;
         }));
     }
@@ -359,7 +359,7 @@ namespace xmath {
 
         auto anti_derive = [&](const auto &index_value) {
             auto [exponent, coeff] = index_value;
-            primitive[exponent] = (coeff_type)(1. / exponent) * at(exponent - 1);
+            primitive[exponent] = (value_type)(1. / exponent) * at(exponent - 1);
         };
 
         std::ranges::for_each(index_coeff_pairs, anti_derive);
