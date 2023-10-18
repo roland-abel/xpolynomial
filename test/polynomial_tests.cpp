@@ -330,7 +330,8 @@ TEST(PolynomialTests, DerivativeOfFirstOrderTest) {
 
 // Tests the indefinite integral of the polynomial.
 TEST(PolynomialTests, IntegrateTest) {
-    EXPECT_EQ(one.integrate(), zero);
+    EXPECT_EQ(one.integrate(), X);
+    EXPECT_EQ((3 * one).integrate(), 3 * X);
     EXPECT_EQ(X.integrate(), .5 * X.pow(2));
     EXPECT_EQ((X.pow(3) + 4 * X.pow(2)).integrate(), 0.25 * X.pow(4) + (4. / 3) * X.pow(3));
     EXPECT_EQ((X.pow(2)).integrate(), (1. / 3) * X.pow(3));
