@@ -21,7 +21,9 @@ namespace xmath {
     public:
         using coeffs_type = std::vector<T>;
         using values_type = std::vector<T>;
-        using coeff_type = coeffs_type::value_type;
+
+        using iterator = std::vector<T>::iterator;
+        using const_iterator = std::vector<T>::const_iterator;
         using value_type = values_type::value_type;
         using size_type = coeffs_type::size_type;
 
@@ -33,7 +35,7 @@ namespace xmath {
 
         /// @brief Constructor that takes a list of coefficients.
         /// @param coeffs The coefficients of the polynomial in descending order.
-        polynomial(std::initializer_list<coeff_type> coeffs);
+        polynomial(std::initializer_list<value_type> coeffs);
 
         /// @brief Constructor that takes a list of coefficients.
         /// @param coeffs The coefficients of the polynomial in descending order.
@@ -51,9 +53,6 @@ namespace xmath {
         ~polynomial() = default;
 
     public:
-        using iterator = std::vector<T>::iterator;
-        using const_iterator = std::vector<T>::const_iterator;
-
         inline iterator begin() { return coeffs_.begin(); }
 
         iterator end() { return coeffs_.end(); }
@@ -96,7 +95,7 @@ namespace xmath {
 
         /// @brief Returns the leading coefficient of the polynomial.
         /// @return The leading coefficient.
-        coeff_type leading_coefficient() const;
+        value_type leading_coefficient() const;
 
         /// @brief Returns the coefficients of the polynomial.
         /// @return The coefficients.
@@ -119,7 +118,7 @@ namespace xmath {
         /// @param degree The degree of the monomial.
         /// @param coeff The coefficient.
         /// @return The polynomial which representing the monomial coeff X^degree.
-        static polynomial<T> monomial(size_type degree, coeff_type coeff = (coeff_type) 1);
+        static polynomial<T> monomial(size_type degree, value_type coeff = (value_type) 1);
 
         /// @brief Constructs a polynomial from the given roots.
         /// @param roots The vector of roots of the polynomial.
@@ -138,22 +137,22 @@ namespace xmath {
         /// @brief Gets the coefficient at the given index.
         /// @param index The index of the coefficient.
         /// @return The coefficient at the specified index.
-        coeff_type at(size_type index) const;
+        value_type at(size_type index) const;
 
         /// @brief Gets the coefficient at the given index for modification.
         /// @param index The index of the coefficient.
         /// @return A reference to the coefficient at the specified index.
-        coeff_type &at(size_type index);
+        value_type &at(size_type index);
 
         /// @brief Access operator for coefficient at the given index.
         /// @param index The index of the coefficient.
         /// @return The coefficient at the specified index.
-        coeff_type operator[](size_type index) const;
+        value_type operator[](size_type index) const;
 
         /// @brief Accesses the coefficient at the specified index for modification.
         /// @param index The index of the coefficient.
         /// @return A reference to the coefficient at the specified index.
-        coeff_type &operator[](size_type index);
+        value_type &operator[](size_type index);
 
         /// @brief Checks if two polynomials are equal.
         /// @param p The polynomial to compare with.
