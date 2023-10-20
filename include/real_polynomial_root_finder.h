@@ -55,7 +55,7 @@ namespace xmath {
                 const polynomial<T> &p,
                 value_type initial,
                 int max_iterations = 100,
-                value_type tolerance = polynomial<T>::tolerance);
+                value_type tolerance = polynomial<T>::epsilon);
 
         /// @brief Gets the number of sign changes of the coefficients of the given polynomial.
         /// @param p The polynomial for which the number of sign changes are to determined.

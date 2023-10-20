@@ -12,7 +12,7 @@ namespace {
     using Polynomial = polynomial<double>;
     using ChebyshevPolynomial = chebyshev_polynomial<double>;
 
-    constexpr auto epsilon = Polynomial::tolerance;
+    constexpr auto epsilon = Polynomial::epsilon;
     auto zero = Polynomial::zero();
     auto one = Polynomial::one();
     auto X = Polynomial::monomial(1, 1.0);

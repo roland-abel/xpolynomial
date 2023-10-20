@@ -33,13 +33,13 @@ namespace xmath {
     };
 
     template<typename T>
-    inline bool nearly_zero(T a, T tolerance = std::numeric_limits<T>::epsilon()) {
-        return std::abs(a) < tolerance;
+    inline bool nearly_zero(T a, T epsilon = std::numeric_limits<T>::epsilon()) {
+        return std::abs(a) < epsilon;
     }
 
     template<typename T>
-    inline bool nearly_equal(T a, T b, T tolerance = std::numeric_limits<T>::epsilon()) {
-        return nearly_zero(a - b, tolerance);
+    inline bool nearly_equal(T a, T b, T epsilon = std::numeric_limits<T>::epsilon()) {
+        return nearly_zero(a - b, epsilon);
     }
 
     inline bool is_even(long a) {
@@ -52,10 +52,10 @@ namespace xmath {
 
     /// @brief Gets the number of sign changes of the given sequence.
     /// @param sequence The sequence for which the number of sign changes are to determined.
-    /// @param tolerance
+    /// @param epsilon
     /// @return The number of sign changes.
     template<typename T>
-    size_t sign_changes(const std::vector<T> &sequence, T tolerance = 1e-5) {
+    size_t sign_changes(const std::vector<T> &sequence, T epsilon = 1e-5) {
         auto changes = 0;
         auto size = sequence.size();
 
@@ -66,7 +66,7 @@ namespace xmath {
         int prev_sign = (sequence[0] >= 0) ? 1 : -1;
 
         for (int i = 1; i < size; ++i) {
-            if (nearly_zero<T>(sequence[i], tolerance)) {
+            if (nearly_zero<T>(sequence[i], epsilon)) {
                 continue;
             }
 

@@ -15,7 +15,7 @@ namespace {
     using SquareFree = square_free_decomposition<double>;
     using value_type = Polynomial::value_type;
 
-    constexpr auto tolerance = Polynomial::tolerance;
+    constexpr auto epsilon = Polynomial::epsilon;
     auto zero = Polynomial::zero();
     auto one = Polynomial::one();
     auto X = Polynomial::monomial(1);

@@ -13,7 +13,7 @@ namespace {
     using Polynomial = polynomial<double>;
     using values_type = Polynomial::values_type;
 
-    constexpr double tolerance = Polynomial::tolerance;
+    constexpr double epsilon = Polynomial::epsilon;
     Polynomial zero = Polynomial::zero();
     Polynomial one = Polynomial::one();
     Polynomial X = Polynomial::monomial(1, 1.0);
@@ -99,9 +99,9 @@ TEST(PolynomialTests, CubicPolynomialTest) {
 
 // Tests for the leading coefficient.
 TEST(PolynomialTests, LeadingCoefficient) {
-    EXPECT_NEAR(Polynomial({1, 0, 0}).leading_coefficient(), 1.0, tolerance);
-    EXPECT_NEAR(Polynomial({3.0, 1.0, 2.0}).leading_coefficient(), 2.0, tolerance);
-    EXPECT_NEAR(Polynomial({0, 0, 3.5, 1.0, 4.0}).leading_coefficient(), 4.0, tolerance);
+    EXPECT_NEAR(Polynomial({1, 0, 0}).leading_coefficient(), 1.0, epsilon);
+    EXPECT_NEAR(Polynomial({3.0, 1.0, 2.0}).leading_coefficient(), 2.0, epsilon);
+    EXPECT_NEAR(Polynomial({0, 0, 3.5, 1.0, 4.0}).leading_coefficient(), 4.0, epsilon);
 }
 
 // Tests for monomial.
@@ -161,11 +161,11 @@ TEST(PolynomialTests, UnitaryMinusOperatorTest) {
 TEST(PolynomialTests, IndexOperatorTest) {
     auto p = Polynomial({0.5, 2.3, 4, -1, 3.6});
 
-    EXPECT_NEAR(p[4], 3.6, tolerance);
-    EXPECT_NEAR(p[3], -1, tolerance);
-    EXPECT_NEAR(p[2], 4, tolerance);
-    EXPECT_NEAR(p[1], 2.3, tolerance);
-    EXPECT_NEAR(p[0], 0.5, tolerance);
+    EXPECT_NEAR(p[4], 3.6, epsilon);
+    EXPECT_NEAR(p[3], -1, epsilon);
+    EXPECT_NEAR(p[2], 4, epsilon);
+    EXPECT_NEAR(p[1], 2.3, epsilon);
+    EXPECT_NEAR(p[0], 0.5, epsilon);
 }
 
 // Tests for the power function.
@@ -187,7 +187,7 @@ TEST(PolynomialTests, PowerFunctionTest) {
 // Tests for the index operator returning zero when out of range.
 TEST(PolynomialTests, IndexOperatorGetZeroWhenOutOfRangeTest) {
     const auto p = Polynomial({0.5, 2.3, 4, -1, 3.6});
-    EXPECT_NEAR(p[10], 0.0, tolerance);
+    EXPECT_NEAR(p[10], 0.0, epsilon);
 }
 
 // Tests polynomial addition with a scalar.
@@ -341,16 +341,16 @@ TEST(PolynomialTests, IntegrateTest) {
 TEST(PolynomialTests, EvaluateTest) {
     auto p = Polynomial({1, 1, 2});    // 1 + x + 2x^2
 
-    EXPECT_NEAR(p.evaluate(-2), 7.0, tolerance);
-    EXPECT_NEAR(p.evaluate(-1), 2.0, tolerance);
-    EXPECT_NEAR(p.evaluate(0), 1.0, tolerance);
-    EXPECT_NEAR(p.evaluate(1), 4.0, tolerance);
-    EXPECT_NEAR(p.evaluate(2), 11.0, tolerance);
+    EXPECT_NEAR(p.evaluate(-2), 7.0, epsilon);
+    EXPECT_NEAR(p.evaluate(-1), 2.0, epsilon);
+    EXPECT_NEAR(p.evaluate(0), 1.0, epsilon);
+    EXPECT_NEAR(p.evaluate(1), 4.0, epsilon);
+    EXPECT_NEAR(p.evaluate(2), 11.0, epsilon);
 
     p = Polynomial({0, -1, 1}); // -x + x^2
-    EXPECT_NEAR(p.evaluate(-1), 2., tolerance);
-    EXPECT_NEAR(p.evaluate(0), 0., tolerance);
-    EXPECT_NEAR(p.evaluate(1), 0., tolerance);
+    EXPECT_NEAR(p.evaluate(-1), 2., epsilon);
+    EXPECT_NEAR(p.evaluate(0), 0., epsilon);
+    EXPECT_NEAR(p.evaluate(1), 0., epsilon);
 }
 
 // Tests polynomial evaluation using the call operator.
@@ -360,7 +360,7 @@ TEST(PolynomialTests, EvaluateWithOperatorTest) {
 
     auto xs = {-2.0, -1.0, 0.0, 1.0, 2.0};
     for (auto x: xs) {
-        EXPECT_NEAR(p(x), f(x), tolerance);
+        EXPECT_NEAR(p(x), f(x), epsilon);
     }
 }
 

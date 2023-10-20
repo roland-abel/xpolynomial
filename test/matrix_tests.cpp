@@ -13,7 +13,7 @@ namespace {
     using Matrix = matrix<double>;
     using coeff_type = Matrix::coeff_type;
     using coeffs_type = Matrix::coeffs_type;
-    constexpr coeff_type tolerance = Matrix::tolerance;
+    constexpr coeff_type epsilon = Matrix::tolerance;
 }
 
 Matrix CreateTestMatrix(size_t num_rows, size_t num_cols, const coeff_type start_value = 1.0) {
@@ -83,12 +83,12 @@ TEST(MatrixTests, MatrixProxyTest) {
     auto m = CreateTestMatrix(3, 2);
 
     //
-    EXPECT_NEAR(m[0][0], 1., tolerance);
-    EXPECT_NEAR(m[0][1], 2., tolerance);
-    EXPECT_NEAR(m[1][1], 4., tolerance);
-    EXPECT_NEAR(m[1][0], 3., tolerance);
-    EXPECT_NEAR(m[2][0], 5., tolerance);
-    EXPECT_NEAR(m[2][1], 6., tolerance);
+    EXPECT_NEAR(m[0][0], 1., epsilon);
+    EXPECT_NEAR(m[0][1], 2., epsilon);
+    EXPECT_NEAR(m[1][1], 4., epsilon);
+    EXPECT_NEAR(m[1][0], 3., epsilon);
+    EXPECT_NEAR(m[2][0], 5., epsilon);
+    EXPECT_NEAR(m[2][1], 6., epsilon);
 }
 
 TEST(MatrixTests, CheckEmpty) {
