@@ -17,21 +17,21 @@ namespace xmath {
 
     template<typename T>
     struct polynomial_specification {
-        static constexpr T tolerance = 1e-5;
+        static constexpr T epsilon = 1e-5;
         static constexpr double one = 1.0;
         static constexpr double zero = 0.0;
     };
 
     template<>
     struct polynomial_specification<double> {
-        static constexpr double tolerance = 1e-5;
+        static constexpr double epsilon = 1e-5;
         static constexpr double one = 1.0;
         static constexpr double zero = 0.0;
     };
 
     template<>
     struct polynomial_specification<float> {
-        static constexpr double tolerance = 1e-5;
+        static constexpr double epsilon = 1e-5;
         static constexpr double one = 1.0f;
         static constexpr double zero = 0.0f;
     };
@@ -52,7 +52,7 @@ namespace xmath {
         using const_iterator = std::vector<T>::const_iterator;
 
         using spec = polynomial_specification<T>;
-        static constexpr value_type tolerance = spec::tolerance;
+        static constexpr value_type epsilon = spec::epsilon;
 
     public:
         /// @brief Default constructor. Creates a zero polynomial.

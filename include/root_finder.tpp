@@ -46,20 +46,20 @@ namespace xmath {
     root_finder<T>::value_type root_finder<T>::regula_falsi(
             const std::function<value_type(value_type)> &func,
             const interval<value_type> &I,
-            value_type tolerance) {
+            value_type epsilon) {
 
         const auto NaN = std::numeric_limits<T>::quiet_NaN();
 
-        if (func(I.start()) * func(I.end()) >= tolerance) {
+        if (func(I.start()) * func(I.end()) >= epsilon) {
             return NaN; // incorrect endpoints a and b.
         }
 
         auto regula_falsi = [&](value_type a, value_type b) {
             auto c = a;
-            while ((b - a) >= tolerance) {
+            while ((b - a) >= epsilon) {
                 c = (a * func(b) - b * func(a)) / (func(b) - func(a));
 
-                if (nearly_zero<value_type>(func(c), tolerance)) {
+                if (nearly_zero<value_type>(func(c), epsilon)) {
                     return c;
                 } else if (func(c) * func(a) < 0) {
                     b = c;

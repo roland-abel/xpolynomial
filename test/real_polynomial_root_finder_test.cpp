@@ -15,7 +15,7 @@ namespace {
     using RootFinder = real_polynomial_root_finder<double>;
     using value_type = Polynomial::value_type;
 
-    constexpr auto tolerance = Polynomial::tolerance;
+    constexpr auto epsilon = Polynomial::epsilon;
     auto zero = Polynomial::zero();
     auto one = Polynomial::one();
     auto X = Polynomial::monomial(1);
@@ -47,23 +47,23 @@ TEST(RealPolynomialRootFinderTests, QuadraticPolynomialWithTwoRootsTest) {
     auto p = 4 * X.pow(2) + .5 * X - 4;
     auto roots = RootFinder::quadratic_roots(p);
 
-    EXPECT_NEAR(get<0>(roots), (-.5 + std::sqrt(64.25)) / 8., tolerance);
-    EXPECT_NEAR(get<1>(roots), (-.5 - std::sqrt(64.25)) / 8., tolerance);
+    EXPECT_NEAR(get<0>(roots), (-.5 + std::sqrt(64.25)) / 8., epsilon);
+    EXPECT_NEAR(get<1>(roots), (-.5 - std::sqrt(64.25)) / 8., epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, QuadraticPolynomialWithOneRootTest) {
     auto p = (X - 0.3).pow(2);
     auto roots = RootFinder::quadratic_roots(p);
 
-    EXPECT_NEAR(get<0>(roots), .3, tolerance);
-    EXPECT_NEAR(get<1>(roots), .3, tolerance);
+    EXPECT_NEAR(get<0>(roots), .3, epsilon);
+    EXPECT_NEAR(get<1>(roots), .3, epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, CubicPolynomialWithOneRootsTest) {
     auto p = X.pow(3) - 5.;
     auto roots = RootFinder::cubic_roots(p);
 
-    EXPECT_NEAR(get<0>(roots), std::pow(5., 1. / 3.), tolerance);
+    EXPECT_NEAR(get<0>(roots), std::pow(5., 1. / 3.), epsilon);
     EXPECT_TRUE(std::isnan(get<1>(roots)));
     EXPECT_TRUE(std::isnan(get<2>(roots)));
 }
@@ -79,9 +79,9 @@ TEST(RealPolynomialRootFinderTests, CubicNormalFormPolynomialWithThreeUnequalRoo
                             }));
 
     auto [r1, r2, r3] = RootFinder::cubic_roots(p);
-    EXPECT_NEAR(r1, 1., tolerance);
-    EXPECT_NEAR(r2, -.5 - std::sqrt(5. / 4.), tolerance);
-    EXPECT_NEAR(r3, -.5 + std::sqrt(5. / 4.), tolerance);
+    EXPECT_NEAR(r1, 1., epsilon);
+    EXPECT_NEAR(r2, -.5 - std::sqrt(5. / 4.), epsilon);
+    EXPECT_NEAR(r3, -.5 + std::sqrt(5. / 4.), epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, CubicPolynomialWithThreeUnequalRootsTest) {
@@ -89,9 +89,9 @@ TEST(RealPolynomialRootFinderTests, CubicPolynomialWithThreeUnequalRootsTest) {
     EXPECT_TRUE(p.has_roots({5., 2., -4}));
 
     auto [r1, r2, r3] = RootFinder::cubic_roots(p);
-    EXPECT_NEAR(r1, 5., tolerance);
-    EXPECT_NEAR(r2, -4., tolerance);
-    EXPECT_NEAR(r3, 2., tolerance);
+    EXPECT_NEAR(r1, 5., epsilon);
+    EXPECT_NEAR(r2, -4., epsilon);
+    EXPECT_NEAR(r3, 2., epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, CubicPolynomialWithTwoEqualRootsTest) {
@@ -99,26 +99,26 @@ TEST(RealPolynomialRootFinderTests, CubicPolynomialWithTwoEqualRootsTest) {
     EXPECT_TRUE(p.has_roots({7., 4.}));
 
     auto [r1, r2, r3] = RootFinder::cubic_roots(p);
-    EXPECT_NEAR(r1, 4., tolerance);
-    EXPECT_NEAR(r2, 7., tolerance);
-    EXPECT_NEAR(r3, 7., tolerance);
+    EXPECT_NEAR(r1, 4., epsilon);
+    EXPECT_NEAR(r2, 7., epsilon);
+    EXPECT_NEAR(r3, 7., epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, CubicPolynomialWithThreeEqualRootsTest) {
     auto p = 2.25 * X.pow(3);
 
     auto [r1, r2, r3] = RootFinder::cubic_roots(p);
-    EXPECT_NEAR(r1, 0., tolerance);
-    EXPECT_NEAR(r2, 0., tolerance);
-    EXPECT_NEAR(r3, 0., tolerance);
+    EXPECT_NEAR(r1, 0., epsilon);
+    EXPECT_NEAR(r2, 0., epsilon);
+    EXPECT_NEAR(r3, 0., epsilon);
 
     p = -1.5 * (X + 7.5).pow(3);
     EXPECT_TRUE(p.has_roots({-7.5}));
 
     auto roots = RootFinder::cubic_roots(p);
-    EXPECT_NEAR(get<0>(roots), -7.5, tolerance);
-    EXPECT_NEAR(get<1>(roots), -7.5, tolerance);
-    EXPECT_NEAR(get<2>(roots), -7.5, tolerance);
+    EXPECT_NEAR(get<0>(roots), -7.5, epsilon);
+    EXPECT_NEAR(get<1>(roots), -7.5, epsilon);
+    EXPECT_NEAR(get<2>(roots), -7.5, epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, SignChangesOfCoefficients) {

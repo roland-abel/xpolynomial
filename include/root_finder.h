@@ -34,7 +34,7 @@ namespace xmath {
         /// @brief Perform the regula falsi method to find a zero point of the given function within the specified interval.
         /// @param func The function for which the zero point needs to be found.
         /// @param I The interval.
-        /// @param tolerance The desired accuracy for the root approximation (default is 1e-15).
+        /// @param epsilon The desired accuracy for the root approximation (default is 1e-15).
         /// @return The approximate zero point of the function within the given interval.
         ///
         /// @note If no solution is found, an undefined value may be returned (NaN).
@@ -42,7 +42,7 @@ namespace xmath {
         static value_type regula_falsi(
                 const std::function<value_type(value_type)> &func,
                 const interval<value_type> &I,
-                value_type tolerance = 1e-5);
+                value_type epsilon = 1e-5);
 
         /// @brief Computes an approximation of a root for an equation using the Newton-Raphson method.
         /// @param func The function for which to find the root.

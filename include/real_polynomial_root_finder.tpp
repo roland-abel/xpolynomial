@@ -138,7 +138,7 @@ namespace xmath {
 
     template<typename T>
     size_t real_polynomial_root_finder<T>::sign_changes(const polynomial<T> &p) {
-        return xmath::sign_changes(p.coefficients(), polynomial<T>::tolerance);
+        return xmath::sign_changes(p.coefficients(), polynomial<T>::epsilon);
     }
 
     template<typename T>

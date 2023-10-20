@@ -18,15 +18,15 @@ namespace xmath {
 
     template<typename T>
     std::ostream &operator<<(std::ostream &os, const polynomial<T> &p) {
-        const auto eps = polynomial<T>::tolerance;
+        const auto epsilon = polynomial<T>::epsilon;
         const auto X = "x";
         const auto Power = "^";
         const auto Space = " ";
         const auto Plus = "+";
         const auto Minus = "-";
 
-        auto to_string = [eps](const polynomial<T>::value_type coeff) {
-            return nearly_zero(coeff, eps) ? 0.0 : coeff;
+        auto to_string = [epsilon](const polynomial<T>::value_type coeff) {
+            return nearly_zero(coeff, epsilon) ? 0.0 : coeff;
         };
 
         if (p.is_constant()) {
@@ -35,7 +35,7 @@ namespace xmath {
             auto is_first_term = true;
             for (int k = p.degree(); k >= 0; --k) {
                 auto coeff = to_string(p[k]);
-                if (nearly_zero<T>(coeff, eps)) {
+                if (nearly_zero<T>(coeff, epsilon)) {
                     continue;
                 }
 
@@ -50,7 +50,7 @@ namespace xmath {
                 }
 
                 auto abs_coeff = std::fabs(coeff);
-                auto is_one = nearly_equal<T>(abs_coeff, 1.0, eps);
+                auto is_one = nearly_equal<T>(abs_coeff, 1.0, epsilon);
 
                 if (k == 0 || !is_one) {
                     os << abs_coeff;
