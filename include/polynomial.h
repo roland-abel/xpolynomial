@@ -17,23 +17,32 @@ namespace xmath {
 
     template<typename T>
     struct polynomial_specification {
-        static constexpr T epsilon = 1e-5;
-        static constexpr double one = 1.0;
-        static constexpr double zero = 0.0;
+        using value_type = T;
+        using size_type = size_t;
+        using floating_point_type = value_type;
+        static constexpr floating_point_type epsilon = 1e-5;
+        static constexpr value_type one = 1.0;
+        static constexpr value_type zero = 0.0;
     };
 
     template<>
     struct polynomial_specification<double> {
-        static constexpr double epsilon = 1e-5;
-        static constexpr double one = 1.0;
-        static constexpr double zero = 0.0;
+        using value_type = double;
+        using size_type = size_t;
+        using floating_point_type = value_type;
+        static constexpr floating_point_type epsilon = 1e-5;
+        static constexpr value_type one = 1.0;
+        static constexpr value_type zero = 0.0;
     };
 
     template<>
     struct polynomial_specification<float> {
-        static constexpr double epsilon = 1e-5;
-        static constexpr double one = 1.0f;
-        static constexpr double zero = 0.0f;
+        using value_type = float;
+        using size_type = size_t;
+        using floating_point_type = value_type;
+        static constexpr floating_point_type epsilon = 1e-5;
+        static constexpr value_type one = 1.0f;
+        static constexpr value_type zero = 0.0f;
     };
 
     template<typename T, typename S = polynomial_specification<T>>
@@ -44,15 +53,14 @@ namespace xmath {
     template<typename T>
     class polynomial<T, polynomial_specification<T>> {
     public:
-        using value_type = std::vector<T>::value_type;
-        using size_type = std::vector<T>::size_type;
-        using coeffs_type = std::vector<T>;
-        using values_type = std::vector<T>;
-        using iterator = std::vector<T>::iterator;
-        using const_iterator = std::vector<T>::const_iterator;
-
         using spec = polynomial_specification<T>;
-        static constexpr value_type epsilon = spec::epsilon;
+        using value_type = spec::value_type;
+        using size_type = spec::size_type;
+        using floating_point_type = spec::floating_point_type;
+        using values_type = std::vector<value_type>;
+        using iterator = std::vector<value_type>::iterator;
+        using const_iterator = std::vector<value_type>::const_iterator;
+        static constexpr floating_point_type epsilon = spec::epsilon;
 
     public:
         /// @brief Default constructor. Creates a zero polynomial.
@@ -64,7 +72,7 @@ namespace xmath {
 
         /// @brief Constructor that takes a list of coefficients.
         /// @param coeffs The coefficients of the polynomial in descending order.
-        explicit polynomial(coeffs_type coeffs);
+        explicit polynomial(values_type coeffs);
 
         /// @brief
         /// @param range
@@ -124,7 +132,7 @@ namespace xmath {
 
         /// @brief Returns the coefficients of the polynomial.
         /// @return The coefficients.
-        const coeffs_type &coefficients() const;
+        const values_type &coefficients() const;
 
         /// @brief Evaluates the polynomial at a given value.
         /// @param x The value at which to evaluate the polynomial.
@@ -345,8 +353,12 @@ namespace xmath {
         /// @brief Trims leading zero coefficients from the polynomial.
         polynomial<T> &trim_coefficients();
 
+        static inline bool nearly_equal(value_type a, value_type b);
+
+        static inline bool nearly_zero(value_type a);
+
     private:
-        coeffs_type coeffs_;
+        values_type coeffs_;
     };
 }
 

@@ -26,7 +26,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::polynomial(coeffs_type coeffs)
+    polynomial<T>::polynomial(values_type coeffs)
             : coeffs_(std::move(coeffs)) {
         trim_coefficients();
     }
@@ -52,8 +52,18 @@ namespace xmath {
     }
 
     template<typename T>
+    bool polynomial<T>::nearly_equal(value_type a, value_type b) {
+        return xmath::nearly_equal<value_type, floating_point_type>(a, b, epsilon);
+    }
+
+    template<typename T>
+    bool polynomial<T>::nearly_zero(value_type a) {
+        return xmath::nearly_zero<value_type, floating_point_type>(a, epsilon);
+    }
+
+    template<typename T>
     polynomial<T> polynomial<T>::monomial(size_type degree, value_type coeff) {
-        coeffs_type coeffs(degree + 1);
+        values_type coeffs(degree + 1);
         coeffs[degree] = coeff;
 
         return polynomial<T>(coeffs);
@@ -67,7 +77,7 @@ namespace xmath {
     template<typename T>
     polynomial<T> &polynomial<T>::trim_coefficients() {
         auto coeff = coeffs_.rbegin();
-        while (coeffs_.size() > 1 && nearly_zero<value_type>(*coeff, epsilon)) {
+        while (coeffs_.size() > 1 && nearly_zero(*coeff)) {
             coeffs_.pop_back();
             ++coeff;
         }
@@ -76,12 +86,12 @@ namespace xmath {
 
     template<typename T>
     bool polynomial<T>::is_zero() const {
-        return degree() == 0 && nearly_zero<value_type>(leading_coefficient(), epsilon);
+        return degree() == 0 && nearly_zero(leading_coefficient());
     }
 
     template<typename T>
     bool polynomial<T>::is_one() const {
-        return degree() == 0 && nearly_equal<value_type>(leading_coefficient(), 1., epsilon);
+        return degree() == 0 && nearly_equal(leading_coefficient(), spec::one);
     }
 
     template<typename T>
@@ -106,7 +116,7 @@ namespace xmath {
 
     template<typename T>
     bool polynomial<T>::is_normalized() const {
-        return nearly_equal<value_type>(leading_coefficient(), (value_type) spec::one);
+        return nearly_equal(leading_coefficient(), spec::one);
     }
 
     template<typename T>
@@ -115,7 +125,7 @@ namespace xmath {
     }
 
     template<typename T>
-    inline const polynomial<T>::coeffs_type &polynomial<T>::coefficients() const {
+    inline const polynomial<T>::values_type &polynomial<T>::coefficients() const {
         return coeffs_;
     }
 
@@ -141,7 +151,7 @@ namespace xmath {
 
     template<typename T>
     bool polynomial<T>::operator==(const polynomial<T> &p) const {
-        auto is_equal = [](value_type a, value_type b) { return nearly_equal<value_type>(a, b, epsilon); };
+        auto is_equal = [](value_type a, value_type b) { return nearly_equal(a, b); };
         return (p.degree() == degree())
                && std::equal(cbegin(), cend(), p.cbegin(), is_equal);
     }
@@ -408,7 +418,7 @@ namespace xmath {
 
     template<typename T>
     bool polynomial<T>::has_root(const value_type &value) const {
-        return nearly_zero<value_type>(evaluate(value), epsilon);
+        return nearly_zero(evaluate(value));
     }
 
     template<typename T>

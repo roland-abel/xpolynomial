@@ -50,7 +50,7 @@ namespace xmath {
                 }
 
                 auto abs_coeff = std::fabs(coeff);
-                auto is_one = nearly_equal<T>(abs_coeff, 1.0, epsilon);
+                auto is_one = nearly_equal<T>(abs_coeff, polynomial<T>::spec::one, epsilon);
 
                 if (k == 0 || !is_one) {
                     os << abs_coeff;
