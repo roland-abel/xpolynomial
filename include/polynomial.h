@@ -72,7 +72,7 @@ namespace xmath {
 
         /// @brief Constructor that takes a list of coefficients.
         /// @param coeffs The coefficients of the polynomial in descending order.
-        explicit polynomial(values_type coeffs);
+        explicit polynomial(const values_type& coeffs);
 
         /// @brief
         /// @param range
