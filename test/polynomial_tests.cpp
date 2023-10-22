@@ -20,13 +20,13 @@ namespace {
 }
 
 // Tests for the default constructor.
-TEST(PolynomialTests, DefaultConstructur) {
+TEST(PolynomialTests, DefaultConstructor) {
     auto p = Polynomial();
     EXPECT_EQ(p.degree(), 0);
 }
 
 // Tests for the copy constructor.
-TEST(PolynomialTests, CopyConstructur) {
+TEST(PolynomialTests, CopyConstructor) {
     auto p = Polynomial({1, 2, 3});
     auto q = Polynomial(p);
 
@@ -34,7 +34,7 @@ TEST(PolynomialTests, CopyConstructur) {
 }
 
 // Tests for the constructor with coefficients.
-TEST(PolynomialTests, ConstructurWithCoefficients) {
+TEST(PolynomialTests, ConstructorWithCoefficients) {
     EXPECT_EQ(Polynomial({0}).degree(), 0);
     EXPECT_EQ(Polynomial({0, 0, 0}).degree(), 0);
     EXPECT_EQ(Polynomial({0, 0, 1}).degree(), 2);   // x^2
