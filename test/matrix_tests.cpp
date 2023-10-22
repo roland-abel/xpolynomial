@@ -31,7 +31,7 @@ TEST(MatrixTests, CheckDimensions) {
     EXPECT_EQ(4, m.cols());
 }
 
-TEST(MatrixTests, ConstructurWithConstValues) {
+TEST(MatrixTests, ConstructorWithConstValues) {
     const auto value = 2.1f;
     auto m = Matrix(2, 2, value);
 
@@ -67,7 +67,7 @@ TEST(MatrixTests, InitialWithValuesList) {
     EXPECT_EQ(m(1, 2), -5.2);
 }
 
-TEST(MatrixTests, InitialListConstructur) {
+TEST(MatrixTests, InitialListConstructor) {
     auto m = Matrix
             ({
                      {1.1, 2.4, -0.7f},
