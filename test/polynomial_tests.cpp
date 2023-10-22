@@ -14,9 +14,9 @@ namespace {
     using values_type = Polynomial::values_type;
 
     constexpr double epsilon = Polynomial::epsilon;
-    Polynomial zero = Polynomial::zero();
-    Polynomial one = Polynomial::one();
-    Polynomial X = Polynomial::monomial(1, 1.0);
+    auto zero = Polynomial::zero();
+    auto one = Polynomial::one();
+    auto X = Polynomial::monomial(1, 1.0);
 }
 
 // Tests for the default constructor.

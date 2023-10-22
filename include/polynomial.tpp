@@ -26,7 +26,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::polynomial(values_type coeffs)
+    polynomial<T>::polynomial(const values_type& coeffs)
             : coeffs_(std::move(coeffs)) {
         trim_coefficients();
     }
