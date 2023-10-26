@@ -142,21 +142,38 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::value_type real_polynomial_root_finder<T>::cauchy_bound(const polynomial<T> &p) {
-        const auto NaN = std::numeric_limits<T>::quiet_NaN();
-
+    polynomial<T>::value_type real_polynomial_root_finder<T>::cauchys_bounds(const polynomial<T> &p) {
         if (p.is_zero()) {
-            return NaN;
+            return std::numeric_limits<T>::quiet_NaN();
         }
+
+        const auto zero = polynomial<T>::spec::zero;
+        const auto one = polynomial<T>::spec::one;
 
         auto num_coefficients = p.coefficients().size();
-        auto max = .0;
+        auto max = zero;
 
         for (auto i = 0; i < num_coefficients - 1; ++i) {
-            max = std::max((double) max, (double) std::abs(p[i]));
+            max = std::max(max, std::abs(p[i]));
         }
+        return one + max / std::abs(p.leading_coefficient());
+    }
 
-        return 1 + max / std::abs(p.leading_coefficient());
+    template<typename T>
+    polynomial<T>::value_type real_polynomial_root_finder<T>::lagranges_bounds(const polynomial<T> &p) {
+        if (p.is_zero()) {
+            return std::numeric_limits<T>::quiet_NaN();
+        }
+        const auto zero = polynomial<T>::spec::zero;
+        const auto one = polynomial<T>::spec::one;
+
+        const auto lc = p.leading_coefficient();
+        const auto sum = std::accumulate(
+                p.coefficients().begin(),
+                p.coefficients().end() - 1, zero, [=](auto s, auto coeff) {
+                    return s + std::abs(coeff / lc);
+                });
+        return std::max(one, sum);
     }
 
     template<typename T>
@@ -206,7 +223,7 @@ namespace xmath {
 
     template<typename T>
     int real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p) {
-        auto bound = cauchy_bound(p);
+        auto bound = cauchys_bounds(p);
         return number_distinct_roots(p, interval<T>(-bound, bound));
     }
 
@@ -241,7 +258,7 @@ namespace xmath {
             }
         };
 
-        auto a = cauchy_bound(p);
+        auto a = cauchys_bounds(p);
         root_isolation(interval<T>(-a, a));
 
         return intervals;
