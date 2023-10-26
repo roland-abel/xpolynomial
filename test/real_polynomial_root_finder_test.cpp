@@ -131,8 +131,14 @@ TEST(RealPolynomialRootFinderTests, SignChangesOfCoefficients) {
     EXPECT_EQ(RootFinder::sign_changes(5 * X.pow(5) - 1 * X.pow(4) - X.pow(3) - X.pow(2) + X - 1), 3);
 }
 
-TEST(RealPolynomialRootFinderTests, CauchyBoundTest) {
-    EXPECT_EQ(RootFinder::cauchy_bound(3 * X.pow(4) - 6 * X.pow(3) - 2 * X.pow(2) - 9), 4);
+TEST(RealPolynomialRootFinderTests, CauchysBoundsTest) {
+    EXPECT_NEAR(RootFinder::cauchys_bounds(3 * X.pow(4) - 6 * X.pow(3) - 2 * X.pow(2) - 9), 4., epsilon);
+}
+
+TEST(RealPolynomialRootFinderTests, LagrangesBoundsTest) {
+    EXPECT_NEAR(RootFinder::lagranges_bounds(3 * X.pow(4) - 6 * X.pow(3) - 2 * X.pow(2) - 9), 17. / 3., epsilon);
+    EXPECT_NEAR(RootFinder::lagranges_bounds(.1 * X.pow(4) - 6 * X.pow(3) - 2 * X.pow(2) - 9), 170., epsilon);
+    EXPECT_NEAR(RootFinder::lagranges_bounds(100 * X.pow(4) - 6 * X.pow(3) - 2 * X.pow(2) - 9), 1., epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, SturmSequenceTest) {
@@ -204,5 +210,5 @@ TEST(RealPolynomialRootFinderTests, FindRootsForPolynomialWithMultipleRootsTest)
 
     EXPECT_EQ(roots.size(), 4);
     EXPECT_TRUE(p.has_roots(roots));
-    EXPECT_EQ(multiplicities, std::vector<unsigned short>({ 1, 1, 1, 3 }));
+    EXPECT_EQ(multiplicities, std::vector<unsigned short>({1, 1, 1, 3}));
 }

@@ -62,10 +62,17 @@ namespace xmath {
         /// @return The number of sign changes.
         static size_t sign_changes(const polynomial<T> &p);
 
-        /// @brief Calculates the Cauchy bound for the real roots of a polynomial
-        /// @param p The polynomial for which to determine the Cauchy bound.
-        /// @return The calculated Cauchy bound for the real roots.
-        static value_type cauchy_bound(const polynomial<T> &p);
+        /// @brief Calculates the Cauchy's bounds for the real roots of a polynomial.
+        /// @see https://en.wikipedia.org/wiki/Geometrical_properties_of_polynomial_roots
+        /// @param p The polynomial for which to determine the Cauchy's bounds.
+        /// @return The calculated Cauchy's bounds for the real roots of p.
+        static value_type cauchys_bounds(const polynomial<T> &p);
+
+        /// @brief Calculates the Cauchy bound for the real roots of a polynomial.
+        /// @see https://en.wikipedia.org/wiki/Geometrical_properties_of_polynomial_roots
+        /// @param p The polynomial for which to determine the Lagrange's bounds.
+        /// @return The calculated Lagrange's bounds for the real roots of p.
+        static value_type lagranges_bounds(const polynomial<T> &p);
 
         /// @brief Gets the Sturm's polynomial sequence.
         /// @param p The polynomial for which the Sturm's sequence are to determine.
