@@ -6,6 +6,7 @@
 #include <gtest/gtest.h>
 #include <cmath>
 #include <complex>
+#include "test_utilities.h"
 #include "complex_polynomial.h"
 
 using namespace xmath;
@@ -14,7 +15,8 @@ namespace {
     using ComplexPolynomial = complex_polynomial<double>;
     using RealPolynomial = polynomial<double, polynomial_specification<double>>;
 
-    constexpr auto I = ComplexPolynomial::value_type(0., 1.);
+    constexpr auto i = std::complex(0., 1.);
+    constexpr auto I = ComplexPolynomial::value_type(i);
 
     constexpr double epsilon = ComplexPolynomial::epsilon;
     auto zero = ComplexPolynomial::zero();
@@ -78,4 +80,10 @@ TEST(ComplexPolynomialTests, SeparateComplexPolynomialTest) {
     EXPECT_EQ(imag, -3 * Y.pow(2) + 1);
 
     EXPECT_EQ(p, real + I * imag);
+}
+
+TEST(ComplexPolynomialTests, EvaluateTest) {
+    auto p = Z.pow(2) - 1.;
+    EXPECT_COMPLEX_NEAR(p(1), 0. + 0. * i, epsilon);
+    EXPECT_COMPLEX_NEAR(p(-1.), 0. + 0. * i, epsilon);
 }

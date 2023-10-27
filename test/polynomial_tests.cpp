@@ -351,6 +351,10 @@ TEST(PolynomialTests, EvaluateTest) {
     EXPECT_NEAR(p.evaluate(-1), 2., epsilon);
     EXPECT_NEAR(p.evaluate(0), 0., epsilon);
     EXPECT_NEAR(p.evaluate(1), 0., epsilon);
+
+    p = Polynomial({1, -2, 1});
+    EXPECT_NEAR(p.evaluate(1), 0., epsilon);
+    EXPECT_NEAR(p.evaluate(-1), 4., epsilon);
 }
 
 // Tests polynomial evaluation using the call operator.
