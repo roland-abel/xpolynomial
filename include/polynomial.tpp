@@ -348,7 +348,7 @@ namespace xmath {
 
         auto derive = [&](const auto &index_value) {
             auto [exponent, coeff] = index_value;
-            derivative[exponent - 1] = exponent * coeff;
+            derivative[exponent - 1] = T(exponent) * coeff;
         };
 
         std::ranges::for_each(index_coeff_pairs, derive);

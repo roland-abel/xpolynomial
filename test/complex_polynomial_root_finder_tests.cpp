@@ -39,6 +39,23 @@ TEST(ComplexPolynomialRootFinder, CubicRootsOfUnityTest) {
 
     EXPECT_EQ(roots.size(), 3);
     EXPECT_COMPLEX_NEAR(roots[0], std::complex(1., 0.), epsilon);
-    EXPECT_COMPLEX_NEAR(roots[1], std::complex(-1./2., std::sqrt(3.) / 2.), epsilon);
-    EXPECT_COMPLEX_NEAR(roots[2], std::complex(-1./2., -std::sqrt(3.) / 2.), epsilon);
+    EXPECT_COMPLEX_NEAR(roots[1], std::complex(-1. / 2., std::sqrt(3.) / 2.), epsilon);
+    EXPECT_COMPLEX_NEAR(roots[2], std::complex(-1. / 2., -std::sqrt(3.) / 2.), epsilon);
 }
+
+TEST(ComplexPolynomialRootFinder, HasRootsOfUnityTest) {
+    auto p = Z.pow(7) - 1.;
+    auto roots_of_unity = RootFinder::nth_roots_of_unity(7);
+
+    EXPECT_TRUE(p.has_roots(roots_of_unity));
+}
+
+TEST(ComplexPolynomialRootFinder, DurandKernerMethodTest) {
+    auto p = (2.6 + i) * Z.pow(7) - 10.5;
+    auto initial_points = RootFinder::nth_roots_of_unity(7);
+    auto roots = RootFinder::durand_kerner_method(p, initial_points);
+
+    EXPECT_EQ(roots.size(), 7);
+    EXPECT_TRUE(p.has_roots(roots));
+}
+
