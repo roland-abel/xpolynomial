@@ -32,7 +32,7 @@ namespace xmath {
         /// @return
         static std::vector<std::complex<T>> durand_kerner_method(
                 const complex_polynomial<T> &p,
-                const std::vector<std::complex<T>>& initial_points,
+                const std::vector<std::complex<T>> &initial_points,
                 size_t max_iterations = 100);
     };
 }
