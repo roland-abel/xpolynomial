@@ -17,3 +17,6 @@ target_include_directories(root_finder PRIVATE ../include)
 
 add_executable(chebyshev_1st chebyshev_1st.cpp)
 target_include_directories(chebyshev_1st PRIVATE ../include)
+
+add_executable(nth_roots_of_unity nth_roots_of_unity.cpp)
+target_include_directories(nth_roots_of_unity PRIVATE ../include)
