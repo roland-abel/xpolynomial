@@ -13,6 +13,35 @@
 
 namespace xmath {
 
+    namespace {
+
+        template<typename T>
+        size_t sign_changes(const std::vector<T> &sequence, T epsilon = 1e-5) {
+            auto changes = 0;
+            auto size = sequence.size();
+
+            if (size <= 1) {
+                return 0; // A sequence with only one value hasn't a sign change.
+            }
+
+            int prev_sign = (sequence[0] >= 0) ? 1 : -1;
+
+            for (int i = 1; i < size; ++i) {
+                if (nearly_zero<T>(sequence[i], epsilon)) {
+                    continue;
+                }
+
+                int current_sign = (sequence[i] >= 0) ? 1 : -1;
+                if (current_sign != prev_sign) {
+                    changes++;
+                    prev_sign = current_sign;
+                }
+            }
+            return changes;
+        }
+    }
+
+
     template<typename T>
     std::tuple<typename polynomial<T>::value_type, typename polynomial<T>::value_type>
     real_polynomial_root_finder<T>::quadratic_roots(const polynomial<T> &p) {
