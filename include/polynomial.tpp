@@ -26,7 +26,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::polynomial(const values_type& coeffs)
+    polynomial<T>::polynomial(const values_type &coeffs)
             : coeffs_(std::move(coeffs)) {
         trim_coefficients();
     }
@@ -153,7 +153,8 @@ namespace xmath {
     bool polynomial<T>::operator==(const polynomial<T> &p) const {
         auto is_equal = [](value_type a, value_type b) { return nearly_equal(a, b); };
         return (p.degree() == degree())
-               && std::equal(cbegin(), cend(), p.cbegin(), is_equal);
+               && std::equal(coefficients().cbegin(), coefficients().cend(),
+                             p.coefficients().cbegin(), is_equal);
     }
 
     template<typename T>
@@ -386,7 +387,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T> operator+(typename polynomial<T>::value_type scalar, const polynomial <T> &polynomial) {
+    polynomial<T> operator+(typename polynomial<T>::value_type scalar, const polynomial<T> &polynomial) {
         return polynomial.operator+(scalar);
     }
 
