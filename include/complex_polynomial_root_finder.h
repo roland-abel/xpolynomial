@@ -34,6 +34,11 @@ namespace xmath {
                 const complex_polynomial<T> &p,
                 const std::vector<std::complex<T>> &initial_points,
                 size_t max_iterations = 100);
+
+        static std::vector<std::complex<T>> aberth_ehrlich_method(
+                const complex_polynomial<T> &p,
+                const std::vector<std::complex<T>> &initial_points,
+                size_t max_iterations = 100);
     };
 }
 
