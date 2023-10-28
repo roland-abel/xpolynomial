@@ -15,7 +15,7 @@ namespace xmath {
     }
 
     template<typename T>
-    matrix<T>::coeff_type matrix<T>::MatrixProxy::operator[](size_type col) {
+    matrix<T>::value_type matrix<T>::MatrixProxy::operator[](size_type col) {
         return inner_matrix_(inner_matrix_.index(row_, col));
     }
 
@@ -30,18 +30,18 @@ namespace xmath {
     }
 
     template<typename T>
-    matrix<T>::matrix(size_type num_rows, size_type num_cols, coeffs_type coeffs)
+    matrix<T>::matrix(size_type num_rows, size_type num_cols, values_type coeffs)
             : num_rows_(num_rows), num_cols_(num_cols), coeffs_(std::move(coeffs)) {
         check_dimension();
     }
 
     template<typename T>
-    matrix<T>::matrix(size_type num_rows, size_type num_cols, const coeff_type &value)
+    matrix<T>::matrix(size_type num_rows, size_type num_cols, const value_type &value)
             : num_rows_(num_rows), num_cols_(num_cols), coeffs_(num_rows * num_cols, value) {
     }
 
     template<typename T>
-    matrix<T>::matrix(const std::vector<std::vector<coeff_type>> &coeffs)
+    matrix<T>::matrix(const std::vector<std::vector<value_type>> &coeffs)
             : num_rows_(coeffs.size()) {
         num_cols_ = 0;
         for (const auto &coefficient: coeffs) {
@@ -105,12 +105,12 @@ namespace xmath {
     }
 
     template<typename T>
-    matrix<T> matrix<T>::make_matrix(const coeff_type &value) const {
+    matrix<T> matrix<T>::make_matrix(const value_type &value) const {
         return {rows(), cols(), value};
     }
 
     template<typename T>
-    matrix<T> matrix<T>::apply(const std::function<coeff_type(const coeff_type &, const size_type &)> &func) const {
+    matrix<T> matrix<T>::apply(const std::function<value_type(const value_type &, const size_type &)> &func) const {
         auto mat = make_matrix();
         for (auto [itr, end, idx] = std::tuple{coeffs_.cbegin(), coeffs_.cend(), 0};
              idx < coeffs_.size(); ++itr, ++idx) {
@@ -165,7 +165,7 @@ namespace xmath {
 
         for (size_type i = 0; i < rows(); i++) {
             for (size_type j = i + 1; j < cols(); j++) {
-                if (!nearly_equal<coeff_type>(at(i, j), at(j, i), tolerance)) {
+                if (!nearly_equal<value_type>(at(i, j), at(j, i), epsilon)) {
                     return false;
                 }
             }
@@ -174,32 +174,32 @@ namespace xmath {
     }
 
     template<typename T>
-    matrix<T>::coeff_type matrix<T>::operator()(size_type idx) const {
+    matrix<T>::value_type matrix<T>::operator()(size_type idx) const {
         return coeffs_.at(idx);
     }
 
     template<typename T>
-    matrix<T>::coeff_type &matrix<T>::operator()(size_type idx) {
+    matrix<T>::value_type &matrix<T>::operator()(size_type idx) {
         return coeffs_.at(idx);
     }
 
     template<typename T>
-    matrix<T>::coeff_type matrix<T>::operator()(size_type row, size_type col) const {
+    matrix<T>::value_type matrix<T>::operator()(size_type row, size_type col) const {
         return coeffs_.at(index(row, col));
     }
 
     template<typename T>
-    matrix<T>::coeff_type &matrix<T>::operator()(size_type row, size_type col) {
+    matrix<T>::value_type &matrix<T>::operator()(size_type row, size_type col) {
         return coeffs_.at(index(row, col));
     }
 
     template<typename T>
-    matrix<T>::coeff_type matrix<T>::at(size_type row, size_type col) const {
+    matrix<T>::value_type matrix<T>::at(size_type row, size_type col) const {
         return operator()(row, col);
     }
 
     template<typename T>
-    matrix<T>::coeff_type &matrix<T>::at(size_type row, size_type col) {
+    matrix<T>::value_type &matrix<T>::at(size_type row, size_type col) {
         return operator()(row, col);
     }
 
@@ -228,7 +228,7 @@ namespace xmath {
                 coeffs_.begin(),
                 coeffs_.end(),
                 mat.coeffs_.begin(),
-                [](coeff_type x, coeff_type y) { return nearly_equal<coeff_type>(x, y, tolerance); });
+                [](value_type x, value_type y) { return nearly_equal<value_type>(x, y, epsilon); });
     }
 
     template<typename T>

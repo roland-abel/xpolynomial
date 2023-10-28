@@ -11,9 +11,9 @@ using namespace xmath;
 
 namespace {
     using Matrix = matrix<double>;
-    using coeff_type = Matrix::coeff_type;
-    using coeffs_type = Matrix::coeffs_type;
-    constexpr coeff_type epsilon = Matrix::tolerance;
+    using coeff_type = Matrix::value_type;
+    using coeffs_type = Matrix::values_type;
+    constexpr coeff_type epsilon = Matrix::epsilon;
 }
 
 Matrix CreateTestMatrix(size_t num_rows, size_t num_cols, const coeff_type start_value = 1.0) {

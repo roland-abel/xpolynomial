@@ -7,7 +7,7 @@ This C++ template project provides a flexible way to work with polynomials and c
 The `polynomial<T>` class allows you to create and manipulate polynomials in a single variable. Here are some of the available functions:
 
 - `polynomial<T>()`: Constructor the zero polynomial.
-- `polynomial<T>(std::initializer_list<coeff_type> coeffs)`: Constructor that creates a polynomial with the given coefficients.
+- `polynomial<T>(std::initializer_list<value_type> coeffs)`: Constructor that creates a polynomial with the given coefficients.
 - `value_type evaluate(value_type x) const`: Computes the value of the polynomial for a given variable `x`.
 - `polynomial<T> derive() const`: Computes the derivative of the polynomial.
 - `polynomial<T> operator+(const polynomial<T> &p) const`: Adds two polynomials together.
