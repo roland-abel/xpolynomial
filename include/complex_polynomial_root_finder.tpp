@@ -32,6 +32,13 @@ namespace xmath {
             const std::vector<std::complex<T>> &initial_points,
             size_t max_iterations) {
 
+        if (initial_points.size() != p.degree()) {
+            return {};
+        }
+
+        auto p_norm = p.normalize();
+        auto approx_roots = initial_points;
+
         auto are_almost_roots = [&p](const std::vector<std::complex<T>> z_pts) {
             return std::ranges::all_of(z_pts.cbegin(), z_pts.cend(), [&p](const auto &z) {
                 return nearly_zero(std::abs(p(z)));
@@ -42,19 +49,16 @@ namespace xmath {
             return {};
         }
 
-        size_t i = 0;
-        auto p_norm = p.normalize();
-        auto roots = initial_points;
-
-        while (++i < max_iterations && !are_almost_roots(roots)) {
-            auto g = complex_polynomial<T>::from_roots(roots);
+        size_t iteration = 0;
+        while (++iteration < max_iterations && !are_almost_roots(approx_roots)) {
+            auto g = complex_polynomial<T>::from_roots(approx_roots);
             auto q = g.derive();
 
-            // Weierstrass’ correction
-            std::for_each(roots.begin(), roots.end(), [&p_norm, &q](auto &z) {
-                z = z - (p_norm(z) / q(z));
-            });
+            approx_roots = to_vector(approx_roots | std::views::transform([&p_norm, &q](auto &z) {
+                // Weierstrass’ correction
+                return z - (p_norm(z) / q(z));
+            }));
         }
-        return roots;
+        return approx_roots;
     }
 }
