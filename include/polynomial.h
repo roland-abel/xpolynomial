@@ -58,8 +58,6 @@ namespace xmath {
         using size_type = spec::size_type;
         using floating_point_type = spec::floating_point_type;
         using values_type = std::vector<value_type>;
-        using iterator = std::vector<value_type>::iterator;
-        using const_iterator = std::vector<value_type>::const_iterator;
         static constexpr floating_point_type epsilon = spec::epsilon;
 
     public:
@@ -86,14 +84,6 @@ namespace xmath {
         ~polynomial() = default;
 
     public:
-        inline iterator begin() { return coeffs_.begin(); }
-
-        iterator end() { return coeffs_.end(); }
-
-        const_iterator cbegin() const { return coeffs_.cbegin(); }
-
-        const_iterator cend() const { return coeffs_.cend(); }
-
         /// @brief Checks if the polynomial is the zero polynomial.
         /// @return True if the polynomial is zero, false otherwise.
         bool is_zero() const;
