@@ -6,6 +6,7 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+#include <ranges>
 #include <limits>
 #include <cmath>
 
@@ -48,6 +49,16 @@ namespace xmath {
 
     inline bool is_odd(long a) {
         return a % 2 == 1;
+    }
+
+    /// @brief
+    /// @tparam R
+    /// @param r
+    /// @return
+    template <std::ranges::range R>
+    auto to_vector(R&& r) {
+        auto r_common = r | std::views::common;
+        return std::vector(r_common.begin(), r_common.end());
     }
 
     /// @brief Gets the number of sign changes of the given sequence.
