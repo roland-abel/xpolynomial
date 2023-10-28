@@ -59,3 +59,11 @@ TEST(ComplexPolynomialRootFinder, DurandKernerMethodTest) {
     EXPECT_TRUE(p.has_roots(roots));
 }
 
+TEST(ComplexPolynomialRootFinder, AberthEhrlichMethodTest) {
+    auto p = (1.2 + 3. * i) * Z.pow(8) + 23.5;
+    auto initial_points = RootFinder::nth_roots_of_unity(8);
+    auto roots = RootFinder::aberth_ehrlich_method(p, initial_points);
+
+    EXPECT_EQ(roots.size(), 8);
+    EXPECT_TRUE(p.has_roots(roots));
+}
