@@ -118,6 +118,27 @@ TEST(MatrixTests, CheckIndex) {
     EXPECT_EQ(5, M.index(1, 2));
 }
 
+TEST(MatrixTests, EqualOperatorTest) {
+    auto A = Matrix(2, 4, {1., 2., 3., 4., 5., 6., 7., 8.});
+    auto B = Matrix(2, 4, {1., 2., 3., 4., 5., 6., 7., 8.});
+    auto C = Matrix(4, 2, {1., 2., 3., 4., 5., 6., 7., 8.});
+    auto D = Matrix(2, 2, {1., 2., 3., 4.});
+
+    EXPECT_TRUE(A == B);
+    EXPECT_FALSE(A == C);
+    EXPECT_FALSE(A == D);
+}
+
+TEST(MatrixTests, NotEqualOperatorTest) {
+    auto A = Matrix(2, 4, {1., 2., 3., 4., 5., 6., 7., 8.});
+    auto B = Matrix(2, 4, {1., 2., 3., 4., 5., 6., 7., 8.});
+    auto C = Matrix(2, 4, {1., 2., 3.1, 4., 5., 6., 7., 8.});
+
+    EXPECT_TRUE(A != C);
+    EXPECT_TRUE(B != C);
+    EXPECT_FALSE(A != B);
+}
+
 TEST(MatrixTests, TestSymmetricalMatrix) {
     auto M = Matrix({{1.1,  2.4,  -0.7},
                      {2.4,  2.2,  -5.2},
@@ -158,4 +179,18 @@ TEST(MatrixTests, MatrixSubtractionTest) {
 
     EXPECT_EQ(A - B, Matrix(2, 4, {-7., -5., -3., -1., 9., 3., 5., 1.5}));
     EXPECT_EQ(B - A, Matrix(2, 4, {7., 5., 3., 1., -9., -3., -5., -1.5}));
+}
+
+TEST(MatrixTests, MultiplicationWithScalarTest) {
+    const auto s = 3.5;
+    const auto A = Matrix(2, 4, {1., 2., 3., 4., 5., 6., 7., 2.5});
+
+    EXPECT_EQ(s * A, Matrix(2, 4, {1. * s, 2. * s, 3. * s, 4. * s, 5. * s, 6. * s, 7. * s, 2.5 * s}));
+}
+
+TEST(MatrixTests, DivisionWithScalarTest) {
+    const auto s = 3.5;
+    const auto A = Matrix(2, 4, {1., 2., 3., 4., 5., 6., 7., 2.5});
+
+    EXPECT_EQ(A / s, Matrix(2, 4, {1. / s, 2. / s, 3. / s, 4. / s, 5. / s, 6. / s, 7. / s, 2.5 / s}));
 }

@@ -96,9 +96,9 @@ namespace xmath {
 
         value_type &operator()(size_type row, size_type col);
 
-        bool operator==(const matrix<T> &mat) const;
+        bool operator==(const matrix<T> &M) const;
 
-        bool operator!=(const matrix<T> &mat) const;
+        bool operator!=(const matrix<T> &M) const;
 
         matrix<T> operator+(const matrix<T> &M) const;
 
