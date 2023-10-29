@@ -3,11 +3,19 @@
 /// @author Roland Abel
 /// @date 08.10.2023
 
+#include <algorithm>
+#include <ranges>
 #include <utility>
-#include "matrix.h"
 #include "utils.h"
+#include "matrix.h"
 
 namespace xmath {
+
+    namespace {
+        using std::views::zip;
+        using std::views::transform;
+        using std::views::zip_transform;
+    }
 
     template<typename T>
     matrix<T>::MatrixProxy::MatrixProxy(const matrix &mat, size_type row)
@@ -30,8 +38,14 @@ namespace xmath {
     }
 
     template<typename T>
-    matrix<T>::matrix(size_type num_rows, size_type num_cols, values_type coeffs)
-            : num_rows_(num_rows), num_cols_(num_cols), coeffs_(std::move(coeffs)) {
+    matrix<T>::matrix(size_type num_rows, size_type num_cols, std::initializer_list<value_type> coeffs)
+            : num_rows_(num_rows), num_cols_(num_cols), coeffs_(coeffs) {
+        check_dimension();
+    }
+
+    template<typename T>
+    matrix<T>::matrix(size_type num_rows, size_type num_cols, const values_type &coeffs)
+            : num_rows_(num_rows), num_cols_(num_cols), coeffs_(coeffs) {
         check_dimension();
     }
 
@@ -41,7 +55,7 @@ namespace xmath {
     }
 
     template<typename T>
-    matrix<T>::matrix(const std::vector<std::vector<value_type>> &coeffs)
+    matrix<T>::matrix(const std::vector<values_type> &coeffs)
             : num_rows_(coeffs.size()) {
         num_cols_ = 0;
         for (const auto &coefficient: coeffs) {
@@ -56,6 +70,11 @@ namespace xmath {
                 coeffs_.at(index(row, col)) = inner_values.at(col);
             }
         }
+    }
+
+    template<typename T>
+    matrix<T>::matrix(size_type num_rows, size_type num_cols, const std::ranges::range auto &range)
+            : matrix<T>(num_rows, num_cols, std::vector<T>{range.begin(), range.end()}) {
     }
 
     template<typename C>
@@ -83,13 +102,16 @@ namespace xmath {
     }
 
     template<typename T>
-    matrix<T> matrix<T>::operator+(const matrix &mat) const {
-        return apply([&](const double &_, const size_type &idx) { return this->operator()(idx) + mat(idx); });
+    matrix<T> matrix<T>::operator+(const matrix &M) const {
+        constexpr auto add = [](const auto a, const auto &b) { return a + b; };
+        return matrix<T>(rows(), cols(), zip_transform(add, coefficients(), M.coefficients()));
     }
 
     template<typename T>
-    matrix<T> matrix<T>::operator-(const matrix &mat) const {
-        return apply([&](const double &_, const size_type &idx) { return this->operator()(idx) - mat(idx); });
+    matrix<T> matrix<T>::operator-(const matrix &M) const {
+        constexpr auto add = [](const auto a, const auto &b) { return a - b; };
+        return matrix<T>(rows(), cols(), zip_transform(add, coefficients(), M.coefficients()));
+
     }
 
     template<typename T>
@@ -102,21 +124,6 @@ namespace xmath {
             }
         }
         return m;
-    }
-
-    template<typename T>
-    matrix<T> matrix<T>::make_matrix(const value_type &value) const {
-        return {rows(), cols(), value};
-    }
-
-    template<typename T>
-    matrix<T> matrix<T>::apply(const std::function<value_type(const value_type &, const size_type &)> &func) const {
-        auto mat = make_matrix();
-        for (auto [itr, end, idx] = std::tuple{coeffs_.cbegin(), coeffs_.cend(), 0};
-             idx < coeffs_.size(); ++itr, ++idx) {
-            mat(idx) = func(*itr, idx);
-        }
-        return mat;
     }
 
     template<typename T>
@@ -209,8 +216,20 @@ namespace xmath {
     }
 
     template<typename T>
+    bool matrix<T>::is_zero() const noexcept {
+        return std::ranges::all_of(coefficients(), [](auto &c) {
+            return nearly_zero<T>(c);
+        });
+    }
+
+    template<typename T>
     bool matrix<T>::is_empty() const noexcept {
         return coeffs_.empty();
+    }
+
+    template<typename T>
+    const matrix<T>::values_type &matrix<T>::coefficients() const {
+        return coeffs_;
     }
 
     template<typename T>

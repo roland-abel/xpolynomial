@@ -4,91 +4,90 @@
 /// @date 08.10.2023
 
 #include <gtest/gtest.h>
-#include <numeric>
 #include "matrix.h"
 
 using namespace xmath;
 
 namespace {
     using Matrix = matrix<double>;
-    using coeff_type = Matrix::value_type;
-    using coeffs_type = Matrix::values_type;
-    constexpr coeff_type epsilon = Matrix::epsilon;
+    using value_type = Matrix::value_type;
+    using values_type = Matrix::values_type;
+
+    constexpr value_type epsilon = Matrix::epsilon;
 }
 
-Matrix CreateTestMatrix(size_t num_rows, size_t num_cols, const coeff_type start_value = 1.0) {
-    auto values = coeffs_type(num_rows * num_cols);
-    std::iota(values.begin(), values.end(), start_value);
-
-    return {num_rows, num_cols, values};
+TEST(MatrixTests, DefaultConstructor) {
+    auto M = Matrix(2, 2);
+    EXPECT_TRUE(M.is_zero());
 }
 
 TEST(MatrixTests, CheckDimensions) {
-    auto m = Matrix(2, 4);
+    auto M = Matrix(2, 4);
 
     // expect number of rows/columns
-    EXPECT_EQ(2, m.rows());
-    EXPECT_EQ(4, m.cols());
+    EXPECT_EQ(2, M.rows());
+    EXPECT_EQ(4, M.cols());
 }
 
 TEST(MatrixTests, ConstructorWithConstValues) {
     const auto value = 2.1f;
-    auto m = Matrix(2, 2, value);
+    auto M = Matrix(2, 2, value);
 
     // expect initial value
-    EXPECT_EQ(m(0, 0), value);
-    EXPECT_EQ(m(1, 0), value);
-    EXPECT_EQ(m(0, 1), value);
-    EXPECT_EQ(m(1, 1), value);
+    EXPECT_EQ(M(0, 0), value);
+    EXPECT_EQ(M(1, 0), value);
+    EXPECT_EQ(M(0, 1), value);
+    EXPECT_EQ(M(1, 1), value);
 }
 
 TEST(MatrixTests, WrongInitialValueList) {
-    const coeffs_type values = {1.1, 2.4, -0.7, 1.0, 2.2};
-    auto action = [&values]() { return Matrix(2, 3, values); };
+    const auto coeffs = {1.1, 2.4, -0.7, 1.0, 2.2};
+    auto action = [&coeffs]() { return Matrix(2, 3, coeffs); };
 
     // throws exception
     EXPECT_ANY_THROW(action());
 }
 
 TEST(MatrixTests, InitialWithValuesList) {
-    const coeffs_type values = {1.1, 2.4, -0.7, 1.0, 2.2, -5.2};
-    auto m = Matrix(2, 3, values);
+    const auto coeffs = {1.1, 2.4, -0.7, 1.0, 2.2, -5.2};
+    auto M = Matrix(2, 3, coeffs);
 
     // expect number of rows/columns
-    EXPECT_EQ(2, m.rows());
-    EXPECT_EQ(3, m.cols());
+    EXPECT_EQ(2, M.rows());
+    EXPECT_EQ(3, M.cols());
 
     // expect right initial values
-    EXPECT_EQ(m(0, 0), 1.1);
-    EXPECT_EQ(m(0, 1), 2.4);
-    EXPECT_EQ(m(0, 2), -0.7);
-    EXPECT_EQ(m(1, 0), 1.0);
-    EXPECT_EQ(m(1, 1), 2.2);
-    EXPECT_EQ(m(1, 2), -5.2);
+    EXPECT_EQ(M(0, 0), 1.1);
+    EXPECT_EQ(M(0, 1), 2.4);
+    EXPECT_EQ(M(0, 2), -0.7);
+    EXPECT_EQ(M(1, 0), 1.0);
+    EXPECT_EQ(M(1, 1), 2.2);
+    EXPECT_EQ(M(1, 2), -5.2);
 }
 
 TEST(MatrixTests, InitialListConstructor) {
-    auto m = Matrix
-            ({
-                     {1.1, 2.4, -0.7f},
-                     {1.0, 2.2, -5.2, 6.4f}
-             });
+    auto M = Matrix({{1.1, 2.4, -0.7f},
+                     {1.0, 2.2, -5.2, 6.4f}});
 
     // expect number of rows/columns
-    EXPECT_EQ(2, m.rows());
-    EXPECT_EQ(4, m.cols());
+    EXPECT_EQ(2, M.rows());
+    EXPECT_EQ(4, M.cols());
 }
 
 TEST(MatrixTests, MatrixProxyTest) {
-    auto m = CreateTestMatrix(3, 2);
+    auto M = Matrix(3, 2, {1., 2., 3., 4., 5., 6.});
 
-    //
-    EXPECT_NEAR(m[0][0], 1., epsilon);
-    EXPECT_NEAR(m[0][1], 2., epsilon);
-    EXPECT_NEAR(m[1][1], 4., epsilon);
-    EXPECT_NEAR(m[1][0], 3., epsilon);
-    EXPECT_NEAR(m[2][0], 5., epsilon);
-    EXPECT_NEAR(m[2][1], 6., epsilon);
+    EXPECT_NEAR(M[0][0], 1., epsilon);
+    EXPECT_NEAR(M[0][1], 2., epsilon);
+    EXPECT_NEAR(M[1][1], 4., epsilon);
+    EXPECT_NEAR(M[1][0], 3., epsilon);
+    EXPECT_NEAR(M[2][0], 5., epsilon);
+    EXPECT_NEAR(M[2][1], 6., epsilon);
+}
+
+TEST(MatrixTests, ZeroMatrixTest) {
+    EXPECT_TRUE(Matrix(2, 2, {.0, .0, .0, .0}).is_zero());
+    EXPECT_FALSE(Matrix(2, 2, {.0, .1, .0, .0}).is_zero());
 }
 
 TEST(MatrixTests, CheckEmpty) {
@@ -108,59 +107,55 @@ TEST(MatrixTests, CheckSquareMatrix) {
 }
 
 TEST(MatrixTests, CheckIndex) {
-    auto m = Matrix(2, 3);
+    auto M = Matrix(2, 3);
 
     // expect right index
-    EXPECT_EQ(0, m.index(0, 0));
-    EXPECT_EQ(1, m.index(0, 1));
-    EXPECT_EQ(2, m.index(0, 2));
-    EXPECT_EQ(3, m.index(1, 0));
-    EXPECT_EQ(4, m.index(1, 1));
-    EXPECT_EQ(5, m.index(1, 2));
+    EXPECT_EQ(0, M.index(0, 0));
+    EXPECT_EQ(1, M.index(0, 1));
+    EXPECT_EQ(2, M.index(0, 2));
+    EXPECT_EQ(3, M.index(1, 0));
+    EXPECT_EQ(4, M.index(1, 1));
+    EXPECT_EQ(5, M.index(1, 2));
 }
 
 TEST(MatrixTests, TestSymmetricalMatrix) {
-    auto m = Matrix
-            ({
-                     {1.1,  2.4,  -0.7},
+    auto M = Matrix({{1.1,  2.4,  -0.7},
                      {2.4,  2.2,  -5.2},
-                     {-0.7, -5.2, -5.2}
-             });
-    EXPECT_TRUE(m.is_symmetrical());
+                     {-0.7, -5.2, -5.2}});
+    EXPECT_TRUE(M.is_symmetrical());
 
-    m = Matrix
-            ({
-                     {1.1,               1.0 / 3.0},
-                     {0.333333333333333, 2.2},
-             });
-    EXPECT_TRUE(m.is_symmetrical());
+    M = Matrix({{1.1,       1.0 / 3.0},
+                {0.3333333, 2.2},});
+    EXPECT_TRUE(M.is_symmetrical());
 
-    m = Matrix
-            ({
-                     {1.1, 2.4},
-                     {3.4, 2.2},
-             });
-    EXPECT_FALSE(m.is_symmetrical());
+    M = Matrix({{1.1, 2.4},
+                {3.4, 2.2},});
+    EXPECT_FALSE(M.is_symmetrical());
 
     // is not a square matrix
-    m = Matrix
-            (2, 3,
-             {1.1, 2.4, -0.7,
-              1.0, 2.2, -5.2
-             });
-    EXPECT_FALSE(m.is_symmetrical());
+    M = Matrix(2, 3, {1.1, 2.4, -0.7, 1.0, 2.2, -5.2});
+    EXPECT_FALSE(M.is_symmetrical());
 }
 
 TEST(MatrixTests, TestTranspose) {
-    auto m = CreateTestMatrix(4, 4);
-    auto transposed = Matrix
-            ({
-                     {1.0, 5.0, 9.0,  13.0},
-                     {2.0, 6.0, 10.0, 14.0},
-                     {3.0, 7.0, 11.0, 15.0},
-                     {4.0, 8.0, 12.0, 16.0}
-             });
+    auto A = Matrix(2, 4, {1., 2., 3., 4., 5., 6., 7., 8.});
+    auto A_transposed = Matrix(4, 2, {1., 5., 2., 6., 3., 7., 4., 8.});
 
-    EXPECT_TRUE(m.transpose() == transposed);
-    EXPECT_TRUE(m.transpose().transpose() == m);
+    EXPECT_TRUE(A.transpose() == A_transposed);
+    EXPECT_TRUE(A.transpose().transpose() == A);
+}
+
+TEST(MatrixTests, MatrixAdditionTest) {
+    const auto A = Matrix(2, 4, {1., 2., 3., 4., 5., 6., 7., 2.5});
+    const auto B = Matrix(2, 4, {8., 7., 6., 5., -4., 3., 2., 1.});
+
+    EXPECT_EQ(A + B, Matrix(2, 4, {9., 9., 9., 9., 1., 9., 9., 3.5}));
+}
+
+TEST(MatrixTests, MatrixSubtractionTest) {
+    const auto A = Matrix(2, 4, {1., 2., 3., 4., 5., 6., 7., 2.5});
+    const auto B = Matrix(2, 4, {8., 7., 6., 5., -4., 3., 2., 1.});
+
+    EXPECT_EQ(A - B, Matrix(2, 4, {-7., -5., -3., -1., 9., 3., 5., 1.5}));
+    EXPECT_EQ(B - A, Matrix(2, 4, {7., 5., 3., 1., -9., -3., -5., -1.5}));
 }

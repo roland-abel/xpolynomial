@@ -57,28 +57,32 @@ namespace xmath {
             size_type row_;
         };
 
-    public:
-
         explicit matrix(size_type num_rows = 0, size_type num_cols = 0);
 
-        matrix(size_type num_rows, size_type num_cols, values_type coeffs);
+        matrix(size_type num_rows, size_type num_cols, std::initializer_list<value_type> coeffs);
+
+        matrix(size_type num_rows, size_type num_cols, const values_type &coeffs);
 
         matrix(size_type num_rows, size_type num_cols, const value_type &value);
 
-        explicit matrix(const std::vector<std::vector<value_type>> &coeffs);
+        explicit matrix(const std::vector<values_type> &coeffs);
+
+        explicit matrix(size_type num_rows, size_type num_cols, const std::ranges::range auto &range);
 
         matrix(const matrix &mat) = default;
 
         ~matrix() = default;
 
-    public:
         constexpr inline size_type rows() const { return num_rows_; }
 
         constexpr inline size_type cols() const { return num_cols_; }
 
         constexpr inline size_type index(size_type row, size_type col) const { return row * num_cols_ + col; }
 
-    public:
+        /// @brief Returns the coefficients of the polynomial.
+        /// @return The coefficients.
+        const values_type &coefficients() const;
+
         template<typename C>
         friend std::ostream &operator<<(std::ostream &os, const matrix<C> &mat);
 
@@ -96,7 +100,7 @@ namespace xmath {
 
         bool operator!=(const matrix &mat) const;
 
-        matrix<T> operator+(const matrix &mat) const;
+        matrix<T> operator+(const matrix &M) const;
 
         matrix<T> operator-(const matrix &mat) const;
 
@@ -115,6 +119,8 @@ namespace xmath {
 
         bool is_empty() const noexcept;
 
+        bool is_zero() const noexcept;
+
         bool is_symmetrical() const noexcept;
 
         void resize(size_type rows, size_type cols);
@@ -123,10 +129,6 @@ namespace xmath {
 
     private:
         void check_dimension();
-
-        matrix<T> make_matrix(const value_type &value = static_cast<value_type >(0.0)) const;
-
-        matrix<T> apply(const std::function<value_type(const value_type &, const size_type &)> &func) const;
 
         // The number of rows of the matrix.
         size_type num_rows_ = 0;
