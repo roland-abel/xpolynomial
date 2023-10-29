@@ -12,6 +12,7 @@
 namespace xmath {
 
     namespace {
+        using std::ranges::all_of;
         using std::views::zip;
         using std::views::transform;
         using std::views::zip_transform;
@@ -103,13 +104,13 @@ namespace xmath {
 
     template<typename T>
     matrix<T> matrix<T>::operator+(const matrix<T> &M) const {
-        constexpr auto add = [](const auto a, const auto &b) { return a + b; };
+        constexpr auto add = [](const value_type &a, const value_type &b) { return a + b; };
         return matrix<T>(rows(), cols(), zip_transform(add, coefficients(), M.coefficients()));
     }
 
     template<typename T>
     matrix<T> matrix<T>::operator-(const matrix<T> &M) const {
-        constexpr auto sub = [](const auto a, const auto &b) { return a - b; };
+        constexpr auto sub = [](const auto &a, const auto &b) { return a - b; };
         return matrix<T>(rows(), cols(), zip_transform(sub, coefficients(), M.coefficients()));
     }
 
@@ -132,12 +133,16 @@ namespace xmath {
 
     template<typename T>
     matrix<T> matrix<T>::operator*(const double &scalar) const {
-        return apply([&](const double &_, const size_type &idx) { return scalar * this->operator()(idx); });
+        return matrix<T>(rows(), cols(), coefficients() | transform([&scalar](const auto &coeff) {
+            return coeff * scalar;
+        }));
     }
 
     template<typename T>
     matrix<T> matrix<T>::operator/(const double &scalar) const {
-        return apply([&](const double &_, const size_type &idx) { return this->operator()(idx) / scalar; });
+        return matrix<T>(rows(), cols(), coefficients() | transform([&scalar](const auto &coeff) {
+            return coeff / scalar;
+        }));
     }
 
     template<typename T>
@@ -152,7 +157,6 @@ namespace xmath {
     matrix<T> operator*(const double &value, const matrix<T> &mat) {
         return mat * value;
     }
-
 
     template<typename T>
     matrix<T> operator/(const double &value, const matrix<T> &mat) {
@@ -216,7 +220,7 @@ namespace xmath {
 
     template<typename T>
     bool matrix<T>::is_zero() const noexcept {
-        return std::ranges::all_of(coefficients(), [](auto &c) {
+        return all_of(coefficients(), [](auto &c) {
             return nearly_zero<T>(c);
         });
     }
@@ -238,19 +242,16 @@ namespace xmath {
     }
 
     template<typename T>
-    bool matrix<T>::operator==(const matrix &mat) const {
-        if (mat.rows() != rows() || mat.cols() != cols())
-            return false;
-
-        return std::equal(
-                coeffs_.begin(),
-                coeffs_.end(),
-                mat.coeffs_.begin(),
-                [](value_type x, value_type y) { return nearly_equal<value_type>(x, y, epsilon); });
+    bool matrix<T>::operator==(const matrix<T> &M) const {
+        auto is_equal = [](const auto &c) {
+            return nearly_equal<T>(std::get<0>(c), std::get<1>(c), matrix<T>::epsilon);
+        };
+        return M.rows() == rows() && M.cols() == cols()
+               && all_of(zip(coefficients(), M.coefficients()), is_equal);
     }
 
     template<typename T>
-    bool matrix<T>::operator!=(const matrix &mat) const {
-        return !(*this == mat);
+    bool matrix<T>::operator!=(const matrix<T> &M) const {
+        return !(*this == M);
     }
 }
