@@ -92,7 +92,7 @@ namespace xmath {
 
     template<typename T>
     matrix<T> matrix<T>::transpose() const {
-        matrix mat(cols(), rows());
+        matrix<T> mat(cols(), rows());
         for (size_type i = 0; i < mat.rows(); i++) {
             for (size_type j = 0; j < mat.cols(); j++) {
                 mat(i, j) = at(j, i);
@@ -102,21 +102,20 @@ namespace xmath {
     }
 
     template<typename T>
-    matrix<T> matrix<T>::operator+(const matrix &M) const {
+    matrix<T> matrix<T>::operator+(const matrix<T> &M) const {
         constexpr auto add = [](const auto a, const auto &b) { return a + b; };
         return matrix<T>(rows(), cols(), zip_transform(add, coefficients(), M.coefficients()));
     }
 
     template<typename T>
-    matrix<T> matrix<T>::operator-(const matrix &M) const {
-        constexpr auto add = [](const auto a, const auto &b) { return a - b; };
-        return matrix<T>(rows(), cols(), zip_transform(add, coefficients(), M.coefficients()));
-
+    matrix<T> matrix<T>::operator-(const matrix<T> &M) const {
+        constexpr auto sub = [](const auto a, const auto &b) { return a - b; };
+        return matrix<T>(rows(), cols(), zip_transform(sub, coefficients(), M.coefficients()));
     }
 
     template<typename T>
     matrix<T> matrix<T>::operator*(const matrix &mat) const {
-        auto m = matrix(rows(), mat.cols());
+        auto m = matrix<T>(rows(), mat.cols());
         for (size_type i = 0; i < rows(); ++i) {
             for (size_type k = 0; k < mat.cols(); ++k) {
                 for (size_type j = 0; j < cols(); ++j)

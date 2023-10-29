@@ -53,7 +53,7 @@ namespace xmath {
             value_type operator[](size_type col);
 
         private:
-            const matrix &inner_matrix_;
+            const matrix<T> &inner_matrix_;
             size_type row_;
         };
 
@@ -69,7 +69,7 @@ namespace xmath {
 
         explicit matrix(size_type num_rows, size_type num_cols, const std::ranges::range auto &range);
 
-        matrix(const matrix &mat) = default;
+        matrix(const matrix<T> &mat) = default;
 
         ~matrix() = default;
 
@@ -96,15 +96,15 @@ namespace xmath {
 
         value_type &operator()(size_type row, size_type col);
 
-        bool operator==(const matrix &mat) const;
+        bool operator==(const matrix<T> &mat) const;
 
-        bool operator!=(const matrix &mat) const;
+        bool operator!=(const matrix<T> &mat) const;
 
-        matrix<T> operator+(const matrix &M) const;
+        matrix<T> operator+(const matrix<T> &M) const;
 
-        matrix<T> operator-(const matrix &mat) const;
+        matrix<T> operator-(const matrix<T> &mat) const;
 
-        matrix<T> operator*(const matrix &mat) const;
+        matrix<T> operator*(const matrix<T> &mat) const;
 
         matrix<T> operator*(const double &scalar) const;
 
