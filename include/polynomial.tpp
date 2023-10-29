@@ -14,6 +14,11 @@
 
 namespace xmath {
 
+    namespace {
+        using std::views::transform;
+        using std::ranges::for_each;
+    }
+
     template<typename T>
     polynomial<T>::polynomial() {
         coeffs_.push_back(0);
@@ -204,14 +209,14 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> polynomial<T>::operator*(value_type scalar) const {
-        return polynomial<T>(coefficients() | std::ranges::views::transform([&](const T &c) {
+        return polynomial<T>(coefficients() | transform([&](const T &c) {
             return c * scalar;
         }));
     }
 
     template<typename T>
     polynomial<T> &polynomial<T>::operator*=(value_type scalar) {
-        std::ranges::for_each(coeffs_, [&](value_type &c) {
+        for_each(coeffs_, [&](value_type &c) {
             c *= scalar;
         });
         return *this;
@@ -219,14 +224,14 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> polynomial<T>::operator/(value_type scalar) const {
-        return polynomial<T>(coefficients() | std::ranges::views::transform([&](const T &c) {
+        return polynomial<T>(coefficients() | transform([&](const T &c) {
             return c / scalar;
         }));
     }
 
     template<typename T>
     polynomial<T> &polynomial<T>::operator/=(value_type scalar) {
-        std::ranges::for_each(coeffs_, [&](value_type &c) {
+        for_each(coeffs_, [&](value_type &c) {
             c /= scalar;
         });
         return *this;
@@ -343,7 +348,7 @@ namespace xmath {
 
         auto derivative = polynomial<T>(degree() - 1);
         auto index_coeff_pairs =
-                std::views::iota((size_t) 1, degree() + 1) | std::views::transform([&](int index) {
+                std::views::iota((size_t) 1, degree() + 1) | transform([&](int index) {
                     return std::make_pair(index, at(index));
                 });
 
@@ -352,7 +357,7 @@ namespace xmath {
             derivative[exponent - 1] = T(exponent) * coeff;
         };
 
-        std::ranges::for_each(index_coeff_pairs, derive);
+        for_each(index_coeff_pairs, derive);
         return derivative.trim_coefficients();
     }
 
@@ -364,7 +369,7 @@ namespace xmath {
 
         auto primitive = polynomial<T>(degree() + 1);
         auto index_coeff_pairs =
-                std::views::iota((size_t) 1, primitive.degree() + 1) | std::views::transform([&](int index) {
+                std::views::iota((size_t) 1, primitive.degree() + 1) | transform([&](int index) {
                     return std::make_pair(index, at(index - 1));
                 });
 
@@ -373,7 +378,7 @@ namespace xmath {
             primitive[exponent] = (value_type)(1. / exponent) * at(exponent - 1);
         };
 
-        std::ranges::for_each(index_coeff_pairs, anti_derive);
+        for_each(index_coeff_pairs, anti_derive);
         return primitive;
     }
 
