@@ -11,6 +11,10 @@
 
 namespace xmath {
 
+    namespace {
+        using std::ranges::views::transform;
+    }
+
     template<typename T>
     struct polynomial_specification<std::complex<T>> {
         using value_type = std::complex<T>;
@@ -40,7 +44,7 @@ namespace xmath {
 
     template<typename T>
     complex_polynomial<T> operator*(const real_polynomial<T> &p, const complex_type<T> &z) {
-        return complex_polynomial<T>(p.coefficients() | std::ranges::views::transform([&](const T &coeff) {
+        return complex_polynomial<T>(p.coefficients() | transform([&](const T &coeff) {
             return coeff * z;
         }));
     }
