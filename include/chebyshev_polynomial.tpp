@@ -3,9 +3,16 @@
 /// @author Roland Abel
 /// @date 08.10.2023
 
+#include <ranges>
 #include "chebyshev_polynomial.h"
 
 namespace xmath {
+
+    namespace {
+        using std::numbers::pi;
+        using std::views::iota;
+        using std::views::transform;
+    }
 
     template<typename T>
     chebyshev_polynomial<T>::polynomial_sequence create_1st_kind_chebyshev_polynomials() {
@@ -56,5 +63,16 @@ namespace xmath {
             T_nm2 = T_nm1;
         }
         return T_n;
+    }
+
+    template<typename T>
+    chebyshev_polynomial<T>::values_type chebyshev_polynomial<T>::roots_1st_kind(size_t order) {
+        auto kth_root = [order](const auto &k) {
+            return std::cos((2. * k + 1.) * std::numbers::pi / (2 * order));
+        };
+
+        return order == 0
+               ? xmath::chebyshev_polynomial<T>::values_type()
+               : to_vector(iota(0, static_cast<int>(order)) | transform(kth_root));
     }
 }

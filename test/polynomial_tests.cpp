@@ -113,7 +113,7 @@ TEST(PolynomialTests, MonomialTest) {
     EXPECT_EQ(Polynomial::monomial(10, 3.5).degree(), 10);
 }
 
-TEST(PolynomialTests, OperatorStreamOutTest) {
+TEST(PolynomialTests, ToStringTest) {
     EXPECT_EQ(zero.to_string(), "0");
     EXPECT_EQ(one.to_string(), "1");
     EXPECT_EQ((-one).to_string(), "-1");
