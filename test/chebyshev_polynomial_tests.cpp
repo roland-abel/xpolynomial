@@ -53,3 +53,16 @@ TEST(ChebyshvPolynomialTest, FirstKindChebyshvPolynomials) {
     EXPECT_EQ(T_10, 512 * X.pow(10) - 1280 * X.pow(8) + 1120 * X.pow(6) - 400 * X.pow(4) + 50 * X.pow(2) - 1);
 }
 
+TEST(ChebyshvPolynomialTest, Roots1stKindZeroOrder) {
+    auto roots = ChebyshevPolynomial::roots_1st_kind(0);
+    EXPECT_EQ(roots.size(), 0);
+}
+
+TEST(ChebyshvPolynomialTest, Roots1stKind) {
+    size_t order = 8;
+    auto roots = ChebyshevPolynomial::roots_1st_kind(order);
+    auto T_8 = ChebyshevPolynomial::create_1st_kind(order);
+
+    EXPECT_EQ(roots.size(), 8);
+    EXPECT_TRUE(T_8.has_roots(roots));
+}

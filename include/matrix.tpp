@@ -35,7 +35,7 @@ namespace xmath {
 
     template<typename T>
     matrix<T>::matrix(size_type num_rows, size_type num_cols)
-            : matrix(num_rows, num_cols, 0.0) {
+            : matrix(num_rows, num_cols, spec::zero) {
     }
 
     template<typename T>
@@ -63,7 +63,7 @@ namespace xmath {
             num_cols_ = std::max(num_cols_, coefficient.size());
         }
 
-        coeffs_.resize(num_rows_ * num_cols_, 0.0);
+        coeffs_.resize(num_rows_ * num_cols_, spec::zero);
 
         for (auto row = 0; row < coeffs.size(); ++row) {
             auto inner_values = coeffs.at(row);
