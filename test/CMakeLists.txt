@@ -11,6 +11,7 @@ add_executable(${UNIT_TEST_NAME}
         chebyshev_polynomial_tests.cpp
         complex_polynomial_tests.cpp
         complex_polynomial_root_finder_tests.cpp
+        real_interval_tests.cpp
 )
 
 target_include_directories(${UNIT_TEST_NAME} PUBLIC ../include)

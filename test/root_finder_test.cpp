@@ -22,7 +22,7 @@ namespace {
 }
 
 TEST(RootFinderTests, BisectionWithIncorrectsEndpointsTest) {
-    auto I = interval(3., 4.);
+    auto I = real_interval(3., 4.);
     auto root = RootFinder::bisection(X, I, epsilon);
 
     EXPECT_TRUE(std::isnan(root));
@@ -31,8 +31,8 @@ TEST(RootFinderTests, BisectionWithIncorrectsEndpointsTest) {
 TEST(RootFinderTests, BisectionTest) {
     auto p = 4 * X.pow(2) + .5 * X - 4;
 
-    EXPECT_NEAR(RootFinder::bisection(p, interval(.0, 2.), epsilon), 0.9394510000000000, epsilon);
-    EXPECT_NEAR(RootFinder::bisection(p, interval(-2., .0), epsilon), -1.06445, epsilon);
+    EXPECT_NEAR(RootFinder::bisection(p, real_interval(.0, 2.), epsilon), 0.9394510000000000, epsilon);
+    EXPECT_NEAR(RootFinder::bisection(p, real_interval(-2., .0), epsilon), -1.06445, epsilon);
 }
 
 TEST(RootFinderTests, NewtonRaphsonForQudraticPolynomialTest) {
@@ -65,7 +65,7 @@ TEST(RootFinderTests, NewtonRaphsonFailTest) {
 
 TEST(RootFinderTests, RegulaFalsi1Test) {
     auto func = [](double x) { return 2 * std::cos(x); };
-    auto I = interval(0.25, std::numbers::pi);
+    auto I = real_interval(0.25, std::numbers::pi);
     auto zero_point = RootFinder::regula_falsi(func, I);
 
     EXPECT_NEAR(zero_point, .5 * std::numbers::pi, epsilon);
@@ -73,7 +73,7 @@ TEST(RootFinderTests, RegulaFalsi1Test) {
 
 TEST(RootFinderTests, RegulaFalsi2Test) {
     auto p = X.pow(5) - 10 * X.pow(4) + 40 * X.pow(3) - 80 * X.pow(2) + 80 * X - 30;
-    auto I = interval(0., 2.);
+    auto I = real_interval(0., 2.);
     auto root = RootFinder::regula_falsi(p, I);
 
     EXPECT_NEAR(root, 0.85130254011, epsilon);

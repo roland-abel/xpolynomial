@@ -9,6 +9,7 @@
 #include <utility>
 #include <iostream>
 #include <vector>
+#include "real_interval.h"
 #include "polynomial.h"
 
 namespace xmath {
@@ -85,13 +86,13 @@ namespace xmath {
         /// @return Sequence of sign variations.
         static std::vector<short> sign_variations(const polynomial_sequence &seq, const value_type &x);
 
-        /// @brief Counts the number of distinct real roots of a polynomial within a specified interval,
+        /// @brief Counts the number of distinct real roots of a polynomial within a specified real_interval,
         /// if the given polynomial is square-free polynomial.
         /// @param p The square-free polynomial for which the number of roots are to determined.
-        /// @param I The real interval in which to find the roots of p.
-        /// @return The number of distinct real roots within the specified interval,
+        /// @param I The real real_interval in which to find the roots of p.
+        /// @return The number of distinct real roots within the specified real_interval,
         /// or NaN if the polynomial p is not square-free.
-        static int number_distinct_roots(const polynomial<T> &p, const interval<T> &I);
+        static int number_distinct_roots(const polynomial<T> &p, const real_interval<T> &I);
 
         /// @brief Counts the number of distinct real roots of a square-free polynomial.
         /// @param p The square-free polynomial for which the number of roots are to determined.
@@ -102,7 +103,7 @@ namespace xmath {
         /// @param p The polynomial for which to isolate the real roots.
         /// @return A vector of intervals containing the isolated real roots
         /// or an empty vector if no roots are found or if polynomial is not square-free.
-        static std::vector<interval<T>> root_isolation(const polynomial<T> &p);
+        static std::vector<real_interval<T>> root_isolation(const polynomial<T> &p);
 
         /// @brief Finds the roots of a polynomial.
         /// @param p The polynomial for which to find the roots.
