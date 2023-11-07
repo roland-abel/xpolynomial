@@ -12,27 +12,6 @@
 
 namespace xmath {
 
-    template<typename T>
-    class interval : std::pair<T, T> {
-    public:
-        interval(T a, T b) : std::pair<T, T>(a, b) {
-        }
-
-        inline T start() const { return std::pair<T, T>::first; }
-
-        inline T end() const { return std::pair<T, T>::second; }
-
-        inline T length() const { return end() - start(); }
-
-        inline bool is_empty() const { return start() > end(); }
-
-        std::pair<interval<T>, interval<T>> bisect() const {
-            return std::make_pair(
-                    interval(start(), (start() + end()) / 2.),
-                    interval((start() + end()) / 2., end()));
-        }
-    };
-
     template<typename T, typename FP = T>
     inline bool nearly_zero(T a, FP epsilon = std::numeric_limits<FP>::epsilon()) {
         return std::abs(a) < epsilon;

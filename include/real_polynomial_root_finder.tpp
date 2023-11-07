@@ -238,7 +238,7 @@ namespace xmath {
     }
 
     template<typename T>
-    int real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p, const interval<T> &I) {
+    int real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p, const real_interval<T> &I) {
         auto NaN = std::numeric_limits<int>::quiet_NaN();
 
         if (!square_free_decomposition<T>::is_square_free(p)) {
@@ -253,26 +253,26 @@ namespace xmath {
     template<typename T>
     int real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p) {
         auto bound = cauchys_bounds(p);
-        return number_distinct_roots(p, interval<T>(-bound, bound));
+        return number_distinct_roots(p, real_interval<T>(-bound, bound));
     }
 
     template<typename T>
-    std::vector<interval<T>> real_polynomial_root_finder<T>::root_isolation(const polynomial<T> &p) {
+    std::vector<real_interval<T>> real_polynomial_root_finder<T>::root_isolation(const polynomial<T> &p) {
 
-        auto intervals = std::vector<interval<T>>();
+        auto intervals = std::vector<real_interval<T>>();
         if (p.is_constant() || !square_free_decomposition<T>::is_square_free(p)) {
             return intervals;
         }
 
         auto seq = sturm_sequence(p); // The Sturm's polynomial sequence.
 
-        // Gets the number of roots of the polynomial p within the interval I.
-        auto number_of_roots = [&seq](const interval<T> &I) {
+        // Gets the number of roots of the polynomial p within the real_interval I.
+        auto number_of_roots = [&seq](const real_interval<T> &I) {
             return xmath::sign_changes(sign_variations(seq, I.start()))
                    - xmath::sign_changes(sign_variations(seq, I.end()));
         };
 
-        std::function<void(const interval<T> &)> root_isolation = [&, number_of_roots](const interval<T> &I) {
+        std::function<void(const real_interval<T> &)> root_isolation = [&, number_of_roots](const real_interval<T> &I) {
             auto r = number_of_roots(I);
             if (r == 0) {
                 // nothing to do
@@ -288,7 +288,7 @@ namespace xmath {
         };
 
         auto a = cauchys_bounds(p);
-        root_isolation(interval<T>(-a, a));
+        root_isolation(real_interval<T>(-a, a));
 
         return intervals;
     }

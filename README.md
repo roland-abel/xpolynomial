@@ -18,7 +18,7 @@ The `polynomial<T>` class allows you to create and manipulate polynomials in a s
 ### Root Finder Class
 The `real_polynomial_root_finder<T>` class finds all real roots of a given polynomial using the Bisection method. Here are some of the available functions:
 
-- `int number_distinct_roots(const polynomial<T> &p, const interval<T> &I)`: Calculates the number of distinct real roots for a given Interval.
+- `int number_distinct_roots(const polynomial<T> &p, const real_interval<T> &I)`: Calculates the number of distinct real roots for a given Interval.
 - `std::tuple<roots_type, multiplicities_type> find_roots(const polynomial<T> &p)`: Find all the real roots with the corresponding multiplicities.
 
 ### Sturm Method for Counting Roots

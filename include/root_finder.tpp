@@ -14,7 +14,7 @@ namespace xmath {
     template<typename T>
     root_finder<T>::value_type root_finder<T>::bisection(
             const std::function<value_type(value_type)> &func,
-            const interval<value_type> &I,
+            const real_interval<value_type> &I,
             value_type tolerance) {
 
         const auto NaN = std::numeric_limits<T>::quiet_NaN();
@@ -45,7 +45,7 @@ namespace xmath {
     template<typename T>
     root_finder<T>::value_type root_finder<T>::regula_falsi(
             const std::function<value_type(value_type)> &func,
-            const interval<value_type> &I,
+            const real_interval<value_type> &I,
             value_type epsilon) {
 
         const auto NaN = std::numeric_limits<T>::quiet_NaN();
