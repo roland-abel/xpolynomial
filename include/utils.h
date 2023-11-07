@@ -22,6 +22,26 @@ namespace xmath {
         return nearly_zero(a - b, epsilon);
     }
 
+    template<typename T, typename FP = T>
+    inline bool greater_than(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+        return a - epsilon > b;
+    }
+
+    template<typename T, typename FP = T>
+    inline bool greater_than_or_equal(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+        return a + epsilon > b;
+    }
+
+    template<typename T, typename FP = T>
+    inline bool less_than(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+        return a + epsilon < b;
+    }
+
+    template<typename T, typename FP = T>
+    inline bool less_than_or_equal(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+        return a - epsilon < b;
+    }
+
     inline bool is_even(long a) {
         return a % 2 == 0;
     }
@@ -34,8 +54,8 @@ namespace xmath {
     /// @tparam R
     /// @param r
     /// @return
-    template <std::ranges::range R>
-    auto to_vector(R&& r) {
+    template<std::ranges::range R>
+    auto to_vector(R &&r) {
         auto r_common = r | std::views::common;
         return std::vector(r_common.begin(), r_common.end());
     }
