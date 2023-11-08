@@ -18,7 +18,7 @@ namespace {
     auto X = Polynomial::monomial(1, 1.0);
 }
 
-TEST(ChebyshvPolynomialTest, FirstKindChebyshvPolynomials) {
+TEST(ChebyshvPolynomialTest, FirstKindChebyshvPolynomialsTest) {
     auto T_0 = ChebyshevPolynomial::create_1st_kind(0);
     EXPECT_EQ(T_0, one);
 
@@ -53,16 +53,26 @@ TEST(ChebyshvPolynomialTest, FirstKindChebyshvPolynomials) {
     EXPECT_EQ(T_10, 512 * X.pow(10) - 1280 * X.pow(8) + 1120 * X.pow(6) - 400 * X.pow(4) + 50 * X.pow(2) - 1);
 }
 
-TEST(ChebyshvPolynomialTest, Roots1stKindZeroOrder) {
+TEST(ChebyshvPolynomialTest, Roots1stKindZeroOrderTest) {
     auto roots = ChebyshevPolynomial::roots_1st_kind(0);
     EXPECT_EQ(roots.size(), 0);
 }
 
-TEST(ChebyshvPolynomialTest, Roots1stKind) {
+TEST(ChebyshvPolynomialTest, Roots1stKindTest) {
     size_t order = 8;
     auto roots = ChebyshevPolynomial::roots_1st_kind(order);
     auto T_8 = ChebyshevPolynomial::create_1st_kind(order);
 
     EXPECT_EQ(roots.size(), 8);
     EXPECT_TRUE(T_8.has_roots(roots));
+}
+
+TEST(ChebyshvPolynomialTest, ClenshawTest) {
+    auto alphas = std::vector<double>{-1., 1.25, 2.5, -3.5, 4.2};
+    auto chebyshev = ChebyshevPolynomial::chebyshev_series(alphas);
+    auto xs = std::vector<double>{-1., -.5, 0., .5, 1.};
+
+    for (auto const &x: xs) {
+        EXPECT_NEAR(chebyshev(x), ChebyshevPolynomial::clenshaw(alphas, x), epsilon);
+    }
 }
