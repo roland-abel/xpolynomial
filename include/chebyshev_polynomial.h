@@ -29,6 +29,19 @@ namespace xmath {
         /// @return
         static values_type roots_1st_kind(size_t order);
 
+        ///
+        /// @param alpha
+        /// @return
+        static polynomial<T> chebyshev_series(const values_type& alphas);
+
+        /// Calculates the Chebyshev series of order n for points in `xs` and the given a list of coefficients `alphas`.
+        /// @param alphas The coefficients.
+        /// @param xs The x points.
+        /// @return The Chebyshev series of order n for the given coefficients for the `xs`.
+        static value_type clenshaw(
+                const values_type& alphas,
+                const value_type& x);
+
     private:
         static polynomial_sequence chebyshev_1st_kind_polynomials_;
     };
