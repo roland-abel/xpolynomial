@@ -43,26 +43,23 @@ namespace xmath {
     polynomial<T> chebyshev_polynomial<T>::create_1st_kind(size_t order) {
         static auto zero = polynomial<T>::zero();
         static auto X = polynomial<T>::monomial(1);
-
-        auto &chebyshev = chebyshev_polynomial<T>::chebyshev_1st_kind_polynomials_;
+        static auto &chebyshev = chebyshev_polynomial<T>::chebyshev_1st_kind_polynomials_;
 
         if (order < chebyshev.size()) {
             return chebyshev[order];
         }
 
-        auto T_nm1 = chebyshev[order - 1]; // T_{n-1}
-        auto T_nm2 = chebyshev[order - 2]; // T_{n+1}
+        if (order < chebyshev.size()) {
+            return chebyshev[order];
+        } else {
+            auto T_nm1 = create_1st_kind(order - 1); // T_{n-1}
+            auto T_nm2 = create_1st_kind(order - 2); // T_{n-2}
 
-        auto T_n = zero;   // T_n
-        for (size_t i = chebyshev.size(); i <= order; ++i) {
-
-            T_n = 2 * X * T_nm1 - T_nm2;
+            auto T_n = 2 * X * T_nm1 - T_nm2;
             chebyshev.push_back(T_n);
 
-            T_nm1 = T_n;
-            T_nm2 = T_nm1;
+            return T_n;
         }
-        return T_n;
     }
 
     template<typename T>
@@ -81,7 +78,7 @@ namespace xmath {
             const values_type &alphas,
             const value_type &x) {
         auto beta1 = polynomial<T>::spec::zero;
-        auto beta2 = polynomial<T>::spec::zero;;
+        auto beta2 = polynomial<T>::spec::zero;
 
         for (int k = alphas.size() - 1; k > 0; k--) {
             auto beta = alphas[k] + 2. * x * beta1 - beta2;

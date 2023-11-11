@@ -59,12 +59,21 @@ TEST(ChebyshvPolynomialTest, Roots1stKindZeroOrderTest) {
 }
 
 TEST(ChebyshvPolynomialTest, Roots1stKindTest) {
-    size_t order = 8;
-    auto roots = ChebyshevPolynomial::roots_1st_kind(order);
-    auto T_8 = ChebyshevPolynomial::create_1st_kind(order);
+    size_t n = 15;
+    auto roots = ChebyshevPolynomial::roots_1st_kind(n);
+    auto T_n = ChebyshevPolynomial::create_1st_kind(n);
 
-    EXPECT_EQ(roots.size(), 8);
-    EXPECT_TRUE(T_8.has_roots(roots));
+    EXPECT_EQ(roots.size(), n);
+    EXPECT_TRUE(T_n.has_roots(roots));
+}
+
+TEST(ChebyshvPolynomialTest, CheckChebyshv1stKindFormularTest) {
+    // Check: T_n(cos(x)) == cos(n * x)
+    auto x = 3.2;
+    auto n = 20;
+
+    auto T_n = ChebyshevPolynomial::create_1st_kind(n);
+    EXPECT_NEAR(T_n(std::cos(x)), std::cos(n * x), epsilon);
 }
 
 TEST(ChebyshvPolynomialTest, ClenshawTest) {
