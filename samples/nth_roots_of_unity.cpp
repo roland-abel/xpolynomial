@@ -4,8 +4,6 @@
 /// @author Roland Abel
 /// @date 28.10.2023.
 
-#include <numeric>
-#include <vector>
 #include <iostream>
 #include "complex_polynomial_root_finder.h"
 
