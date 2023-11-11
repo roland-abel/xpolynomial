@@ -10,6 +10,7 @@ using namespace xmath;
 
 namespace {
     using Polynomial = polynomial<double>;
+    using Interval = real_interval<double>;
     using ChebyshevPolynomial = chebyshev_polynomial<double>;
 
     constexpr auto epsilon = Polynomial::epsilon;
@@ -54,17 +55,33 @@ TEST(ChebyshvPolynomialTest, FirstKindChebyshvPolynomialsTest) {
 }
 
 TEST(ChebyshvPolynomialTest, Roots1stKindZeroOrderTest) {
-    auto roots = ChebyshevPolynomial::roots_1st_kind(0);
+    auto roots = ChebyshevPolynomial::chebyshev_nodes(0, Interval(-1., 1));
     EXPECT_EQ(roots.size(), 0);
 }
 
-TEST(ChebyshvPolynomialTest, Roots1stKindTest) {
+TEST(ChebyshvPolynomialTest, ChebyshevNodesTest) {
     size_t n = 15;
-    auto roots = ChebyshevPolynomial::roots_1st_kind(n);
+    auto nodes = ChebyshevPolynomial::chebyshev_nodes(n, Interval(-1., 1));
     auto T_n = ChebyshevPolynomial::create_1st_kind(n);
 
-    EXPECT_EQ(roots.size(), n);
-    EXPECT_TRUE(T_n.has_roots(roots));
+    EXPECT_EQ(nodes.size(), n);
+    EXPECT_TRUE(T_n.has_roots(nodes));
+}
+
+TEST(ChebyshvPolynomialTest, ChebyshevNodesForIntervalTest) {
+    const auto n = 5;
+    auto I = Interval(-2.0, 3.0);
+
+    const auto A = .5 * (I.start() + I.end());
+    const auto B = .5 * (I.end() - I.start());
+
+    auto chebyshev_nodes = ChebyshevPolynomial::chebyshev_nodes(n, Interval(-1., 1));
+    const auto nodes = ChebyshevPolynomial::chebyshev_nodes(n, I);
+
+    ASSERT_EQ(n, nodes.size());
+    for (size_t i = 0; i < n; ++i) {
+        EXPECT_NEAR(nodes[i], A + B * chebyshev_nodes[i], epsilon);
+    }
 }
 
 TEST(ChebyshvPolynomialTest, CheckChebyshv1stKindFormularTest) {
