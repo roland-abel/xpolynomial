@@ -55,8 +55,8 @@ namespace xmath {
         /// @note If no solution is found, an undefined value may be returned (NaN).
         /// It is recommended to check the validity of the result.
         static value_type newton_raphson(
-                const std::function<value_type(value_type)> &func,
-                const std::function<value_type(value_type)> &derive,
+                const std::function<value_type(const value_type &)> &func,
+                const std::function<value_type(const value_type &)> &derive,
                 value_type initial,
                 int max_iterations = 100,
                 value_type tolerance = 1e-5);

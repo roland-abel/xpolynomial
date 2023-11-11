@@ -74,8 +74,8 @@ namespace xmath {
 
     template<typename T>
     root_finder<T>::value_type root_finder<T>::newton_raphson(
-            const std::function<value_type(value_type)> &func,
-            const std::function<value_type(value_type)> &derive,
+            const std::function<value_type(const value_type &)> &func,
+            const std::function<value_type(const value_type &)> &derive,
             value_type initial,
             int max_iterations,
             value_type tolerance) {

@@ -56,6 +56,14 @@ TEST(RootFinderTests, NewtonRaphsonForCubicPolynomialTest) {
     EXPECT_NEAR(RootFinder::newton_raphson(p, q, 1.3), 1.36602, epsilon);
 }
 
+TEST(RootFinderTests, NewtonRaphsonCosTest) {
+    auto func = [](const auto& x) { return std::cos(x); };
+    auto f_prim = [](auto x) { return -std::sin(x); };
+
+    const auto pi_half = std::numbers::pi / 2.;
+    EXPECT_NEAR(RootFinder::newton_raphson(func, f_prim, 1.1, 100), pi_half, epsilon);
+}
+
 TEST(RootFinderTests, NewtonRaphsonFailTest) {
     auto p = X.pow(3) - 3 * X - 1;
     auto q = p.derive();
@@ -63,7 +71,7 @@ TEST(RootFinderTests, NewtonRaphsonFailTest) {
     EXPECT_TRUE(std::isnan(RootFinder::newton_raphson(p, q, -1.)));
 }
 
-TEST(RootFinderTests, RegulaFalsi1Test) {
+TEST(RootFinderTests, RegulaFalsiTest) {
     auto func = [](double x) { return 2 * std::cos(x); };
     auto I = real_interval(0.25, std::numbers::pi);
     auto zero_point = RootFinder::regula_falsi(func, I);
