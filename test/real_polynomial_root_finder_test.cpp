@@ -132,13 +132,13 @@ TEST(RealPolynomialRootFinderTests, SignChangesOfCoefficients) {
 }
 
 TEST(RealPolynomialRootFinderTests, CauchysBoundsTest) {
-    EXPECT_NEAR(RootFinder::cauchys_bounds(3 * X.pow(4) - 6 * X.pow(3) - 2 * X.pow(2) - 9), 4., epsilon);
+    EXPECT_NEAR(RootFinder::cauchy_bounds(3 * X.pow(4) - 6 * X.pow(3) - 2 * X.pow(2) - 9), 4., epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, LagrangesBoundsTest) {
-    EXPECT_NEAR(RootFinder::lagranges_bounds(3 * X.pow(4) - 6 * X.pow(3) - 2 * X.pow(2) - 9), 17. / 3., epsilon);
-    EXPECT_NEAR(RootFinder::lagranges_bounds(.1 * X.pow(4) - 6 * X.pow(3) - 2 * X.pow(2) - 9), 170., epsilon);
-    EXPECT_NEAR(RootFinder::lagranges_bounds(100 * X.pow(4) - 6 * X.pow(3) - 2 * X.pow(2) - 9), 1., epsilon);
+    EXPECT_NEAR(RootFinder::lagrange_bounds(3 * X.pow(4) - 6 * X.pow(3) - 2 * X.pow(2) - 9), 17. / 3., epsilon);
+    EXPECT_NEAR(RootFinder::lagrange_bounds(.1 * X.pow(4) - 6 * X.pow(3) - 2 * X.pow(2) - 9), 170., epsilon);
+    EXPECT_NEAR(RootFinder::lagrange_bounds(100 * X.pow(4) - 6 * X.pow(3) - 2 * X.pow(2) - 9), 1., epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, SturmSequenceTest) {

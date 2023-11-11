@@ -72,8 +72,8 @@ TEST(ChebyshvPolynomialTest, ChebyshevNodesForIntervalTest) {
     const auto n = 5;
     auto I = Interval(-2.0, 3.0);
 
-    const auto A = .5 * (I.start() + I.end());
-    const auto B = .5 * (I.end() - I.start());
+    const auto A = .5 * (I.lower() + I.upper());
+    const auto B = .5 * (I.upper() - I.lower());
 
     auto chebyshev_nodes = ChebyshevPolynomial::chebyshev_nodes(n, Interval(-1., 1));
     const auto nodes = ChebyshevPolynomial::chebyshev_nodes(n, I);

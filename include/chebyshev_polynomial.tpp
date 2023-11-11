@@ -76,8 +76,8 @@ namespace xmath {
             return std::cos(pi_half * ((2. * k + 1.) / order));
         };
 
-        const auto A = .5 * (I.start() + I.end());
-        const auto B = .5 * (I.end() - I.start());
+        const auto A = .5 * (I.lower() + I.upper());
+        const auto B = .5 * (I.upper() - I.lower());
 
         auto z_node = [A, B, &I](const auto &x) {
             return A + B * x;

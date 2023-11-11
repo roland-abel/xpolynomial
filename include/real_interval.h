@@ -60,65 +60,65 @@ namespace xmath {
         }
 
         /// Constructor that creates a closed/opened interval with the boundaries `a` and `b`.
-        /// @param a The left endpoint of the interval.
-        /// @param a The right endpoint of the interval.
-        /// @param left The left boundary closed or opened.
-        /// @param right The left boundary closed or opened.
-        real_interval(T a, T b, interval_bounds left = closed, interval_bounds right = closed)
+        /// @param a The lower endpoint of the interval.
+        /// @param a The upper endpoint of the interval.
+        /// @param lower The lower boundary closed or opened.
+        /// @param upper The lower boundary closed or opened.
+        real_interval(T a, T b, interval_bounds lower = closed, interval_bounds upper = closed)
                 : std::pair<T, T>(a, b) {
-            left_ = left;
-            right_ = right;
+            lower_ = lower;
+            upper_ = upper;
         }
 
-        /// Gets the start point of the interval.
-        /// @return The start point.
-        inline T start() const { return std::pair<T, T>::first; }
+        /// Gets the lower point of the interval.
+        /// @return The lower point.
+        inline T lower() const { return std::pair<T, T>::first; }
 
         /// Gets the end point of the interval.
         /// @return The end point.
-        inline T end() const { return std::pair<T, T>::second; }
+        inline T upper() const { return std::pair<T, T>::second; }
 
         /// Gets the length of the interval.
         /// @return The length.
-        inline T length() const { return end() - start(); }
+        inline T length() const { return upper() - lower(); }
 
         /// Gets a value indicated whether the interval is empty.
         /// @return True if the interval ist empty, otherwise false.
         inline bool is_empty() const {
-            return greater_than(start(), end()) || (is_degenerate() && !is_closed());
+            return greater_than(lower(), upper()) || (is_degenerate() && !is_closed());
         }
 
         /// Gets a values indicated whether the interval is closed.
         /// @return True if the interval is closed; otherwise false.
-        inline bool is_closed() const { return left_ == closed && right_ == closed; }
+        inline bool is_closed() const { return lower_ == closed && upper_ == closed; }
 
         /// Gets a values indicated whether the interval is opened.
         /// @return True if the interval is opened; otherwise false.
-        inline bool is_opened() const { return left_ == opened && right_ == opened; }
+        inline bool is_opened() const { return lower_ == opened && upper_ == opened; }
 
-        inline bool is_left_open() const { return left_ == opened; }
+        inline bool is_lower_open() const { return lower_ == opened; }
 
-        inline bool is_right_open() const { return right_ == opened; }
+        inline bool is_upper_open() const { return upper_ == opened; }
 
-        inline bool is_left_closed() const { return left_ == closed; }
+        inline bool is_left_closed() const { return lower_ == closed; }
 
-        inline bool is_right_closed() const { return right_ == closed; }
+        inline bool is_right_closed() const { return upper_ == closed; }
 
-        inline bool is_half_open() const { return left_ != right_; }
+        inline bool is_half_open() const { return lower_ != upper_; }
 
-        inline bool is_degenerate() const { return nearly_equal(start(), end(), epsilon); }
+        inline bool is_degenerate() const { return nearly_equal(lower(), upper(), epsilon); }
 
         /// Gets a tuple of two intervals created by the current interval by bisection.
         /// @return A tuple of two intervals.
         std::pair<real_interval<T>, real_interval<T>> bisect() const {
             return std::make_pair(
-                    real_interval(start(), (start() + end()) / static_cast<T>(2.)),
-                    real_interval((start() + end()) / static_cast<T>(2.), end()));
+                    real_interval(lower(), (lower() + upper()) / static_cast<T>(2.)),
+                    real_interval((lower() + upper()) / static_cast<T>(2.), upper()));
         }
 
     private:
-        interval_bounds left_;
-        interval_bounds right_;
+        interval_bounds lower_;
+        interval_bounds upper_;
     };
 }
 
