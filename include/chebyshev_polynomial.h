@@ -7,6 +7,7 @@
 #define CHEBYSHEV_POLYNOMIAL_H_
 
 #include <vector>
+#include "real_interval.h"
 #include "polynomial.h"
 
 namespace xmath {
@@ -25,10 +26,10 @@ namespace xmath {
         /// @return The Chebyshev polynomial T_n of the first kind.
         static polynomial<T> create_1st_kind(size_t order);
 
-        /// @brief
-        /// @param order
-        /// @return
-        static values_type roots_1st_kind(size_t order);
+        /// @brief Computes the Chebyshev nodes for a given order within a specified interval.
+        /// @param order  The order of the Chebyshev nodes.
+        /// @return A vector containing the Chebyshev nodes for the specified order within the interval.
+        static values_type chebyshev_nodes(size_t order, const real_interval<T>& I);
 
         /// Calculates the Chebyshev series of order n for points in `xs` and the given a list of coefficients `alphas`.
         /// @param alphas A vector containing the coefficients for the Chebyshev series polynomial.

@@ -63,14 +63,26 @@ namespace xmath {
     }
 
     template<typename T>
-    chebyshev_polynomial<T>::values_type chebyshev_polynomial<T>::roots_1st_kind(size_t order) {
-        auto kth_root = [order](const auto &k) {
-            return std::cos((2. * k + 1.) * std::numbers::pi / (2 * order));
+    chebyshev_polynomial<T>::values_type chebyshev_polynomial<T>::chebyshev_nodes(
+            size_t order,
+            const real_interval<T> &I) {
+
+        if (order == 0) {
+            xmath::chebyshev_polynomial<T>::values_type();
+        }
+
+        const auto pi_half = std::numbers::pi / 2.;
+        auto kth_node = [pi_half, order](const auto &k) {
+            return std::cos(pi_half * ((2. * k + 1.) / order));
         };
 
-        return order == 0
-               ? xmath::chebyshev_polynomial<T>::values_type()
-               : to_vector(iota(0, static_cast<int>(order)) | transform(kth_root));
+        const auto A = .5 * (I.start() + I.end());
+        const auto B = .5 * (I.end() - I.start());
+
+        auto z_node = [A, B, &I](const auto &x) {
+            return A + B * x;
+        };
+        return to_vector(iota(0, static_cast<int>(order)) | transform(kth_node) | transform(z_node));
     }
 
     template<typename T>
