@@ -19,7 +19,7 @@ namespace xmath {
 
         const auto NaN = std::numeric_limits<T>::quiet_NaN();
 
-        if (func(I.start()) * func(I.end()) >= tolerance) {
+        if (func(I.lower()) * func(I.upper()) >= tolerance) {
             return NaN; // incorrect endpoints a and b.
         }
 
@@ -39,7 +39,7 @@ namespace xmath {
             }
             return c;
         };
-        return bisection(I.start(), I.end());
+        return bisection(I.lower(), I.upper());
     }
 
     template<typename T>
@@ -50,7 +50,7 @@ namespace xmath {
 
         const auto NaN = std::numeric_limits<T>::quiet_NaN();
 
-        if (func(I.start()) * func(I.end()) >= epsilon) {
+        if (func(I.lower()) * func(I.upper()) >= epsilon) {
             return NaN; // incorrect endpoints a and b.
         }
 
@@ -69,7 +69,7 @@ namespace xmath {
             }
             return c;
         };
-        return regula_falsi(I.start(), I.end());
+        return regula_falsi(I.lower(), I.upper());
     }
 
     template<typename T>

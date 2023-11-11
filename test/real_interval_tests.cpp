@@ -17,16 +17,16 @@ namespace {
 
 TEST(RealIntervalTests, DefaultConstructorTest) {
     auto I = Interval();
-    EXPECT_NEAR(I.start(), 0.0, epsilon);
-    EXPECT_NEAR(I.end(), 1.0, epsilon);
+    EXPECT_NEAR(I.lower(), 0.0, epsilon);
+    EXPECT_NEAR(I.upper(), 1.0, epsilon);
     EXPECT_FALSE(I.is_empty());
     EXPECT_TRUE(I.is_closed());
 }
 
 TEST(RealIntervalTests, ConstructorTest) {
     auto I = Interval(-1., 1.);
-    EXPECT_NEAR(I.start(), -1.0, epsilon);
-    EXPECT_NEAR(I.end(), 1.0, epsilon);
+    EXPECT_NEAR(I.lower(), -1.0, epsilon);
+    EXPECT_NEAR(I.upper(), 1.0, epsilon);
 }
 
 TEST(RealIntervalTests, IsOpenedTest) {

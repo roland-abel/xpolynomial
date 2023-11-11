@@ -171,7 +171,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::value_type real_polynomial_root_finder<T>::cauchys_bounds(const polynomial<T> &p) {
+    polynomial<T>::value_type real_polynomial_root_finder<T>::cauchy_bounds(const polynomial<T> &p) {
         if (p.is_zero()) {
             return std::numeric_limits<T>::quiet_NaN();
         }
@@ -189,7 +189,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::value_type real_polynomial_root_finder<T>::lagranges_bounds(const polynomial<T> &p) {
+    polynomial<T>::value_type real_polynomial_root_finder<T>::lagrange_bounds(const polynomial<T> &p) {
         if (p.is_zero()) {
             return std::numeric_limits<T>::quiet_NaN();
         }
@@ -199,8 +199,8 @@ namespace xmath {
         const auto lc = p.leading_coefficient();
         const auto sum = std::accumulate(
                 p.coefficients().begin(),
-                p.coefficients().end() - 1, zero, [=](auto s, auto coeff) {
-                    return s + std::abs(coeff / lc);
+                p.coefficients().end() - 1, zero, [=](auto s, auto c) {
+                    return s + std::abs(c / lc);
                 });
         return std::max(one, sum);
     }
@@ -246,13 +246,13 @@ namespace xmath {
         }
 
         auto seq = sturm_sequence(p);
-        return xmath::sign_changes(sign_variations(seq, I.start()))
-               - xmath::sign_changes(sign_variations(seq, I.end()));
+        return xmath::sign_changes(sign_variations(seq, I.lower()))
+               - xmath::sign_changes(sign_variations(seq, I.upper()));
     }
 
     template<typename T>
     int real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p) {
-        auto bound = cauchys_bounds(p);
+        auto bound = cauchy_bounds(p);
         return number_distinct_roots(p, real_interval<T>(-bound, bound));
     }
 
@@ -268,8 +268,8 @@ namespace xmath {
 
         // Gets the number of roots of the polynomial p within the real_interval I.
         auto number_of_roots = [&seq](const real_interval<T> &I) {
-            return xmath::sign_changes(sign_variations(seq, I.start()))
-                   - xmath::sign_changes(sign_variations(seq, I.end()));
+            return xmath::sign_changes(sign_variations(seq, I.lower()))
+                   - xmath::sign_changes(sign_variations(seq, I.upper()));
         };
 
         std::function<void(const real_interval<T> &)> root_isolation = [&, number_of_roots](const real_interval<T> &I) {
@@ -287,7 +287,7 @@ namespace xmath {
             }
         };
 
-        auto a = cauchys_bounds(p);
+        auto a = cauchy_bounds(p);
         root_isolation(real_interval<T>(-a, a));
 
         return intervals;
