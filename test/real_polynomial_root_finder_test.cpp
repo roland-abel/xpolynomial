@@ -212,3 +212,8 @@ TEST(RealPolynomialRootFinderTests, FindRootsForPolynomialWithMultipleRootsTest)
     EXPECT_TRUE(p.has_roots(roots));
     EXPECT_EQ(multiplicities, std::vector<unsigned short>({1, 1, 1, 3}));
 }
+
+TEST(RealPolynomialRootFinderTests, NewtonRaphsonTest) {
+    auto p = X.pow(2) - 2;
+    EXPECT_NEAR(RootFinder::newton_raphson(p, 1.1), std::sqrt(2), epsilon);
+}
