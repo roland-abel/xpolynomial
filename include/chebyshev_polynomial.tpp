@@ -80,28 +80,31 @@ namespace xmath {
     chebyshev_polynomial<T>::value_type chebyshev_polynomial<T>::clenshaw(
             const values_type &alphas,
             const value_type &x) {
+        auto beta1 = polynomial<T>::spec::zero;
+        auto beta2 = polynomial<T>::spec::zero;;
 
-        const auto n = alphas.size();
-        std::function<T(const int k)> beta = [&](const int k) {
-            if (k == n) {
-                return alphas[n];
-            } else if (k == n - 1) {
-                return alphas[n - 1] + 2 * x * beta(k + 1);
-            } else {
-                return alphas[k] + 2 * x * beta(k + 1) - beta(k + 2);
-            }
-        };
+        for (int k = alphas.size() - 1; k > 0; k--) {
+            auto beta = alphas[k] + 2. * x * beta1 - beta2;
 
-        auto result = alphas[0] + x * beta(1) - beta(2);
-        return result;
+            beta2 = beta1;
+            beta1 = beta;
+        }
+        return alphas[0] + x * beta1 - beta2;
     }
-    
+
     template<typename T>
     polynomial<T> chebyshev_polynomial<T>::chebyshev_series(const values_type &alphas) {
-        auto series = polynomial<T>::zero();
-        for (int k = 0; k < alphas.size(); ++k) {
-            series += alphas[k] * chebyshev_polynomial<T>::create_1st_kind(k);
+        static auto X = polynomial<T>::monomial(1);
+
+        auto beta1 = polynomial<T>::zero();
+        auto beta2 = polynomial<T>::zero();
+
+        for (int k = alphas.size() - 1; k > 0; k--) {
+            polynomial<T> beta = alphas[k] + 2. * X * beta1 - beta2;
+
+            beta2 = beta1;
+            beta1 = beta;
         }
-        return series;
+        return alphas[0] + X * beta1 - beta2;
     }
 }

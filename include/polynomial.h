@@ -50,6 +50,7 @@ namespace xmath {
     };
 
     /// @brief Represents a polynomial with coefficients from template parameter type T.
+    /// @tparam T The data type of the coefficients.
     template<typename T>
     class polynomial<T, polynomial_specification<T>> {
     public:
