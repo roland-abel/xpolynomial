@@ -23,24 +23,31 @@ namespace xmath {
 
         /// @brief Creates first kind Chebyshev polynomial T_n for the given order.
         /// @param order The order of the polynomial.
-        /// @return The Chebyshev polynomial T_n of the first kind.
+        /// @return The Chebyshev polynomial of the first kind of the order.
         static polynomial<T> create_1st_kind(size_t order);
+
+        /// Creates first kind Chebyshev polynomial T_n for the given order.
+        /// @param order The order of the polynomial.
+        /// @param chebyshev_cache The Chebyshev polynomial cache is used to avoid repeated calculations.
+        /// @return The Chebyshev polynomial of the first kind of the order.
+        static polynomial<T> create_1st_kind(
+                size_t order,
+                chebyshev_polynomial<T>::polynomial_sequence& chebyshev_cache);
 
         /// @brief Computes the Chebyshev nodes for a given order within a specified interval.
         /// @param order  The order of the Chebyshev nodes.
         /// @return A vector containing the Chebyshev nodes for the specified order within the interval.
         static values_type chebyshev_nodes(size_t order, const real_interval<T>& I);
 
-        /// Calculates the Chebyshev series of order n for points in `xs` and the given a list of coefficients `alphas`.
+        /// Calculates the Chebyshev series of order n for the given point and the coefficients alphas.
         /// @param alphas A vector containing the coefficients for the Chebyshev series polynomial.
-        /// @return The Chebyshev series of order n for the given coefficients.
+        /// @return The Chebyshev series of order n for the given coefficients alphas as polynomial.
         static polynomial<T> chebyshev_series(const values_type &alphas);
 
-        /// Evaluates the Chebyshev series for the given coefficients and input value by using
-        /// Clenshaw algorithm.
+        /// Evaluates the Chebyshev series for the given coefficients and input value by using Clenshaw algorithm.
         /// @param alphas A vector containing the coefficients for the Chebyshev series polynomial.
-        /// @param xs The input x points.
-        /// @return The Chebyshev series of order n for the given coefficients for the `xs`.
+        /// @param x The input x value.
+        /// @return The value of the Chebyshev series of order n for the given coefficients alphas at x.
         static value_type clenshaw(const values_type &alphas, const value_type &x);
 
     private:

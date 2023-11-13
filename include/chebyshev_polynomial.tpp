@@ -41,22 +41,30 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> chebyshev_polynomial<T>::create_1st_kind(size_t order) {
+        return create_1st_kind(order, chebyshev_polynomial<T>::chebyshev_1st_kind_polynomials_);
+    }
+
+    template<typename T>
+    polynomial<T> chebyshev_polynomial<T>::create_1st_kind(
+            size_t order,
+            chebyshev_polynomial<T>::polynomial_sequence &chebyshev_cache) {
         static auto zero = polynomial<T>::zero();
         static auto X = polynomial<T>::monomial(1);
-        static auto &chebyshev = chebyshev_polynomial<T>::chebyshev_1st_kind_polynomials_;
 
-        if (order < chebyshev.size()) {
-            return chebyshev[order];
-        }
-
-        if (order < chebyshev.size()) {
-            return chebyshev[order];
+        if (order < chebyshev_cache.size()) {
+            return chebyshev_cache[order];
+        } else if (order == 0) {
+            chebyshev_cache.push_back(polynomial<T>::one());
+            return chebyshev_cache[0];
+        } else if (order == 1) {
+            chebyshev_cache.push_back(X);
+            return chebyshev_cache[1];
         } else {
-            auto T_nm1 = create_1st_kind(order - 1); // T_{n-1}
-            auto T_nm2 = create_1st_kind(order - 2); // T_{n-2}
+            auto T_nm1 = create_1st_kind(order - 1, chebyshev_cache); // T_{n-1}
+            auto T_nm2 = create_1st_kind(order - 2, chebyshev_cache); // T_{n-2}
 
             auto T_n = 2 * X * T_nm1 - T_nm2;
-            chebyshev.push_back(T_n);
+            chebyshev_cache.push_back(T_n);
 
             return T_n;
         }

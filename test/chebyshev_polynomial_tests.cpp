@@ -54,6 +54,27 @@ TEST(ChebyshvPolynomialTest, FirstKindChebyshvPolynomialsTest) {
     EXPECT_EQ(T_10, 512 * X.pow(10) - 1280 * X.pow(8) + 1120 * X.pow(6) - 400 * X.pow(4) + 50 * X.pow(2) - 1);
 }
 
+TEST(ChebyshvPolynomialTest, FirstKindChebyshvPolynomialsWithEmptyCacheTest) {
+    ChebyshevPolynomial::polynomial_sequence chebyshev_cache;
+
+    auto T_0 = ChebyshevPolynomial::create_1st_kind(0, chebyshev_cache);
+    EXPECT_EQ(T_0, one);
+
+    auto T_1 = ChebyshevPolynomial::create_1st_kind(1, chebyshev_cache);
+    EXPECT_EQ(T_1, X);
+
+    auto T_2 = ChebyshevPolynomial::create_1st_kind(2, chebyshev_cache);
+    EXPECT_EQ(T_2, 2 * X.pow(2) - 1);
+
+    auto T_9 = ChebyshevPolynomial::create_1st_kind(9, chebyshev_cache);
+    EXPECT_EQ(T_9, 256 * X.pow(9) - 576 * X.pow(7) + 432 * X.pow(5) - 120 * X.pow(3) + 9 * X);
+
+    auto T_10 = ChebyshevPolynomial::create_1st_kind(10, chebyshev_cache);
+    EXPECT_EQ(T_10, 512 * X.pow(10) - 1280 * X.pow(8) + 1120 * X.pow(6) - 400 * X.pow(4) + 50 * X.pow(2) - 1);
+
+    EXPECT_EQ(11, chebyshev_cache.size());
+}
+
 TEST(ChebyshvPolynomialTest, Roots1stKindZeroOrderTest) {
     auto roots = ChebyshevPolynomial::chebyshev_nodes(0, Interval(-1., 1));
     EXPECT_EQ(roots.size(), 0);
