@@ -9,6 +9,7 @@
 using namespace xmath;
 
 namespace {
+    using std::numbers::pi;
     using Polynomial = polynomial<double>;
     using Interval = real_interval<double>;
     using ChebyshevPolynomial = chebyshev_polynomial<double>;
@@ -122,4 +123,22 @@ TEST(ChebyshvPolynomialTest, ClenshawTest) {
     for (auto const &x: xs) {
         EXPECT_NEAR(chebyshev(x), ChebyshevPolynomial::clenshaw(alphas, x), epsilon);
     }
+}
+
+TEST(ChebyshvPolynomialTest, ChebyshevGaussQuadratureForMonomialsTest) {
+    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature(one), pi, epsilon);
+    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature(X), 0., epsilon);
+    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature(X.pow(2)), pi / 2., epsilon);
+    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature(X.pow(3)), 0., epsilon);
+    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature(X.pow(4)), 3. * pi / 8., epsilon);
+    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature(X.pow(5)), 0., epsilon);
+    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature(X.pow(6)), 5. * pi / 16., epsilon);
+    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature(X.pow(7)), 0., epsilon);
+}
+
+TEST(ChebyshvPolynomialTest, ChebyshevGaussQuadratureTest) {
+    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature([](auto x) { return std::sin(x - 1); }), -2.02285, epsilon);
+    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature([](auto x) { return std::exp(x); }), 3.97746, epsilon);
+    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature([](auto x) { return std::exp(x) - 1; }), 0.835871, epsilon);
+    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature([](auto x) { return std::log(x + 4.); }), 4.30489, epsilon);
 }

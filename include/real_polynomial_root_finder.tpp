@@ -14,7 +14,6 @@
 namespace xmath {
 
     namespace {
-
         template<typename T>
         size_t sign_changes(const std::vector<T> &sequence, T epsilon = 1e-5) {
             auto changes = 0;
@@ -40,7 +39,6 @@ namespace xmath {
             return changes;
         }
     }
-
 
     template<typename T>
     std::tuple<typename polynomial<T>::value_type, typename polynomial<T>::value_type>
