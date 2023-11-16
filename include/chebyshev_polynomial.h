@@ -21,6 +21,8 @@ namespace xmath {
         using value_type = polynomial<T>::value_type;
         using values_type = polynomial<T>::values_type;
 
+        static_assert(std::is_floating_point<T>::value, "The type parameter must be a floating point type.");
+
         /// @brief Creates first kind Chebyshev polynomial T_n for the given N.
         /// @param N The N of the polynomial.
         /// @return The Chebyshev polynomial of the first kind of the N.
