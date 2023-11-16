@@ -17,6 +17,10 @@ namespace xmath {
 
     template<typename T>
     struct polynomial_specification<std::complex<T>> {
+
+        static_assert(std::is_floating_point<T>::value,
+                      "The type parameter must be a floating point type.");
+
         using value_type = std::complex<T>;
         using size_type = size_t;
         using floating_point_type = T;

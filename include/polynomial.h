@@ -11,7 +11,6 @@
 #include <iostream>
 #include <vector>
 #include <ranges>
-#include "matrix.h"
 
 namespace xmath {
 
@@ -45,6 +44,16 @@ namespace xmath {
         static constexpr value_type zero = 0.0f;
     };
 
+    template<>
+    struct polynomial_specification<int> {
+        using value_type = int;
+        using size_type = size_t;
+        using floating_point_type = value_type;
+        static constexpr floating_point_type epsilon = 1e-5;
+        static constexpr value_type one = 1;
+        static constexpr value_type zero = 0;
+    };
+
     template<typename T, typename S = polynomial_specification<T>>
     class polynomial {
     };
@@ -71,7 +80,7 @@ namespace xmath {
 
         /// @brief Constructor that takes a list of coefficients.
         /// @param coeffs The coefficients of the polynomial in descending order.
-        explicit polynomial(const values_type& coeffs);
+        explicit polynomial(const values_type &coeffs);
 
         /// @brief
         /// @param range
