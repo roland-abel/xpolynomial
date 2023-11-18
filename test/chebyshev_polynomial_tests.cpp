@@ -137,8 +137,8 @@ TEST(ChebyshvPolynomialTest, ChebyshevGaussQuadratureForMonomialsTest) {
 }
 
 TEST(ChebyshvPolynomialTest, ChebyshevGaussQuadratureTest) {
-    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature([](auto x) { return std::sin(x - 1); }), -2.02285, epsilon);
+    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature([](auto x) { return std::sin(x - 1.); }), -2.02285, epsilon);
     EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature([](auto x) { return std::exp(x); }), 3.97746, epsilon);
-    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature([](auto x) { return std::exp(x) - 1; }), 0.835871, epsilon);
+    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature([](auto x) { return std::exp(x) - 1.; }), 0.835871, epsilon);
     EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature([](auto x) { return std::log(x + 4.); }), 4.30489, epsilon);
 }
