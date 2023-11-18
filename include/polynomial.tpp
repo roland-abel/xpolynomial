@@ -25,6 +25,11 @@ namespace xmath {
     }
 
     template<typename T>
+    polynomial<T>::polynomial(polynomial<T> &&p) noexcept
+            : coeffs_(std::move(p.coeffs_)) {
+    }
+
+    template<typename T>
     polynomial<T>::polynomial(std::initializer_list<value_type> coeffs)
             : coeffs_(coeffs) {
         trim_coefficients();
@@ -397,7 +402,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T> operator*(typename polynomial<T>::value_type scalar, const polynomial <T> &polynomial) {
+    polynomial<T> operator*(typename polynomial<T>::value_type scalar, const polynomial<T> &polynomial) {
         return polynomial.operator*(scalar);
     }
 
