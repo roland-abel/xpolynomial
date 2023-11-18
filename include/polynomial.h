@@ -74,6 +74,14 @@ namespace xmath {
         /// @brief Default constructor. Creates a zero polynomial.
         explicit polynomial<T>();
 
+        /// @brief Copy constructor.
+        /// @param p The polynomial to be copied.
+        polynomial(const polynomial<T> &p) = default;
+
+        /// @brief Move constructor.
+        /// @param p The polynomial to be moved.
+        polynomial(polynomial<T> &&p) noexcept;
+
         /// @brief Constructor that takes a list of coefficients.
         /// @param coeffs The coefficients of the polynomial in descending order.
         polynomial(std::initializer_list<value_type> coeffs);
@@ -85,10 +93,6 @@ namespace xmath {
         /// @brief
         /// @param range
         explicit polynomial(const std::ranges::range auto &range);
-
-        /// @brief Copy constructor.
-        /// @param p The polynomial to be copied.
-        polynomial(const polynomial<T> &p) = default;
 
         /// @brief Destructor.
         ~polynomial() = default;
@@ -166,6 +170,11 @@ namespace xmath {
         /// @param p The polynomial to assign values from.
         /// @return The polynomial to the current polynomial after assignment.
         polynomial<T> &operator=(const polynomial<T> &p) = default;
+
+        /// @brief Move assignment operator (=) for the polynomial class.
+        /// @param p The polynomial to assign values from.
+        /// @return The polynomial to the current polynomial after assignment.
+        polynomial<T> &operator=(polynomial<T> &&p) noexcept = default;
 
         /// @brief Gets the coefficient at the given index.
         /// @param index The index of the coefficient.
