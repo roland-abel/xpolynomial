@@ -57,6 +57,7 @@ TEST(PolynomialTests, ZeroPloynomialTest) {
 
 // Tests for the constant 1 polynomial.
 TEST(PolynomialTests, OnePloynomialTest) {
+    EXPECT_TRUE(Polynomial::one().is_one());
     EXPECT_TRUE(Polynomial::one().is_constant());
     EXPECT_TRUE(Polynomial::one().is_linear());
     EXPECT_EQ(Polynomial::one(), one);
