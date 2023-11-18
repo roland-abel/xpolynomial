@@ -37,6 +37,38 @@ TEST(RealIntervalTests, IsOpenedTest) {
     EXPECT_TRUE(Interval(0., 1., opened, opened).is_opened());
 }
 
+TEST(RealIntervalTests, IsLowerClosed) {
+    EXPECT_TRUE(Interval().is_lower_closed());
+    EXPECT_TRUE(Interval(0., 1., closed, closed).is_lower_closed());
+    EXPECT_FALSE(Interval(0., 1., opened, closed).is_lower_closed());
+    EXPECT_TRUE(Interval(0., 1., closed, opened).is_lower_closed());
+    EXPECT_FALSE(Interval(0., 1., opened, opened).is_lower_closed());
+}
+
+TEST(RealIntervalTests, IsUpperClosed) {
+    EXPECT_TRUE(Interval().is_lower_closed());
+    EXPECT_TRUE(Interval(0., 1., closed, closed).is_upper_closed());
+    EXPECT_TRUE(Interval(0., 1., opened, closed).is_upper_closed());
+    EXPECT_FALSE(Interval(0., 1., closed, opened).is_upper_closed());
+    EXPECT_FALSE(Interval(0., 1., opened, opened).is_upper_closed());
+}
+
+TEST(RealIntervalTests, IsLowerOpen) {
+    EXPECT_FALSE(Interval().is_lower_open());
+    EXPECT_FALSE(Interval(0., 1., closed, closed).is_lower_open());
+    EXPECT_TRUE(Interval(0., 1., opened, closed).is_lower_open());
+    EXPECT_FALSE(Interval(0., 1., closed, opened).is_lower_open());
+    EXPECT_TRUE(Interval(0., 1., opened, opened).is_lower_open());
+}
+
+TEST(RealIntervalTests, IsUpperOpen) {
+    EXPECT_FALSE(Interval().is_upper_open());
+    EXPECT_FALSE(Interval(0., 1., closed, closed).is_upper_open());
+    EXPECT_FALSE(Interval(0., 1., opened, closed).is_upper_open());
+    EXPECT_TRUE(Interval(0., 1., closed, opened).is_upper_open());
+    EXPECT_TRUE(Interval(0., 1., opened, opened).is_upper_open());
+}
+
 TEST(RealIntervalTests, IsClosedTest) {
     EXPECT_TRUE(Interval().is_closed());
     EXPECT_FALSE(Interval(0., 1., opened, opened).is_closed());
@@ -57,4 +89,12 @@ TEST(RealIntervalTests, IsEmptyTest) {
     EXPECT_TRUE(Interval(2., 2., closed, opened).is_empty());
     EXPECT_TRUE(Interval(2., 2., opened, closed).is_empty());
     EXPECT_FALSE(Interval(2., 2., closed, closed).is_empty());
+}
+
+TEST(RealIntervalTests, IsHalfOpen) {
+    EXPECT_FALSE(Interval(1., -1.).is_half_open());
+    EXPECT_FALSE(Interval(2., 2., opened, opened).is_half_open());
+    EXPECT_TRUE(Interval(2., 2., closed, opened).is_half_open());
+    EXPECT_TRUE(Interval(2., 2., opened, closed).is_half_open());
+    EXPECT_FALSE(Interval(2., 2., closed, closed).is_half_open());
 }
