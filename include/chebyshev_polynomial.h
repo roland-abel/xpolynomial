@@ -37,7 +37,7 @@ namespace xmath {
         /// @brief Computes the Chebyshev nodes for a given N within a specified interval.
         /// @param N  The N of the Chebyshev nodes.
         /// @return A vector containing the Chebyshev nodes for the specified N within the interval.
-        static values_type chebyshev_nodes(size_t N, const real_interval<T> &I);
+        static values_type chebyshev_nodes(size_t N, const real_interval<T> &I = real_interval<value_type>(-1., 1.));
 
         /// Calculates the Chebyshev series of order n for the given point and the coefficients alphas.
         /// @param alphas A vector containing the coefficients for the Chebyshev series polynomial.
@@ -50,16 +50,27 @@ namespace xmath {
         /// @return The value of the Chebyshev series of order n for the given coefficients alphas at x.
         static value_type clenshaw(const values_type &alphas, const value_type &x);
 
-        /// @brief Compute the numerical integral from -1 to 1 for a function of the following
-        /// kind: ∫_-1^1 f(x)/(1-x^2)dx for a given function f by using the Chebyshev-Gauss quadrature rule.
-        /// @param func The function f defined on the interval [-1, 1].
+        /// @brief Compute the numerical integral for a function defined in the domain with the weight function
+        /// 1/(1-x^2) by using the Chebyshev-Gauss quadrature rule.
+        /// @param func The function f defined in the domain.
+        /// @param domain The domain over which func is interpolated (default [-1, 1]).
         /// @param N The number of iteration.
         /// @return The approximation of the integral ∑_i=1^N w_i f(x_i) where the weights are the constant
         /// w_i = π/N and x_i's are the Chebyshev nodes.
         static value_type chebyshev_quadrature(
                 std::function<value_type(value_type)> func,
-                real_interval<value_type> I = real_interval<value_type>(-1., 1.),
+                real_interval<value_type> domain = real_interval<value_type>(-1., 1.),
                 uint32_t N = 5);
+
+        /// Interpolate a function at the Chebyshev nodes of the 1st kind.
+        /// @param func The function to be interpolated.
+        /// @param degree The degree of the interpolating polynomial.
+        /// @param domain The domain over which func is interpolated (default [-1, 1]).
+        /// @return The interpolating Chebyshev polynomial.
+        static polynomial<T> interpolate(
+                std::function<value_type(value_type)> func,
+                uint32_t degree,
+                real_interval<value_type> domain = real_interval<value_type>(-1., 1.));
 
     private:
         static polynomial_sequence chebyshev_1st_kind_polynomials_;
