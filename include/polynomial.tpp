@@ -441,19 +441,18 @@ namespace xmath {
 
     template<typename T>
     std::tuple<polynomial<T>, polynomial<T>> polynomial<T>::divide(const polynomial<T> &divisor) const {
-        auto quotient = zero();
-        auto remainder = *this;
+        auto q = zero();
+        auto r = *this;
 
-        long delta = static_cast<long>(remainder.degree() - divisor.degree());
-        while (remainder != zero() && delta >= 0) {
-            auto divider =
-                    (remainder.leading_coefficient() / divisor.leading_coefficient()) * monomial(delta, spec::one);
+        long delta = static_cast<long>(r.degree() - divisor.degree());
+        while (r != zero() && delta >= 0) {
+            const auto t = (r.leading_coefficient() / divisor.leading_coefficient()) * monomial(delta, spec::one);
 
-            quotient = quotient + divider;
-            remainder = remainder - divisor * divider;
+            q = q + t;
+            r = r - divisor * t;
 
-            delta = static_cast<long>(remainder.degree() - divisor.degree());
+            delta = static_cast<long>(r.degree() - divisor.degree());
         }
-        return std::make_tuple(quotient, remainder);
+        return std::make_tuple(q, r);
     }
 }
