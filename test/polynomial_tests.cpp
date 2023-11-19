@@ -17,6 +17,18 @@ namespace {
     auto zero = Polynomial::zero();
     auto one = Polynomial::one();
     auto X = Polynomial::monomial(1, 1.0);
+
+    void check_polynomial_division(
+            const Polynomial &p,
+            const Polynomial &q,
+            const Polynomial &s,
+            const Polynomial &r) {
+
+        auto [s_prim, r_prim] = p.divide(q);
+        EXPECT_EQ(s_prim, s);
+        EXPECT_EQ(r_prim, r);
+        EXPECT_EQ(p, s_prim * q + r);
+    }
 }
 
 // Tests for the default constructor.
@@ -373,7 +385,10 @@ TEST(PolynomialTests, HasRootTest) {
     auto p = X - 1.47;
     EXPECT_TRUE(p.has_root(1.47));
 
-    p = X.pow(2) - 2;
+    p = X.pow(2) - 2.;
+    EXPECT_NEAR(std::sqrt(2) * std::sqrt(2) - 2., 0., epsilon);
+    EXPECT_NEAR(p(std::sqrt(2)), 0., epsilon);
+
     EXPECT_TRUE(p.has_root(std::sqrt(2)));
     EXPECT_TRUE(p.has_root(-std::sqrt(2)));
     EXPECT_FALSE(p.has_root(1.0));
@@ -404,6 +419,7 @@ TEST(PolynomialTests, FromRootsTest) {
 
     roots = {-1.3, 0.2, 1.0, 4.1, 3.1, 8.12};
     p = Polynomial::from_roots(roots);
+    EXPECT_TRUE(p.has_roots(roots));
     EXPECT_TRUE((1.2 * p).has_roots(roots));
     EXPECT_TRUE(p.is_normalized());
     EXPECT_EQ(p.degree(), 6);
@@ -411,18 +427,32 @@ TEST(PolynomialTests, FromRootsTest) {
 
 // Tests polynomial divide function.
 TEST(PolynomialTests, DivideTest) {
-    auto [quotient, remainder] = X.divide(one);    // X/1 = X remainder 0
+    check_polynomial_division(X, one, X, zero);
+    check_polynomial_division(X.pow(2), 4. * one, .25 * X.pow(2), zero);
 
-    EXPECT_EQ(quotient, X);
-    EXPECT_EQ(remainder, zero);
+    check_polynomial_division(X.pow(2) - 2 * X + 1., X - 1., X - 1, zero);
+    check_polynomial_division(X.pow(2) - 2 * X + 1., X + 2., X - 4., 9. * one);
 
-    auto [q1, r1] = X.pow(2).divide(4. * one); // X^2/4 = 0.25*X^2
-    EXPECT_EQ(q1, .25 * X.pow(2));
-    EXPECT_EQ(r1, zero);
+    check_polynomial_division(
+            3 * X.pow(3) + X.pow(2) + X + 5, 5 * X.pow(2) + -3 * X + 1,
+            (3. / 5) * X + (14. / 25), (52. / 25) * X + (111. / 25));
 
-    auto [q2, r2] = (3 * X.pow(3) + X.pow(2) + X + 5).divide(5 * X.pow(2) + -3 * X + 1);
-    EXPECT_EQ(q2, (3. / 5) * X + (14. / 25));
-    EXPECT_EQ(r2, (52. / 25) * X + (111. / 25));
+    check_polynomial_division(
+            3 * X.pow(3) + X.pow(2) + X + 5, 5 * X.pow(2) + -3 * X + 1,
+            (3. / 5) * X + (14. / 25), (52. / 25) * X + (111. / 25));
+}
+
+TEST(PolynomialTests, DivideWithLargeLeadingCoefficientTest) {
+    const auto lc = 1e10;
+    const auto eps = 1e-13;
+
+    EXPECT_FALSE(nearly_equal(lc + 1., lc, eps));
+    EXPECT_FALSE(nearly_equal(lc - 1., lc, eps));
+    EXPECT_FALSE(nearly_zero(1. / lc, eps));
+
+    check_polynomial_division(
+            lc * X.pow(4) - 1, X - 1.,
+            lc * (X.pow(3) + X.pow(2) + X.pow(1) + 1.), one + lc);
 }
 
 // Tests polynomial divide function.

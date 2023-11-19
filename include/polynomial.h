@@ -16,12 +16,6 @@ namespace xmath {
 
     template<typename T>
     struct polynomial_specification {
-        using value_type = T;
-        using size_type = size_t;
-        using floating_point_type = value_type;
-        static constexpr floating_point_type epsilon = 1e-5;
-        static constexpr value_type one = 1.0;
-        static constexpr value_type zero = 0.0;
     };
 
     template<>
@@ -44,18 +38,10 @@ namespace xmath {
         static constexpr value_type zero = 0.0f;
     };
 
-    template<>
-    struct polynomial_specification<int> {
-        using value_type = int;
-        using size_type = size_t;
-        using floating_point_type = value_type;
-        static constexpr floating_point_type epsilon = 1e-5;
-        static constexpr value_type one = 1;
-        static constexpr value_type zero = 0;
-    };
-
     template<typename T, typename S = polynomial_specification<T>>
     class polynomial {
+    public:
+        using spec = polynomial_specification<T>;
     };
 
     /// @brief Represents a polynomial with coefficients from template parameter type T.
