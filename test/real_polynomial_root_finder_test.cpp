@@ -7,15 +7,17 @@
 #include <cmath>
 #include "polynomial.h"
 #include "real_polynomial_root_finder.h"
+#include "chebyshev_polynomial.h"
 
 using namespace xmath;
 
 namespace {
     using Polynomial = polynomial<double>;
     using RootFinder = real_polynomial_root_finder<double>;
-    using value_type = Polynomial::value_type;
+    using ChebyshevPolynomial = chebyshev_polynomial<double>;
+    using value_type = Polynomial::spec::value_type;
 
-    constexpr auto epsilon = Polynomial::epsilon;
+    constexpr auto epsilon = Polynomial::spec::epsilon;
     auto zero = Polynomial::zero();
     auto one = Polynomial::one();
     auto X = Polynomial::monomial(1);
@@ -216,4 +218,16 @@ TEST(RealPolynomialRootFinderTests, FindRootsForPolynomialWithMultipleRootsTest)
 TEST(RealPolynomialRootFinderTests, NewtonRaphsonTest) {
     auto p = X.pow(2) - 2;
     EXPECT_NEAR(RootFinder::newton_raphson(p, 1.1), std::sqrt(2), epsilon);
+}
+
+TEST(RealPolynomialRootFinderTests, FindChebyshevRootsTest) {
+    const auto n = 17;
+    const auto precision = 1e-11;
+
+    const auto T_n = ChebyshevPolynomial::create_1st_kind(n);
+    const auto [roots, multiplicities] = RootFinder::find_roots(T_n, precision);
+    const auto nodes = ChebyshevPolynomial::chebyshev_nodes(n);
+
+    EXPECT_EQ(roots.size(), n);
+    EXPECT_TRUE(T_n.has_roots(roots));
 }

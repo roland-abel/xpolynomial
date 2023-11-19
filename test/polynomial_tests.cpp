@@ -451,8 +451,9 @@ TEST(PolynomialTests, DivideWithLargeLeadingCoefficientTest) {
     EXPECT_FALSE(nearly_zero(1. / lc, eps));
 
     check_polynomial_division(
-            lc * X.pow(4) - 1, X - 1.,
-            lc * (X.pow(3) + X.pow(2) + X.pow(1) + 1.), one + lc);
+            lc * X.pow(4) - 1,
+            X - 1.,
+            lc * (X.pow(3) + X.pow(2) + X.pow(1) + 1.), -one + lc);
 }
 
 // Tests polynomial divide function.

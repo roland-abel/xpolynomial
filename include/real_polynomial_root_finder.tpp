@@ -293,7 +293,7 @@ namespace xmath {
 
     template<typename T>
     std::tuple<typename real_polynomial_root_finder<T>::roots_type, typename real_polynomial_root_finder<T>::multiplicities_type>
-    real_polynomial_root_finder<T>::find_roots(const polynomial<T> &p) {
+    real_polynomial_root_finder<T>::find_roots(const polynomial<T> &p, const T precision) {
 
         auto roots = std::vector<value_type>();
         auto multiplicities = std::vector<unsigned short>();
@@ -305,7 +305,7 @@ namespace xmath {
 
             for (auto I: intervals) {
                 multiplicities.push_back(k + 1);
-                roots.push_back(root_finder<T>::bisection(q, I, 1e-9));
+                roots.push_back(root_finder<T>::bisection(q, I, precision));
             }
         }
         return std::make_tuple(roots, multiplicities);
