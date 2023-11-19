@@ -107,9 +107,9 @@ namespace xmath {
 
         /// @brief Finds the roots of a polynomial.
         /// @param p The polynomial for which to find the roots.
-        /// @param tolerance
+        /// @param precision The desired precision.
         /// @return A tuple containing the roots and their multiplicities.
-        static std::tuple<roots_type, multiplicities_type> find_roots(const polynomial<T> &p);
+        static std::tuple<roots_type, multiplicities_type> find_roots(const polynomial<T> &p, const T precision = 1e-9);
     };
 }
 
