@@ -25,7 +25,7 @@ int main() {
     auto p = Z.pow(n) - 1.;
     auto roots = RootFinder::nth_roots_of_unity(n);
 
-    cout << "Has roots: " << p.has_roots(roots) << endl;
+    cout << "Has roots: " << (p.has_roots(roots) ? "true" : "false") << endl;
     cout << n << "th-roots:" << endl;
     for (auto z: roots) {
         cout << z << endl;
