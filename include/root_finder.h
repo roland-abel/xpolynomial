@@ -9,6 +9,7 @@
 #include <utility>
 #include <iostream>
 #include <vector>
+#include <functional>
 
 namespace xmath {
 

@@ -7,6 +7,8 @@
 #define CHEBYSHEV_POLYNOMIAL_H_
 
 #include <vector>
+#include <functional>
+#include <cstdint>
 #include "real_interval.h"
 #include "polynomial.h"
 
