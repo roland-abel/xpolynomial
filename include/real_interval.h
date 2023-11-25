@@ -128,6 +128,19 @@ namespace xmath {
                     real_interval((lower() + upper()) / static_cast<T>(2.), upper()));
         }
 
+        /// Gets a function that map linear the interval to the given interval.
+        /// @param I The interval.
+        /// @return The linear mapping function.
+        std::tuple<std::function<T(const T &x)>, T, T> linear_transform(const real_interval<T> &I) const {
+            const auto a = lower(), b = upper(), alpha = I.lower(), beta = I.upper();
+            const auto m = (beta - alpha) / (b - a), c = (alpha * b - beta * a) / (b - a);
+
+            auto map = [m, c](const T &t) {
+                return m * t + c;
+            };
+            return std::make_tuple(map, m, c);
+        }
+
     private:
         interval_bounds lower_;
         interval_bounds upper_;

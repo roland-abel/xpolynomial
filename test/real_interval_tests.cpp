@@ -9,7 +9,9 @@
 using namespace xmath;
 
 namespace {
+    using std::numbers::pi;
     using Interval = real_interval<double>;
+
     auto opened = real_interval<double>::interval_bounds::opened;
     auto closed = real_interval<double>::interval_bounds::closed;
     constexpr double epsilon = 1e-9;
@@ -97,4 +99,26 @@ TEST(RealIntervalTests, IsHalfOpen) {
     EXPECT_TRUE(Interval(2., 2., closed, opened).is_half_open());
     EXPECT_TRUE(Interval(2., 2., opened, closed).is_half_open());
     EXPECT_FALSE(Interval(2., 2., closed, closed).is_half_open());
+}
+
+TEST(RealIntervalTests, LinearTransform1) {
+    const auto I = Interval(-1., 1.);
+    const auto J = Interval(2., 5.);
+    const auto [linear_mapping, m, c] = I.linear_transform(J);
+
+    EXPECT_NEAR(linear_mapping(-1.), 2., epsilon);
+    EXPECT_NEAR(linear_mapping(1.), 5., epsilon);
+    EXPECT_NEAR(linear_mapping(0.), 3.5, epsilon);
+}
+
+TEST(RealIntervalTests, LinearTransform2) {
+    const auto I = Interval(-1., 1.);
+    const auto J = Interval(0., 2 * pi);
+    const auto linear_mapping = I.linear_transform(J);
+
+//    EXPECT_NEAR(linear_mapping(-1.), 0., epsilon);
+//    EXPECT_NEAR(linear_mapping(-1. / 2.), pi / 2., epsilon);
+//    EXPECT_NEAR(linear_mapping(0.), pi, epsilon);
+//    EXPECT_NEAR(linear_mapping(1. / 2.), 3. / 2. * pi, epsilon);
+//    EXPECT_NEAR(linear_mapping(1.), 2 * pi, epsilon);
 }
