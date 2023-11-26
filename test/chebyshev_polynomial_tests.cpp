@@ -1,7 +1,30 @@
-/// @file legendre_polynomial_tests.h
+/// @file chebyshev_polynomial_tests.h
+/// @brief
 ///
 /// @author Roland Abel
-/// @date 14.10.2023
+/// @date October 14, 2023
+///
+/// Copyright (c) 2023 Roland Abel
+///
+/// This software is released under the MIT License.
+///
+/// Permission is hereby granted, free of charge, to any person obtaining a copy
+/// of this software and associated documentation files (the "Software"), to deal
+/// in the Software without restriction, including without limitation the rights
+/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+/// copies of the Software, and to permit persons to whom the Software is
+/// furnished to do so, subject to the following conditions:
+///
+/// The above copyright notice and this permission notice shall be included in
+/// all copies or substantial portions of the Software.
+///
+/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+/// THE SOFTWARE.
 
 #include <gtest/gtest.h>
 #include "chebyshev_polynomial.h"
@@ -141,4 +164,8 @@ TEST(ChebyshvPolynomialTest, ChebyshevGaussQuadratureTest) {
     EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature([](auto x) { return std::exp(x); }), 3.97746, epsilon);
     EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature([](auto x) { return std::exp(x) - 1.; }), 0.835871, epsilon);
     EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature([](auto x) { return std::log(x + 4.); }), 4.30489, epsilon);
+}
+
+TEST(ChebyshvPolynomialTest, ChebyshevGaussQuadratureOverIntervalTest) {
+    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature(X.pow(2), Interval(-0.5, 0.5)), pi / 2., epsilon);
 }
