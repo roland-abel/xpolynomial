@@ -1,34 +1,59 @@
 # xpolynomial
-This C++ template project provides a flexible way to work with polynomials and calculate their real roots.
+
+C++ template project provides a flexible way to work with polynomials and calculate their real roots.
+
+## Overview
+
+This C++ template library provides functionality for working with polynomials.
+It includes basic operations such as addition, subtraction, multiplication,
+and division, as well as polynomial evaluation.
 
 ## Features
 
-### Polynomial Class
-The `polynomial<T>` class allows you to create and manipulate polynomials in a single variable. Here are some of the available functions:
+### Polynomial
 
-- `polynomial<T>()`: Constructor the zero polynomial.
-- `polynomial<T>(std::initializer_list<value_type> coeffs)`: Constructor that creates a polynomial with the given coefficients.
-- `value_type evaluate(value_type x) const`: Computes the value of the polynomial for a given variable `x`.
-- `polynomial<T> derive() const`: Computes the derivative of the polynomial.
-- `polynomial<T> operator+(const polynomial<T> &p) const`: Adds two polynomials together.
-- `polynomial<T> operator-(const polynomial<T> &p) const`: Subtracts one polynomial from another.
-- `polynomial<T> operator*(const polynomial<T> &p) const`: Multiplies two polynomials.
-- `std::string to_string() const`: Returns the polynomial as a string.
+The `polynomial<T>` class allows you to create and manipulate polynomials in a single variable. This template class
+designed to handle polynomials with coefficients of various numerical data types and provides a wide range of
+functionalities for working with polynomials, including basic operations, evaluation, normalization, and more.
 
-### Root Finder Class
-The `real_polynomial_root_finder<T>` class finds all real roots of a given polynomial using the Bisection method. Here are some of the available functions:
+### Euclidean Algorithm
 
-- `int number_distinct_roots(const polynomial<T> &p, const real_interval<T> &I)`: Calculates the number of distinct real roots for a given Interval.
-- `std::tuple<roots_type, multiplicities_type> find_roots(const polynomial<T> &p)`: Find all the real roots with the corresponding multiplicities.
+The primary functionalities of the `euclidean_algorithm<>` template is computing the greatest common divisor (gcd)
+of two polynomials and the extended Euclidean algorithm for polynomials.
 
-### Sturm Method for Counting Roots
+### Chebyshev Polynomial
 
-The number of real roots of a polynomial can be determined using the Sturm method. This method involves creating a sequence of polynomials, known as Sturm sequences, and counting the sign changes in this sequence. The number of sign changes corresponds to the number of distinct real roots of the polynomial.
+The `chebyshev_polynomial<>` template class provides a set of methods for working with Chebyshev polynomials
+of the first kind. These polynomials are integral in various mathematical applications, and the class facilitates
+their generation, evaluation, and interpolation.
+
+### Root Finding Algorithm
+
+The `real_polynomial_root_finder<>` and `complex_polynomial_root_finder<>` classes are utility classes specifically
+designed for finding roots of polynomials with real and complex coefficients, respectively.
+These classes provide various numerical methods to achieve accurate root approximations.
+
+Sturm's method plays a crucial role in identifying, counting, and isolating roots within intervals.
+Its effectiveness lies in constructing a sequence of polynomials whose sign variations provide information
+about the distribution of roots. The algorithm's complexity is polynomial in nature, making it suitable for a wide
+range of polynomial degrees.
+
+### Square-free Decomposition
+
+The `square_free_decomposition<>` class identifies whether a polynomial is square-free and employs Yun's algorithm
+for square-free decomposition. Additionally, it provides a method to reconstruct the original polynomial
+from its square-free decomposition.
+
+### Polynomial Interpolation
+
+The `polynomial_interpolation<>` class provides functionality for Lagrange polynomial interpolation,
+a method to construct a polynomial that passes through a given set of data points.
 
 
 ## Usage
 
-To use this project, you can include the `polynomial<double>` and `real_polynomial_root_finder<double>` classes in your C++ code and use them as follows:
+To use this project, you can include the `polynomial<double>` and `real_polynomial_root_finder<double>` classes in your
+C++ code and use them as follows:
 
 ```cpp
 #include "real_polynomial_root_finder.h"
@@ -54,6 +79,14 @@ int main() {
     return 0;
 }
 ```
+
+## Usage
+
+todo:
+
+## Author
+
+Roland Abel
 
 ## License
 
