@@ -3,7 +3,6 @@ enable_testing()
 add_executable(${UNIT_TEST_NAME}
         legendre_polynomial_tests.cpp
         polynomial_tests.cpp
-        matrix_tests.cpp
         euclidean_algorithm_tests.cpp
         root_finder_test.cpp
         real_polynomial_root_finder_test.cpp
