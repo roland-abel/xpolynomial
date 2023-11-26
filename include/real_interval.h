@@ -31,6 +31,7 @@
 
 #include <limits>
 #include <cmath>
+#include <functional>
 #include "utils.h"
 
 namespace xmath {
