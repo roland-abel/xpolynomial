@@ -152,8 +152,8 @@ namespace xmath {
     template<typename T>
     chebyshev_polynomial<T>::value_type chebyshev_polynomial<T>::chebyshev_quadrature(
             std::function<value_type(value_type)> func,
-            real_interval<value_type> domain,
             uint32_t N) {
+
         auto value = polynomial<T>::spec::zero;
         for (int i = 1; i <= N; ++i) {
             value += func(std::cos((2. * i - 1.) * pi / (2. * N)));
@@ -162,12 +162,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T> chebyshev_polynomial<T>::interpolate(
-            std::function<value_type(value_type)> func,
-            uint32_t degree,
-            real_interval<value_type> domain) {
-
-
+    polynomial<T> chebyshev_polynomial<T>::interpolate(std::function<value_type(value_type)> func, uint32_t degree) {
         return polynomial<T>();
     }
 }

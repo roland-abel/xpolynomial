@@ -38,11 +38,12 @@ namespace xmath {
         using std::ranges::views::transform;
     }
 
+    /// @brief Specialization of polynomial_specification for complex numbers.
+    /// @tparam T The data type of the coefficients in the complex polynomial.
     template<typename T>
     struct polynomial_specification<std::complex<T>> {
 
-        static_assert(std::is_floating_point<T>::value,
-                      "The type parameter must be a floating point type.");
+        static_assert(std::is_floating_point<T>::value, "The type parameter must be a floating point type.");
 
         using value_type = std::complex<T>;
         using size_type = size_t;
@@ -52,6 +53,10 @@ namespace xmath {
         static constexpr value_type zero = std::complex<T>(0, 0);
     };
 
+    /// @brief Output stream operator for complex polynomials.
+    /// @param os The output stream.
+    /// @param p The complex polynomial to be output.
+    /// @return The output stream.
     template<typename T>
     std::ostream &operator<<(std::ostream &os, const polynomial<std::complex<T>> &p) {
         for (auto coeff: p.coefficients()) {
@@ -69,6 +74,10 @@ namespace xmath {
     template<typename T>
     using complex_type = std::complex<T>;
 
+    /// @brief Multiplication operator for a real polynomial and a complex number.
+    /// @param p The real polynomial.
+    /// @param z The complex number.
+    /// @return The resulting complex polynomial.
     template<typename T>
     complex_polynomial<T> operator*(const real_polynomial<T> &p, const complex_type<T> &z) {
         return complex_polynomial<T>(p.coefficients() | transform([&](const T &coeff) {
@@ -91,12 +100,11 @@ namespace xmath {
         return p + q;
     }
 
-    /// @brief
-    /// @tparam T
-    /// @param polynomial
-    /// @return
+    /// @brief Separates a complex polynomial into its real and imaginary parts.
+    /// @param p The complex polynomial to be separated.
+    /// @return A pair of polynomials representing the real and imaginary parts, respectively.
     template<typename T>
-    auto separate(const complex_polynomial<T> &polynomial) -> decltype(auto);
+    auto separate(const complex_polynomial<T> &p) -> decltype(auto);
 }
 
 #include "complex_polynomial.tpp"

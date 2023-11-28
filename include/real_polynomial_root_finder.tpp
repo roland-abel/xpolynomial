@@ -316,7 +316,7 @@ namespace xmath {
 
     template<typename T>
     std::tuple<typename real_polynomial_root_finder<T>::roots_type, typename real_polynomial_root_finder<T>::multiplicities_type>
-    real_polynomial_root_finder<T>::find_roots(const polynomial<T> &p, const T precision) {
+    real_polynomial_root_finder<T>::find_roots(const polynomial<T> &p, T precision) {
 
         auto roots = std::vector<value_type>();
         auto multiplicities = std::vector<unsigned short>();

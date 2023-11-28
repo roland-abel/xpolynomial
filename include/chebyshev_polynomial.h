@@ -75,27 +75,19 @@ namespace xmath {
         /// @return The value of the Chebyshev series of order n for the given coefficients alphas at x.
         static value_type clenshaw(const values_type &alphas, const value_type &x);
 
-        /// @brief Compute the numerical integral for a function defined in the domain with the weight function
+        /// @brief Compute the numerical integral for a function defined in [-1., 1.] with the weight function
         /// 1/(1-x^2) by using the Chebyshev-Gauss quadrature rule.
-        /// @param func The function f defined in the domain.
-        /// @param domain The domain over which func is interpolated (default [-1, 1]).
+        /// @param func The function f defined in the interval [-1., 1.].
         /// @param N The number of iteration.
         /// @return The approximation of the integral ∑_i=1^N w_i f(x_i) where the weights are the constant
         /// w_i = π/N and x_i's are the Chebyshev nodes.
-        static value_type chebyshev_quadrature(
-                std::function<value_type(value_type)> func,
-                real_interval<value_type> domain = real_interval<value_type>(-1., 1.),
-                uint32_t N = 5);
+        static value_type chebyshev_quadrature(std::function<value_type(value_type)> func, uint32_t N = 5);
 
-        /// Interpolate a function at the Chebyshev nodes of the 1st kind.
+        /// Interpolates a function at the Chebyshev nodes of the 1st kind.
         /// @param func The function to be interpolated.
         /// @param degree The degree of the interpolating polynomial.
-        /// @param domain The domain over which func is interpolated (default [-1, 1]).
         /// @return The interpolating Chebyshev polynomial.
-        static polynomial<T> interpolate(
-                std::function<value_type(value_type)> func,
-                uint32_t degree,
-                real_interval<value_type> domain = real_interval<value_type>(-1., 1.));
+        static polynomial<T> interpolate(std::function<value_type(value_type)> func, uint32_t degree);
 
     private:
         static polynomial_sequence chebyshev_1st_kind_polynomials_;
