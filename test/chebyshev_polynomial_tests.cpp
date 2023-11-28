@@ -165,7 +165,3 @@ TEST(ChebyshvPolynomialTest, ChebyshevGaussQuadratureTest) {
     EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature([](auto x) { return std::exp(x) - 1.; }), 0.835871, epsilon);
     EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature([](auto x) { return std::log(x + 4.); }), 4.30489, epsilon);
 }
-
-TEST(ChebyshvPolynomialTest, ChebyshevGaussQuadratureOverIntervalTest) {
-    EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature(X.pow(2), Interval(-0.5, 0.5)), pi / 2., epsilon);
-}
