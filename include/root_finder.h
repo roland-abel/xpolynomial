@@ -37,7 +37,7 @@
 namespace xmath {
 
     /// @brief A class for finding roots using various numerical methods.
-    /// @tparam T
+    /// @tparam T The data type of the coefficients in the polynomials.
     template<typename T>
     class root_finder {
     public:

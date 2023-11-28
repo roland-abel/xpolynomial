@@ -35,27 +35,31 @@
 
 namespace xmath {
 
-    /// @brief
-    /// @tparam T
+    /// @brief Provides methods for finding roots of complex polynomials using various algorithms.
+    /// @tparam T The data type of the coefficients in the complex polynomial.
     template<typename T>
     class complex_polynomial_root_finder {
     public:
-        using complex_numbers = std::vector<std::complex<T>>;
-
-        /// @brief Gets a vector of th n-th roots of unity.
-        /// @param n Positive integer.
-        /// @return The n-th roots of unity.
+        /// @brief Gets a vector of the n-th roots of unity.
+        /// @param n A positive integer specifying the order of the roots.
+        /// @return A vector containing the n-th roots of unity.
         static std::vector<std::complex<T>> nth_roots_of_unity(int n);
 
-        /// @brief
-        /// @param p
-        /// @param initial_points
-        /// @return
+        /// @brief Finds roots of a complex polynomial using the Durand-Kerner method.
+        /// @param p The complex polynomial for which roots are to be found.
+        /// @param initial_points The initial points to start the iteration.
+        /// @param max_iterations The maximum number of iterations (default: 100).
+        /// @return A vector containing the roots of the complex polynomial.
         static std::vector<std::complex<T>> durand_kerner_method(
                 const complex_polynomial<T> &p,
                 const std::vector<std::complex<T>> &initial_points,
                 size_t max_iterations = 100);
 
+        /// @brief Finds roots of a complex polynomial using the Aberth-Ehrlich method.
+        /// @param p The complex polynomial for which roots are to be found.
+        /// @param initial_points The initial points to start the iteration.
+        /// @param max_iterations The maximum number of iterations (default: 100).
+        /// @return A vector containing the roots of the complex polynomial.
         static std::vector<std::complex<T>> aberth_ehrlich_method(
                 const complex_polynomial<T> &p,
                 const std::vector<std::complex<T>> &initial_points,

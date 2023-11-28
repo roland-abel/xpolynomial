@@ -38,6 +38,7 @@
 namespace xmath {
 
     /// @brief A class for finding roots of polynomials with real coefficients using various numerical methods.
+    /// @tparam T The data type of the coefficients in the polynomials.
     template<typename T>
     class real_polynomial_root_finder {
     public:
@@ -132,7 +133,7 @@ namespace xmath {
         /// @param p The polynomial for which to find the roots.
         /// @param precision The desired precision.
         /// @return A tuple containing the roots and their multiplicities.
-        static std::tuple<roots_type, multiplicities_type> find_roots(const polynomial<T> &p, const T precision = 1e-9);
+        static std::tuple<roots_type, multiplicities_type> find_roots(const polynomial<T> &p, T precision = 1e-9);
     };
 }
 

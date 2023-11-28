@@ -38,7 +38,7 @@ namespace xmath {
     /// into powers of square-free polynomials p = q_1 q_2^2 q_3^3 ... qn^n where those of the q_i are
     /// non-constant and pairwise coprime square-free polynomials.
     /// See: https://en.wikipedia.org/wiki/Square-free_polynomial
-    /// @tparam T The coefficient's type.
+    /// @tparam T The data type of the coefficients in the polynomials.
     template<typename T>
     class square_free_decomposition {
     public:

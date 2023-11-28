@@ -111,31 +111,31 @@ namespace xmath {
     public:
         /// @brief Checks if the polynomial is the zero polynomial.
         /// @return True if the polynomial is zero, false otherwise.
-        bool is_zero() const;
+        [[nodiscard]] bool is_zero() const;
 
         /// @brief Checks if the polynomial is the 1 polynomial.
         /// @return True if the polynomial is 1, false otherwise.
-        bool is_one() const;
+        [[nodiscard]] bool is_one() const;
 
         /// @brief Checks if the polynomial is a constant (degree 0) polynomial.
         /// @return True if the polynomial is a constant, false otherwise.
-        bool is_constant() const;
+        [[nodiscard]] bool is_constant() const;
 
         /// @brief Checks if the polynomial is a linear (degree 1) polynomial.
         /// @return True if the polynomial is linear, false otherwise.
-        bool is_linear() const;
+        [[nodiscard]] bool is_linear() const;
 
         /// @brief Checks if the polynomial is a quadratic (degree 2) polynomial.
         /// @return True if the polynomial is quadratic, false otherwise.
-        bool is_quadratic() const;
+        [[nodiscard]] bool is_quadratic() const;
 
         /// @brief Checks if the polynomial is a cubic (degree 3) polynomial.
         /// @return True if the polynomial is cubic, false otherwise.
-        bool is_cubic() const;
+        [[nodiscard]] bool is_cubic() const;
 
         /// @brief Checks if the polynomial is normalized, i.e. the leading coefficient is equal to 1.
         /// @return True if the polynomial is normalized, false otherwise.
-        bool is_normalized() const;
+        [[nodiscard]] bool is_normalized() const;
 
         /// @brief Returns the degree of the polynomial.
         /// @return The degree of the polynomial.
@@ -355,16 +355,16 @@ namespace xmath {
         /// @brief Checks if the polynomial has the given root.
         /// @param value The value to check.
         /// @return True if the polynomial has the given root; otherwise false.
-        bool has_root(const value_type &value) const;
+        [[nodiscard]] bool has_root(const value_type &value) const;
 
         /// @brief Checks if the polynomial has given roots.
         /// @param values The values to check.
         /// @return True if the polynomial has all the given roots; otherwise false.
-        bool has_roots(const values_type &values) const;
+        [[nodiscard]] bool has_roots(const values_type &values) const;
 
         /// @brief Convert the polynomial to a string representation.
         /// @return The string representation of the polynomial.
-        std::string to_string() const;
+        [[nodiscard]] std::string to_string() const;
 
     private:
         /// @brief Constructor that creates a zero polynomial of a given degree.
@@ -373,8 +373,10 @@ namespace xmath {
         /// @brief Trims leading zero coefficients from the polynomial.
         polynomial<T> &trim_coefficients();
 
+        /// @brief Checks if two values are nearly equal within a small epsilon.
         static inline bool nearly_equal(value_type a, value_type b);
 
+        /// @brief Checks if a value is nearly zero within a small epsilon.
         static inline bool nearly_zero(value_type a);
 
     private:

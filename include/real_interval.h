@@ -59,6 +59,9 @@ namespace xmath {
         static constexpr floating_point_type epsilon = 1e-5f;
     };
 
+    /// @brief Represents a real interval with specified boundary conditions.
+    /// @tparam T The data type of the interval endpoints.
+    /// @tparam FT The floating-point specification type.
     template<typename T, typename FT = floating_point_specification<T>>
     class real_interval : std::pair<T, T> {
     public:
@@ -108,41 +111,41 @@ namespace xmath {
 
         /// @brief Gets a value indicated whether the interval is empty.
         /// @return True if the interval ist empty, otherwise false.
-        inline bool is_empty() const {
+        [[nodiscard]] inline bool is_empty() const {
             return greater_than(lower(), upper()) || (is_degenerate() && !is_closed());
         }
 
         /// @brief Gets a values indicated whether the interval is closed.
         /// @return True if the interval is closed; otherwise false.
-        inline bool is_closed() const { return lower_ == closed && upper_ == closed; }
+        [[nodiscard]] inline bool is_closed() const { return lower_ == closed && upper_ == closed; }
 
         /// @brief Gets a values indicated whether the interval is opened.
         /// @return True if the interval is opened; otherwise false.
-        inline bool is_opened() const { return lower_ == opened && upper_ == opened; }
+        [[nodiscard]] inline bool is_opened() const { return lower_ == opened && upper_ == opened; }
 
         /// @brief Gets a values indicated whether the lower boundary of the interval is open.
         /// @return True if the lower boundary is opened; otherwise false.
-        inline bool is_lower_open() const { return lower_ == opened; }
+        [[nodiscard]] inline bool is_lower_open() const { return lower_ == opened; }
 
         /// @brief Gets a values indicated whether the upper boundary of the interval is open.
         /// @return True if the upper boundary is opened; otherwise false.
-        inline bool is_upper_open() const { return upper_ == opened; }
+        [[nodiscard]] inline bool is_upper_open() const { return upper_ == opened; }
 
         /// @brief Gets a values indicated whether the lower boundary of the interval is closed.
         /// @return True if the lower boundary is closed; otherwise false.
-        inline bool is_lower_closed() const { return lower_ == closed; }
+        [[nodiscard]] inline bool is_lower_closed() const { return lower_ == closed; }
 
         /// @brief Gets a values indicated whether the upper boundary of the interval is closed.
         /// @return True if the upper boundary is closed; otherwise false.
-        inline bool is_upper_closed() const { return upper_ == closed; }
+        [[nodiscard]] inline bool is_upper_closed() const { return upper_ == closed; }
 
         /// @brief Gets a values indicated whether the interval is half open.
         /// @return True if the interval is half open; otherwise false.
-        inline bool is_half_open() const { return lower_ != upper_; }
+        [[nodiscard]] inline bool is_half_open() const { return lower_ != upper_; }
 
         /// @brief Gets a values indicated whether the interval is degenerate, e.g. the intervals boundary are equals.
         /// @return True if the interval is degenerate; otherwise false.
-        inline bool is_degenerate() const { return nearly_equal(lower(), upper(), epsilon); }
+        [[nodiscard]] inline bool is_degenerate() const { return nearly_equal(lower(), upper(), epsilon); }
 
         /// Gets a tuple of two intervals created by the current interval by bisection.
         /// @return A tuple of two intervals.

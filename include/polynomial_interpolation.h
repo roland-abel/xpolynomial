@@ -33,6 +33,8 @@
 
 namespace xmath {
 
+    /// @brief Provides methods for polynomial interpolation using Lagrange basis.
+    /// @tparam T The data type of the coefficients in the polynomials.
     template<typename T>
     class polynomial_interpolation {
     public:
