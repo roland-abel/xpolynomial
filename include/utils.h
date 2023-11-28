@@ -117,7 +117,7 @@ namespace xmath {
     /// @param a The integer value to check.
     /// @return True if the integer is odd; otherwise, false.
     inline bool is_odd(long a) {
-        return a % 2 == 1;
+        return a % 2 != 0;
     }
 
     /// @brief Converts a range to a vector.
