@@ -46,7 +46,8 @@ namespace xmath {
         /// @return Returns the gcd of p and q.
         static polynomial<T> euclidean(const polynomial<T> &p, const polynomial<T> &q);
 
-        /// @brief Computes the extended Euclidean algorithm for two polynomials.
+        /// @brief Computes the greatest common divisor (gcd) of two polynomials and two polynomials s and t such that
+        /// gcd == s * p + t * q by using the extended Euclidean algorithm.
         /// Example usage:
         /// @code{.cpp}
         ///
