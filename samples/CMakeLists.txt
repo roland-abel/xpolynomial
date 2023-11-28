@@ -20,3 +20,6 @@ target_include_directories(chebyshev_1st PRIVATE ../include)
 
 add_executable(nth_roots_of_unity nth_roots_of_unity.cpp)
 target_include_directories(nth_roots_of_unity PRIVATE ../include)
+
+add_executable(euclidean euclidean.cpp)
+target_include_directories(euclidean PRIVATE ../include)
