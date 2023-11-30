@@ -152,6 +152,13 @@ namespace xmath {
     }
 
     template<typename T>
+    bool polynomial<T>::is_integer() const {
+        return std::all_of(coefficients().begin(), coefficients().end(), [](double c) {
+            return c == static_cast<int>(c);
+        });
+    }
+
+    template<typename T>
     polynomial<T>::value_type polynomial<T>::leading_coefficient() const {
         return coeffs_.back();
     }
@@ -419,12 +426,12 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T> operator+(typename polynomial<T>::value_type scalar, const polynomial<T> &polynomial) {
+    polynomial<T> operator+(typename polynomial<T>::value_type scalar, const polynomial <T> &polynomial) {
         return polynomial.operator+(scalar);
     }
 
     template<typename T>
-    polynomial<T> operator*(typename polynomial<T>::value_type scalar, const polynomial<T> &polynomial) {
+    polynomial<T> operator*(typename polynomial<T>::value_type scalar, const polynomial <T> &polynomial) {
         return polynomial.operator*(scalar);
     }
 

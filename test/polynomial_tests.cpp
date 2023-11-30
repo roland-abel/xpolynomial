@@ -350,6 +350,15 @@ TEST(PolynomialTests, NormalizeTest) {
     EXPECT_EQ(q, (1. / 4.) + (1. / 2.) * X + (3. / 4.) * X.pow(2) + X.pow(3));
 }
 
+TEST(PolynomialTests, IsIntegerTest) {
+    ASSERT_TRUE(Polynomial({}).is_integer());
+    ASSERT_TRUE(Polynomial({1.0, 2.0, 3.0}).is_integer());
+    ASSERT_TRUE(Polynomial({-1.0, -2.0, 3.0}).is_integer());
+    ASSERT_TRUE(Polynomial({3. / 3., -2.0, 3.0}).is_integer());
+    ASSERT_FALSE(Polynomial({1.0, 2.5, 3.0}).is_integer());
+    ASSERT_FALSE(Polynomial({1.0, 1. / 3., 3.0}).is_integer());
+}
+
 // Tests the derivative of a first-order polynomial.
 TEST(PolynomialTests, DerivativeOfFirstOrderTest) {
     auto p = one - 6 * X.pow(2) + 2 * X.pow(3) + 3 * X.pow(4) + 4 * X.pow(5);
