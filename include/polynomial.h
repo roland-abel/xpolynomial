@@ -137,6 +137,10 @@ namespace xmath {
         /// @return True if the polynomial is normalized, false otherwise.
         [[nodiscard]] bool is_normalized() const;
 
+        /// @brief Checks if all coefficients of a polynomial are integers.
+        /// @return True if all coefficients are integers, false otherwise.
+        [[nodiscard]] bool is_integer() const;
+
         /// @brief Returns the degree of the polynomial.
         /// @return The degree of the polynomial.
         size_type degree() const;
