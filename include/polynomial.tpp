@@ -154,8 +154,17 @@ namespace xmath {
     template<typename T>
     bool polynomial<T>::is_integer() const {
         return std::all_of(coefficients().begin(), coefficients().end(), [](double c) {
-            return c == static_cast<int>(c);
+            return nearly_equal(c, std::round(c));
         });
+    }
+
+    template<typename T>
+    polynomial<T> polynomial<T>::to_integer() const {
+        auto q = polynomial<T>(degree());
+        for (auto i = 0; i < degree() + 1; ++i) {
+            q[i] = std::round(at(i));
+        }
+        return q.trim_coefficients();
     }
 
     template<typename T>
@@ -426,7 +435,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T> operator+(typename polynomial<T>::value_type scalar, const polynomial <T> &polynomial) {
+    polynomial<T> operator+(typename polynomial<T>::value_type scalar, const polynomial<T> &polynomial) {
         return polynomial.operator+(scalar);
     }
 
