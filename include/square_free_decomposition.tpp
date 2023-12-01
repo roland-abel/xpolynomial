@@ -26,6 +26,9 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
+#include <vector>
+#include <numeric>
+#include <ranges>
 #include "euclidean_algorithm.h"
 #include "square_free_decomposition.h"
 
@@ -37,12 +40,34 @@ namespace xmath {
     }
 
     template<typename T>
+    T square_free_decomposition<T>::content(const polynomial<T> &p) {
+        if (!p.is_integer()) {
+            return std::numeric_limits<T>::quiet_NaN();
+        }
+
+        auto integer_coeffs = p.coefficients() | std::views::transform([](double coefficient) {
+            return std::abs(static_cast<long>(coefficient));
+        });
+
+        long gcd = 0;
+        for (auto c: integer_coeffs) {
+            gcd = std::gcd(gcd, c);
+        }
+        return gcd;
+    }
+
+    template<typename T>
+    polynomial<T> square_free_decomposition<T>::primitive_part(const polynomial<T> &p) {
+        return p / content(p);
+    }
+
+    template<typename T>
     polynomial<T> square_free_decomposition<T>::from_square_free_decomposition(
-            const square_free_decomposition::polynomial_sequence &decomposition) {
+            const square_free_decomposition::polynomial_sequence &square_free_seq) {
 
         auto q = polynomial<T>::one();
-        for (int k = 0; k < decomposition.size(); ++k) {
-            q *= decomposition[k].pow(k + 1);
+        for (int k = 0; k < square_free_seq.size(); ++k) {
+            q *= square_free_seq[k].pow(k + 1);
         }
         return q;
     }
@@ -50,16 +75,20 @@ namespace xmath {
     template<typename T>
     square_free_decomposition<T>::polynomial_sequence
     square_free_decomposition<T>::yun_algorithm(const polynomial<T> &p) {
-        auto decomposition = xmath::square_free_decomposition<T>::polynomial_sequence();
+        if (!p.is_integer()) {
+            return {};
+        }
 
-        auto p_prim = p.derive();
-        auto q = euclidean_algorithm<T>::euclidean(p, p_prim);
-        auto b = p / q;
+        auto square_free_seq = xmath::square_free_decomposition<T>::polynomial_sequence();
+        auto pp = primitive_part(p);
+        auto p_prim = pp.derive();
+        auto q = euclidean_algorithm<T>::euclidean(pp, p_prim).to_integer();
+        auto b = pp / q;
         auto c = p_prim / q;
         auto d = c - b.derive();
 
         q = euclidean_algorithm<T>::euclidean(b, d);
-        decomposition.push_back(q);
+        square_free_seq.push_back(q);
 
         while (!d.is_zero()) {
             b = b / q;
@@ -67,9 +96,9 @@ namespace xmath {
             d = c - b.derive();
 
             q = euclidean_algorithm<T>::euclidean(b, d);
-            decomposition.push_back(q);
+            square_free_seq.push_back(q);
         }
-        return decomposition;
+        return square_free_seq;
     }
 }
 

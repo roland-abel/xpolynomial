@@ -23,3 +23,6 @@ target_include_directories(nth_roots_of_unity PRIVATE ../include)
 
 add_executable(euclidean euclidean.cpp)
 target_include_directories(euclidean PRIVATE ../include)
+
+add_executable(square_free square_free.cpp)
+target_include_directories(square_free PRIVATE ../include)
