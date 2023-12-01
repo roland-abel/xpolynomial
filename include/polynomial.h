@@ -141,6 +141,10 @@ namespace xmath {
         /// @return True if all coefficients are integers, false otherwise.
         [[nodiscard]] bool is_integer() const;
 
+        /// @brief Transforms the polynomial to a polynomial with integer coefficients.
+        /// @return A new polynomial with integer coefficients.
+        [[nodiscard]] polynomial<T> to_integer() const;
+
         /// @brief Returns the degree of the polynomial.
         /// @return The degree of the polynomial.
         size_type degree() const;

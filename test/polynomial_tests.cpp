@@ -162,6 +162,7 @@ TEST(PolynomialTests, ToStringTest) {
     EXPECT_EQ((-X.pow(3) + X.pow(2)).to_string(), "-x^3 + x^2");
     EXPECT_EQ((-X.pow(3) - 2.4 * X.pow(2)).to_string(), "-x^3 - 2.4x^2");
     EXPECT_EQ((-3.2 * X.pow(6) - 1.4 * X.pow(2) - 1).to_string(), "-3.2x^6 - 1.4x^2 - 1");
+    EXPECT_EQ((-(1./3.) * X.pow(6) - 1.456 * X.pow(2) - (1./4.)).to_string(), "-0.333333x^6 - 1.456x^2 - 0.25");
 }
 
 // Tests for the equal operator.
