@@ -35,7 +35,7 @@
 namespace xmath {
 
     /// @brief Provides methods for performing the Euclidean algorithm on polynomials.
-/// @tparam T The data type of the coefficients in the polynomials.
+    /// @tparam T The data type of the coefficients in the polynomials.
     template<typename T>
     class euclidean_algorithm {
     public:
