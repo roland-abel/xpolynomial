@@ -50,15 +50,29 @@ namespace xmath {
         /// @return True if the polynomial p is square-free; otherwise false.
         static bool is_square_free(const polynomial<T> &p);
 
+        /// @brief Computes the content of a polynomial.
+        /// This method requires a polynomial whose coefficients are given exactly as integers.
+        /// @param p The polynomial.
+        /// @return The content of the polynomial, which is the greatest common divisor (gcd) of its coefficients,
+        /// or NaN if p is not integral.
+        static T content(const polynomial<T> &p);
+
+        /// Calculates the primitive part of a polynomial.
+        /// @param p The polynomial.
+        /// @return The primitive part of the polynomial.
+        static polynomial<T> primitive_part(const polynomial<T> &p);
+
         /// @brief Gets the square-free decomposition of the polynomial p.
+        /// This method requires a polynomial whose coefficients are given exactly as integers.
         /// @param p The polynomial.
         /// @return The square-free decomposition of p.
         static polynomial_sequence yun_algorithm(const polynomial<T> &p);
 
         /// @brief Gets the polynomial from the square-free decomposition.
-        /// @param decomposition The square-free decomposition.
+        /// This method requires a polynomial whose coefficients are given exactly as integers.
+        /// @param square_free_seq The square-free decomposition.
         /// @return The polynomial which square-free decomposition is given.
-        static polynomial<T> from_square_free_decomposition(const polynomial_sequence& decomposition);
+        static polynomial<T> from_square_free_decomposition(const polynomial_sequence &square_free_seq);
     };
 }
 
