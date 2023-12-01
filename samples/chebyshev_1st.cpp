@@ -30,13 +30,14 @@
 /// THE SOFTWARE.
 
 #include "chebyshev_polynomial.h"
+#include "real_polynomial_root_finder.h"
 
 using namespace std;
 using namespace xmath;
 
 namespace {
-    using ChebyshevPolynomial = chebyshev_polynomial<float>;
-    auto X = polynomial<double>::monomial(1, 1.0);
+    using ChebyshevPolynomial = chebyshev_polynomial<double>;
+    using RootFinder = real_polynomial_root_finder<double>;
 }
 
 int main() {
@@ -47,5 +48,13 @@ int main() {
         auto T_n = ChebyshevPolynomial::create_1st_kind(n);
         cout << "T_" << n << ": " << T_n << endl;
     }
+    cout << endl;
+
+    cout << "Roots of T_10:" << endl;
+    auto [roots, multiplicities] = RootFinder::find_roots(ChebyshevPolynomial::create_1st_kind(10));
+    for (int k = 0; k < roots.size(); ++k) {
+        cout << "r[" << k << "] = " << roots[k] << endl;
+    }
+
     return 0;
 }
