@@ -27,6 +27,7 @@
 /// THE SOFTWARE.
 
 #include <gtest/gtest.h>
+#include "test_utilities.h"
 #include "chebyshev_polynomial.h"
 
 using namespace xmath;
@@ -111,7 +112,7 @@ TEST(ChebyshvPolynomialTest, ChebyshevNodesTest) {
 
     EXPECT_EQ(nodes.size(), n);
     EXPECT_TRUE(T_n.has_roots(nodes));
-}
+    EXPECT_UNIQUE(nodes, epsilon);}
 
 TEST(ChebyshvPolynomialTest, ChebyshevNodesForIntervalTest) {
     const auto n = 5;
