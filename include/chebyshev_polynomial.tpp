@@ -114,7 +114,9 @@ namespace xmath {
         auto z_node = [A, B](const auto &x) {
             return A + B * x;
         };
-        return to_vector(iota(0, static_cast<int>(N)) | transform(kth_node) | transform(z_node));
+        return to_vector(iota(1, static_cast<int>(N + 1))
+                         | transform(kth_node)
+                         | transform(z_node));
     }
 
     template<typename T>
