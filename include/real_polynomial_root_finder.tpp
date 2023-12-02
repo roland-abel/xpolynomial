@@ -37,8 +37,8 @@
 namespace xmath {
 
     namespace {
-        template<typename T>
-        size_t sign_changes(const std::vector<T> &sequence, T epsilon = 1e-5) {
+        template<typename T, typename FP=double_t>
+        size_t sign_changes(const std::vector<T> &sequence, FP epsilon = 1e-5) {
             auto changes = 0;
             auto size = sequence.size();
 
@@ -262,6 +262,10 @@ namespace xmath {
     int real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p, const real_interval<T> &I) {
         auto NaN = std::numeric_limits<int>::quiet_NaN();
 
+        if (!I.is_lower_open() || !I.is_upper_closed()) {
+            return NaN;
+        }
+
         if (!square_free_decomposition<T>::is_square_free(p)) {
             return NaN;
         }
@@ -274,12 +278,15 @@ namespace xmath {
     template<typename T>
     int real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p) {
         auto bound = cauchy_bounds(p);
-        return number_distinct_roots(p, real_interval<T>(-bound, bound));
+        return number_distinct_roots(p, real_interval<T>(
+                -bound,
+                bound,
+                real_interval<T>::interval_bounds::opened,
+                real_interval<T>::interval_bounds::closed));
     }
 
     template<typename T>
     std::vector<real_interval<T>> real_polynomial_root_finder<T>::root_isolation(const polynomial<T> &p) {
-
         auto intervals = std::vector<real_interval<T>>();
         if (p.is_constant() || !square_free_decomposition<T>::is_square_free(p)) {
             return intervals;
@@ -287,13 +294,13 @@ namespace xmath {
 
         auto seq = sturm_sequence(p); // The Sturm's polynomial sequence.
 
-        // Gets the number of roots of the polynomial p within the real_interval I.
         auto number_of_roots = [&seq](const real_interval<T> &I) {
-            return xmath::sign_changes(sign_variations(seq, I.lower()))
-                   - xmath::sign_changes(sign_variations(seq, I.upper()));
+            // Gets the number of roots of the polynomial p within the real_interval I.
+            return xmath::sign_changes(sign_variations(seq, I.lower())) - xmath::sign_changes(sign_variations(seq, I.upper()));
         };
 
-        std::function<void(const real_interval<T> &)> root_isolation = [&, number_of_roots](const real_interval<T> &I) {
+        std::function<void(const real_interval<T> &)> root_isolation = [&, p, number_of_roots](const real_interval<T> &I) {
+            const auto epsilon = polynomial<T>::epsilon;
             auto r = number_of_roots(I);
             if (r == 0) {
                 // nothing to do
@@ -301,10 +308,14 @@ namespace xmath {
                 // Interval contains exactly one root
                 intervals.push_back(I);
             } else {
-                const auto J = I.bisect();
+                const auto c = (I.lower() + I.upper()) / static_cast<T>(2.);
+                const auto t = nearly_zero(p(c), epsilon) ? epsilon : 0;
 
-                root_isolation(J.first);
-                root_isolation(J.second);
+                const auto J_left = real_interval(I.lower(), c + t);
+                const auto J_right = real_interval(c + t, I.upper());
+
+                root_isolation(J_left);
+                root_isolation(J_right);
             }
         };
 
@@ -316,19 +327,19 @@ namespace xmath {
 
     template<typename T>
     std::tuple<typename real_polynomial_root_finder<T>::roots_type, typename real_polynomial_root_finder<T>::multiplicities_type>
-    real_polynomial_root_finder<T>::find_roots(const polynomial<T> &p, T precision) {
+    real_polynomial_root_finder<T>::find_roots(const polynomial<T> &p, T epsilon) {
 
         auto roots = std::vector<value_type>();
         auto multiplicities = std::vector<unsigned short>();
 
-        auto decomposition = square_free_decomposition<T>::yun_algorithm(p);
-        for (int k = 0; k < decomposition.size(); ++k) {
-            auto q = decomposition[k];
+        auto square_free_seq = square_free_decomposition<T>::yun_algorithm(p);
+        for (int k = 0; k < square_free_seq.size(); ++k) {
+            auto q = square_free_seq[k];
             auto intervals = root_isolation(q);
 
             for (auto I: intervals) {
                 multiplicities.push_back(k + 1);
-                roots.push_back(root_finder<T>::bisection(q, I, precision));
+                roots.push_back(root_finder<T>::bisection(q, I, epsilon));
             }
         }
         return std::make_tuple(roots, multiplicities);

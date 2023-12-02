@@ -28,6 +28,7 @@
 
 #include <gtest/gtest.h>
 #include <cmath>
+#include "test_utilities.h"
 #include "polynomial.h"
 #include "real_polynomial_root_finder.h"
 #include "chebyshev_polynomial.h"
@@ -97,11 +98,7 @@ TEST(RealPolynomialRootFinderTests, CubicNormalFormPolynomialWithThreeUnequalRoo
     auto p = X.pow(3) - 2 * X + 1;
 
     EXPECT_EQ((X - 1) * (X.pow(2) + X - 1), p);
-    EXPECT_TRUE(p.has_roots({
-                                    1.,
-                                    -.5 + std::sqrt(5. / 4.),
-                                    -.5 - std::sqrt(5. / 4.)
-                            }));
+    EXPECT_TRUE(p.has_roots({1., -.5 + std::sqrt(5. / 4.), -.5 - std::sqrt(5. / 4.)}));
 
     auto [r1, r2, r3] = RootFinder::cubic_roots(p);
     EXPECT_NEAR(r1, 1., epsilon);
@@ -222,15 +219,20 @@ TEST(RealPolynomialRootFinderTests, RootIsolationTest) {
 }
 
 TEST(RealPolynomialRootFinderTests, FindRootsTest) {
-    auto p = Polynomial::from_roots({-2.5, -1.15, 0., .5, 1.25, 4.125, 6.5});
+    auto p = Polynomial::from_roots({-2, 0, 0, -1, 1});
+    ASSERT_TRUE(p.is_integer());
+
     auto [roots, _] = RootFinder::find_roots(p);
 
-    EXPECT_EQ(roots.size(), 7);
+    EXPECT_EQ(roots.size(), 4);
     EXPECT_TRUE(p.has_roots(roots));
+    EXPECT_UNIQUE(roots, epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, FindRootsForPolynomialWithMultipleRootsTest) {
-    auto p = Polynomial::from_roots({-2.5, -1.15, 1.15, .5, .5, .5});
+    auto p = Polynomial::from_roots({-2, -1, 1, 5, 5, 5});
+    ASSERT_TRUE(p.is_integer());
+
     auto [roots, multiplicities] = RootFinder::find_roots(p);
 
     EXPECT_EQ(roots.size(), 4);
@@ -245,12 +247,12 @@ TEST(RealPolynomialRootFinderTests, NewtonRaphsonTest) {
 
 TEST(RealPolynomialRootFinderTests, FindChebyshevRootsTest) {
     const auto n = 17;
-    const auto precision = 1e-11;
 
     const auto T_n = ChebyshevPolynomial::create_1st_kind(n);
-    const auto [roots, multiplicities] = RootFinder::find_roots(T_n, precision);
+    const auto [roots, multiplicities] = RootFinder::find_roots(T_n);
     const auto nodes = ChebyshevPolynomial::chebyshev_nodes(n);
 
     EXPECT_EQ(roots.size(), n);
     EXPECT_TRUE(T_n.has_roots(roots));
+    EXPECT_UNIQUE(roots, epsilon);
 }
