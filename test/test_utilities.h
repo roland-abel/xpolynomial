@@ -50,7 +50,7 @@ bool unique(const std::vector<T> &vec, T epsilon) {
   ASSERT_NEAR((a).imag(), (b).imag(), epsilon)
 
 #define EXPECT_UNIQUE(vec, epsilon)        \
-  EXPECT_TRUE(unique(vec, epsilon));       \
+    EXPECT_TRUE(unique(vec, epsilon))      \
 
 #define ASSERT_UNIQUE(vec, epsilon)        \
   ASSERT_TRUE(unique(vec, epsilon));       \
