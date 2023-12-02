@@ -38,21 +38,20 @@ namespace xmath {
     root_finder<T>::value_type root_finder<T>::bisection(
             const std::function<value_type(value_type)> &func,
             const real_interval<value_type> &I,
-            value_type tolerance) {
+            value_type epsilon) {
 
         const auto NaN = std::numeric_limits<T>::quiet_NaN();
 
-        if (func(I.lower()) * func(I.upper()) >= tolerance) {
+        if (greater_than_or_equal(func(I.lower()) * func(I.upper()), 0., epsilon)) {
             return NaN; // incorrect endpoints a and b.
         }
 
         auto bisection = [&](value_type a, value_type b) {
             auto c = a;
-            while ((b - a) >= tolerance) {
+            while (!nearly_zero<value_type>(b - a, epsilon)) {
                 // Choose the middle point as the new estimation for the root
                 c = (b + a) / 2.;
-
-                if (nearly_zero<value_type>(func(c), tolerance)) {
+                if (nearly_zero<value_type>(func(c))) {
                     return c;
                 } else if (func(c) * func(a) < 0) {
                     b = c;
@@ -73,7 +72,7 @@ namespace xmath {
 
         const auto NaN = std::numeric_limits<T>::quiet_NaN();
 
-        if (func(I.lower()) * func(I.upper()) >= epsilon) {
+        if (greater_than_or_equal(func(I.lower()) * func(I.upper()), 0., epsilon)) {
             return NaN; // incorrect endpoints a and b.
         }
 
@@ -101,7 +100,7 @@ namespace xmath {
             const std::function<value_type(const value_type &)> &derive,
             value_type initial,
             int max_iterations,
-            value_type tolerance) {
+            value_type epsilon) {
 
         const auto NaN = std::numeric_limits<T>::quiet_NaN();
 
@@ -111,8 +110,8 @@ namespace xmath {
         auto y = func(x);
         auto dfdx = derive(x);
 
-        while (std::abs(y) >= tolerance && num_itr < max_iterations) {
-            if (nearly_zero(dfdx, tolerance)) {
+        while (std::abs(y) >= epsilon && num_itr < max_iterations) {
+            if (nearly_zero(dfdx, epsilon)) {
                 return NaN;
             }
 
