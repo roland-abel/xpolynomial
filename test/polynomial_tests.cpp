@@ -162,7 +162,7 @@ TEST(PolynomialTests, ToStringTest) {
     EXPECT_EQ((-X.pow(3) + X.pow(2)).to_string(), "-x^3 + x^2");
     EXPECT_EQ((-X.pow(3) - 2.4 * X.pow(2)).to_string(), "-x^3 - 2.4x^2");
     EXPECT_EQ((-3.2 * X.pow(6) - 1.4 * X.pow(2) - 1).to_string(), "-3.2x^6 - 1.4x^2 - 1");
-    EXPECT_EQ((-(1./3.) * X.pow(6) - 1.456 * X.pow(2) - (1./4.)).to_string(), "-0.333333x^6 - 1.456x^2 - 0.25");
+    EXPECT_EQ((-(1. / 3.) * X.pow(6) - 1.456 * X.pow(2) - (1. / 4.)).to_string(), "-0.333333x^6 - 1.456x^2 - 0.25");
 }
 
 // Tests for the equal operator.
@@ -414,20 +414,19 @@ TEST(PolynomialTests, EvaluateWithOperatorTest) {
     }
 }
 
-TEST(PolynomialTests, HasRootTest) {
+TEST(PolynomialTests, IsRootTest) {
     auto p = X - 1.47;
-    EXPECT_TRUE(p.has_root(1.47));
+    EXPECT_TRUE(p.is_root(1.47));
 
     p = X.pow(2) - 2.;
-    EXPECT_NEAR(std::sqrt(2) * std::sqrt(2) - 2., 0., epsilon);
-    EXPECT_NEAR(p(std::sqrt(2)), 0., epsilon);
+    ASSERT_NEAR(std::sqrt(2) * std::sqrt(2) - 2., 0., epsilon);
+    ASSERT_NEAR(p(std::sqrt(2)), 0., epsilon);
 
-    EXPECT_TRUE(p.has_root(std::sqrt(2)));
-    EXPECT_TRUE(p.has_root(-std::sqrt(2)));
-    EXPECT_FALSE(p.has_root(1.0));
+    EXPECT_TRUE(p.is_root(std::sqrt(2)));
+    EXPECT_TRUE(p.is_root(-std::sqrt(2)));
+    EXPECT_FALSE(p.is_root(1.0));
 }
 
-// Tests polynomial creation from roots.
 TEST(PolynomialTests, FromRootsTest) {
     auto p = Polynomial::from_roots({});
     EXPECT_EQ(p, one);
@@ -456,6 +455,14 @@ TEST(PolynomialTests, FromRootsTest) {
     EXPECT_TRUE((1.2 * p).has_roots(roots));
     EXPECT_TRUE(p.is_normalized());
     EXPECT_EQ(p.degree(), 6);
+
+    const auto pi = std::numbers::pi;
+    roots = {-pi, pi};
+
+    p = Polynomial::from_roots(roots);
+    EXPECT_TRUE(p.has_roots(roots));
+    EXPECT_NEAR(p(pi), 0, epsilon);
+    EXPECT_NEAR(p(-pi), 0, epsilon);
 }
 
 // Tests polynomial divide function.

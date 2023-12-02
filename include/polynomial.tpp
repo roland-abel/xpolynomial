@@ -466,14 +466,15 @@ namespace xmath {
     }
 
     template<typename T>
-    bool polynomial<T>::has_root(const value_type &value) const {
-        return nearly_zero(evaluate(value));
+    bool polynomial<T>::is_root(const value_type &value) const {
+        const auto y = evaluate(value);
+        return nearly_zero(y);
     }
 
     template<typename T>
     bool polynomial<T>::has_roots(const values_type &values) const {
         return std::all_of(values.begin(), values.end(), [&](const auto &value) {
-            return has_root(value);
+            return is_root(value);
         });
     }
 
