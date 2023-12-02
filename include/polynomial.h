@@ -360,10 +360,10 @@ namespace xmath {
         /// @return The integral polynomial.
         polynomial<T> integrate() const;
 
-        /// @brief Checks if the polynomial has the given root.
+        /// @brief Checks if the given value is a root of the polynomial.
         /// @param value The value to check.
-        /// @return True if the polynomial has the given root; otherwise false.
-        [[nodiscard]] bool has_root(const value_type &value) const;
+        /// @return True if the value is a root of the polynomial; otherwise false.
+        [[nodiscard]] bool is_root(const value_type &value) const;
 
         /// @brief Checks if the polynomial has given roots.
         /// @param values The values to check.
