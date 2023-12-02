@@ -41,7 +41,7 @@ namespace {
 
 int main() {
     // Create a polynomial
-    auto p = (X + 1 / 3.).pow(3) * (X - 1.5) * (X.pow(2) + X - 2).pow(2);
+    auto p = (X + 3.).pow(3) * (X - 1.) * (X.pow(2) + X - 2).pow(3);
     auto [roots, multiplicities] = RootFinder::find_roots(p);
 
     cout << "Polynomial: " << p << endl << endl;
