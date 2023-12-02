@@ -45,17 +45,21 @@ TEST(RealIntervalTests, DefaultConstructorTest) {
     EXPECT_NEAR(I.lower(), 0.0, epsilon);
     EXPECT_NEAR(I.upper(), 1.0, epsilon);
     EXPECT_FALSE(I.is_empty());
-    EXPECT_TRUE(I.is_closed());
+    EXPECT_TRUE(I.is_lower_open());
+    EXPECT_TRUE(I.is_upper_closed());
+    EXPECT_TRUE(I.is_half_open());
 }
 
 TEST(RealIntervalTests, ConstructorTest) {
     auto I = Interval(-1., 1.);
     EXPECT_NEAR(I.lower(), -1.0, epsilon);
     EXPECT_NEAR(I.upper(), 1.0, epsilon);
+
+    EXPECT_TRUE(Interval().is_lower_open());
+    EXPECT_TRUE(Interval().is_upper_closed());
 }
 
 TEST(RealIntervalTests, IsOpenedTest) {
-    EXPECT_FALSE(Interval().is_opened());
     EXPECT_FALSE(Interval(0., 1., closed, closed).is_opened());
     EXPECT_FALSE(Interval(0., 1., opened, closed).is_opened());
     EXPECT_FALSE(Interval(0., 1., closed, opened).is_opened());
@@ -63,7 +67,6 @@ TEST(RealIntervalTests, IsOpenedTest) {
 }
 
 TEST(RealIntervalTests, IsLowerClosed) {
-    EXPECT_TRUE(Interval().is_lower_closed());
     EXPECT_TRUE(Interval(0., 1., closed, closed).is_lower_closed());
     EXPECT_FALSE(Interval(0., 1., opened, closed).is_lower_closed());
     EXPECT_TRUE(Interval(0., 1., closed, opened).is_lower_closed());
@@ -71,7 +74,6 @@ TEST(RealIntervalTests, IsLowerClosed) {
 }
 
 TEST(RealIntervalTests, IsUpperClosed) {
-    EXPECT_TRUE(Interval().is_lower_closed());
     EXPECT_TRUE(Interval(0., 1., closed, closed).is_upper_closed());
     EXPECT_TRUE(Interval(0., 1., opened, closed).is_upper_closed());
     EXPECT_FALSE(Interval(0., 1., closed, opened).is_upper_closed());
@@ -79,7 +81,6 @@ TEST(RealIntervalTests, IsUpperClosed) {
 }
 
 TEST(RealIntervalTests, IsLowerOpen) {
-    EXPECT_FALSE(Interval().is_lower_open());
     EXPECT_FALSE(Interval(0., 1., closed, closed).is_lower_open());
     EXPECT_TRUE(Interval(0., 1., opened, closed).is_lower_open());
     EXPECT_FALSE(Interval(0., 1., closed, opened).is_lower_open());
@@ -87,7 +88,6 @@ TEST(RealIntervalTests, IsLowerOpen) {
 }
 
 TEST(RealIntervalTests, IsUpperOpen) {
-    EXPECT_FALSE(Interval().is_upper_open());
     EXPECT_FALSE(Interval(0., 1., closed, closed).is_upper_open());
     EXPECT_FALSE(Interval(0., 1., opened, closed).is_upper_open());
     EXPECT_TRUE(Interval(0., 1., closed, opened).is_upper_open());
@@ -95,7 +95,6 @@ TEST(RealIntervalTests, IsUpperOpen) {
 }
 
 TEST(RealIntervalTests, IsClosedTest) {
-    EXPECT_TRUE(Interval().is_closed());
     EXPECT_FALSE(Interval(0., 1., opened, opened).is_closed());
     EXPECT_FALSE(Interval(0., 1., opened, closed).is_closed());
     EXPECT_FALSE(Interval(0., 1., closed, opened).is_closed());
@@ -117,31 +116,51 @@ TEST(RealIntervalTests, IsEmptyTest) {
 }
 
 TEST(RealIntervalTests, IsHalfOpen) {
-    EXPECT_FALSE(Interval(1., -1.).is_half_open());
+    EXPECT_TRUE(Interval(1., -1.).is_half_open());
     EXPECT_FALSE(Interval(2., 2., opened, opened).is_half_open());
     EXPECT_TRUE(Interval(2., 2., closed, opened).is_half_open());
     EXPECT_TRUE(Interval(2., 2., opened, closed).is_half_open());
     EXPECT_FALSE(Interval(2., 2., closed, closed).is_half_open());
 }
 
-TEST(RealIntervalTests, LinearTransform1) {
+TEST(RealIntervalTests, LinearTransform1Test) {
     const auto I = Interval(-1., 1.);
     const auto J = Interval(2., 5.);
-    const auto [linear_mapping, m, c] = I.linear_transform(J);
+    const auto map = I.linear_transform(J);
 
-    EXPECT_NEAR(linear_mapping(-1.), 2., epsilon);
-    EXPECT_NEAR(linear_mapping(1.), 5., epsilon);
-    EXPECT_NEAR(linear_mapping(0.), 3.5, epsilon);
+    EXPECT_NEAR(map(-1.), 2., epsilon);
+    EXPECT_NEAR(map(1.), 5., epsilon);
+    EXPECT_NEAR(map(0.), 3.5, epsilon);
 }
 
-TEST(RealIntervalTests, LinearTransform2) {
+TEST(RealIntervalTests, LinearTransform2Test) {
     const auto I = Interval(-1., 1.);
     const auto J = Interval(0., 2 * pi);
-    const auto linear_mapping = I.linear_transform(J);
+    const auto map = I.linear_transform(J);
 
-//    EXPECT_NEAR(linear_mapping(-1.), 0., epsilon);
-//    EXPECT_NEAR(linear_mapping(-1. / 2.), pi / 2., epsilon);
-//    EXPECT_NEAR(linear_mapping(0.), pi, epsilon);
-//    EXPECT_NEAR(linear_mapping(1. / 2.), 3. / 2. * pi, epsilon);
-//    EXPECT_NEAR(linear_mapping(1.), 2 * pi, epsilon);
+    EXPECT_NEAR(map(-1.), 0., epsilon);
+    EXPECT_NEAR(map(-1. / 2.), pi / 2., epsilon);
+    EXPECT_NEAR(map(0.), pi, epsilon);
+    EXPECT_NEAR(map(1. / 2.), 3. / 2. * pi, epsilon);
+    EXPECT_NEAR(map(1.), 2 * pi, epsilon);
+}
+
+TEST(RealIntervalTests, BisectTest) {
+    const auto I = Interval(-2., 1.);
+    const auto [I1, I2] = I.bisect();
+
+    EXPECT_NEAR(I1.lower(), -2., epsilon);
+    EXPECT_NEAR(I1.upper(), -0.5, epsilon);
+    EXPECT_NEAR(I2.lower(), -0.5, epsilon);
+    EXPECT_NEAR(I2.upper(), 1., epsilon);
+}
+
+TEST(RealIntervalTests, BisectHalfOpenIntervalsTest) {
+    const auto I = Interval(-2., 1.);
+    const auto [I1, I2] = I.bisect(opened, closed);
+
+    EXPECT_TRUE(I1.is_lower_open());
+    EXPECT_TRUE(I1.is_upper_closed());
+    EXPECT_TRUE(I2.is_lower_open());
+    EXPECT_TRUE(I2.is_upper_closed());
 }

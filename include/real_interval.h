@@ -89,9 +89,9 @@ namespace xmath {
         /// Constructor that creates a closed/opened interval with the boundaries `a` and `b`.
         /// @param a The lower endpoint of the interval.
         /// @param a The upper endpoint of the interval.
-        /// @param lower The lower boundary closed or opened.
-        /// @param upper The lower boundary closed or opened.
-        real_interval(T a, T b, interval_bounds lower = closed, interval_bounds upper = closed)
+        /// @param lower The lower boundary closed or opened (default opened).
+        /// @param upper The lower boundary closed or opened (default closed).
+        real_interval(T a, T b, interval_bounds lower = opened, interval_bounds upper = closed)
                 : std::pair<T, T>(a, b) {
             lower_ = lower;
             upper_ = upper;
@@ -149,23 +149,25 @@ namespace xmath {
 
         /// Gets a tuple of two intervals created by the current interval by bisection.
         /// @return A tuple of two intervals.
-        std::pair<real_interval<T>, real_interval<T>> bisect() const {
+        std::pair<real_interval<T>, real_interval<T>>
+        bisect(interval_bounds lower_bounds = opened, interval_bounds upper_bounds = closed) const {
+            const auto c = (lower() + upper()) / static_cast<T>(2.);
             return std::make_pair(
-                    real_interval(lower(), (lower() + upper()) / static_cast<T>(2.)),
-                    real_interval((lower() + upper()) / static_cast<T>(2.), upper()));
+                    real_interval(lower(), c, lower_bounds, upper_bounds),
+                    real_interval(c, upper(), lower_bounds, upper_bounds));
         }
 
         /// Gets a function that map linear the interval to the given interval.
         /// @param I The interval.
         /// @return The linear mapping function.
-        std::tuple<std::function<T(const T &x)>, T, T> linear_transform(const real_interval<T> &I) const {
+        std::function<T(const T &x)> linear_transform(const real_interval<T> &I) const {
             const auto a = lower(), b = upper(), alpha = I.lower(), beta = I.upper();
             const auto m = (beta - alpha) / (b - a), c = (alpha * b - beta * a) / (b - a);
 
             auto map = [m, c](const T &t) {
                 return m * t + c;
             };
-            return std::make_tuple(map, m, c);
+            return map;
         }
 
     private:
