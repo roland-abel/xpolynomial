@@ -93,27 +93,30 @@ namespace xmath {
         /// @return The calculated Cauchy's bounds for the real roots of p.
         static value_type cauchy_bounds(const polynomial<T> &p);
 
-        /// @brief Calculates the Cauchy bound for the real roots of a polynomial.
+        /// @brief Calculates the Lagrange's bound for the real roots of a polynomial.
         /// @see https://en.wikipedia.org/wiki/Geometrical_properties_of_polynomial_roots
         /// @param p The polynomial for which to determine the Lagrange's bounds.
         /// @return The calculated Lagrange's bounds for the real roots of p.
         static value_type lagrange_bounds(const polynomial<T> &p);
 
         /// @brief Gets the Sturm's polynomial sequence.
+        /// @see https://en.wikipedia.org/wiki/Sturm%27s_theorem
         /// @param p The polynomial for which the Sturm's sequence are to determine.
         /// @return The canonical sequence.
         static polynomial_sequence sturm_sequence(const polynomial<T> &p);
 
         /// @brief Gets the sign variations at x for the given sequence of polynomials.
+        /// The sign variations at a point of the Sturm sequence of p is the number of sign changes.
+        /// @see https://en.wikipedia.org/wiki/Sturm%27s_theorem
         /// @param seq The sequence of polynomials.
         /// @param x The value for which the sign variations are to determined.
         /// @return Sequence of sign variations.
         static std::vector<short> sign_variations(const polynomial_sequence &seq, const value_type &x);
 
-        /// @brief Counts the number of distinct real roots of a polynomial within a specified real_interval,
+        /// @brief Counts the number of distinct real roots of a polynomial within a specified half-open interval,
         /// if the given polynomial is square-free polynomial.
         /// @param p The square-free polynomial for which the number of roots are to determined.
-        /// @param I The real real_interval in which to find the roots of p.
+        /// @param I The real half-open interval (a, b] in which to find the roots of p.
         /// @return The number of distinct real roots within the specified real_interval,
         /// or NaN if the polynomial p is not square-free.
         static int number_distinct_roots(const polynomial<T> &p, const real_interval<T> &I);
@@ -129,11 +132,13 @@ namespace xmath {
         /// or an empty vector if no roots are found or if polynomial is not square-free.
         static std::vector<real_interval<T>> root_isolation(const polynomial<T> &p);
 
-        /// @brief Finds the roots of a polynomial.
+        /// @brief Finds the roots of a polynomial. This method requires a polynomial whose coefficients
+        /// are given exactly as integers.
         /// @param p The polynomial for which to find the roots.
-        /// @param precision The desired precision.
-        /// @return A tuple containing the roots and their multiplicities.
-        static std::tuple<roots_type, multiplicities_type> find_roots(const polynomial<T> &p, T precision = 1e-9);
+        /// @param epsilon The desired precision (default 1e-15).
+        /// @return A tuple containing the roots and their multiplicities, or empty lists if the coefficients of
+        /// the given polynomial are not all integers.
+        static std::tuple<roots_type, multiplicities_type> find_roots(const polynomial<T> &p, T epsilon = 1e-15);
     };
 }
 
