@@ -36,17 +36,14 @@ using namespace xmath;
 namespace {
     using Polynomial = polynomial<double>;
     using RootFinder = root_finder<double>;
-    using value_type = Polynomial::value_type;
 
-    constexpr auto epsilon = Polynomial::epsilon;
-    auto zero = Polynomial::zero();
-    auto one = Polynomial::one();
+    constexpr auto epsilon = 1e-5;
     auto X = Polynomial::monomial(1);
 }
 
 TEST(RootFinderTests, BisectionWithIncorrectsEndpointsTest) {
     auto I = real_interval(3., 4.);
-    auto root = RootFinder::bisection(X, I, epsilon);
+    auto root = RootFinder::bisection(X, I);
 
     EXPECT_TRUE(std::isnan(root));
 }
@@ -54,8 +51,27 @@ TEST(RootFinderTests, BisectionWithIncorrectsEndpointsTest) {
 TEST(RootFinderTests, BisectionTest) {
     auto p = 4 * X.pow(2) + .5 * X - 4;
 
-    EXPECT_NEAR(RootFinder::bisection(p, real_interval(.0, 2.), epsilon), 0.9394510000000000, epsilon);
-    EXPECT_NEAR(RootFinder::bisection(p, real_interval(-2., .0), epsilon), -1.06445, epsilon);
+    EXPECT_NEAR(RootFinder::bisection(p, real_interval(.0, 2.)), (std::sqrt(257) - 1.) / 16., epsilon);
+    EXPECT_NEAR(RootFinder::bisection(p, real_interval(-2., .0)), (-1. - std::sqrt(257)) / 16., epsilon);
+}
+
+TEST(RootFinderTests, Bisection2Test) {
+    auto p = Polynomial::from_roots({-2, 0, -1, 1});
+    auto root = RootFinder::bisection(p, real_interval(-3., -1.5));
+
+    ASSERT_NEAR(root, -2., epsilon);
+    ASSERT_NEAR(p(root), 0., epsilon);
+
+    EXPECT_TRUE(p.is_root(root));
+}
+
+TEST(RootFinderTests, Bisection3Test) {
+    auto p = X.pow(3) - .75 * X;
+    auto root = RootFinder::bisection(p, real_interval(-.875, -.4375));
+
+    EXPECT_NEAR(root, -std::sqrt(.75), epsilon);
+    EXPECT_NEAR(p(root), 0., epsilon);
+    EXPECT_TRUE(p.is_root(root));
 }
 
 TEST(RootFinderTests, NewtonRaphsonForQudraticPolynomialTest) {
@@ -80,7 +96,7 @@ TEST(RootFinderTests, NewtonRaphsonForCubicPolynomialTest) {
 }
 
 TEST(RootFinderTests, NewtonRaphsonCosTest) {
-    auto func = [](const auto& x) { return std::cos(x); };
+    auto func = [](const auto &x) { return std::cos(x); };
     auto f_prim = [](auto x) { return -std::sin(x); };
 
     const auto pi_half = std::numbers::pi / 2.;
