@@ -71,7 +71,13 @@ TEST(SquareFreeDecompositionTests, PrimitivePartTest) {
 }
 
 TEST(SquareFreeDecompositionTests, YunAlgorithmNotIntegralPolynomialTest) {
-    ASSERT_EQ(SquareFree::yun_algorithm({1., 2., 1. / 4.}).size(), 0);
+    auto p = Polynomial ::from_roots({{1., 2., 1. / 4.}});
+    ASSERT_TRUE(SquareFree::is_square_free(p) && !p.is_integer());
+    EXPECT_EQ(SquareFree::yun_algorithm(p).size(), 1);
+
+    auto q = Polynomial ::from_roots({{1., 2., 1., 1./2., 3.}});
+    ASSERT_TRUE(!SquareFree::is_square_free(q) && !q.is_integer());
+    EXPECT_EQ(SquareFree::yun_algorithm(q).size(), 0);
 }
 
 TEST(SquareFreeDecompositionTests, YunAlgorithm1Test) {

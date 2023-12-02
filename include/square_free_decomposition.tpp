@@ -75,11 +75,16 @@ namespace xmath {
     template<typename T>
     square_free_decomposition<T>::polynomial_sequence
     square_free_decomposition<T>::yun_algorithm(const polynomial<T> &p) {
+        auto square_free_seq = xmath::square_free_decomposition<T>::polynomial_sequence();
+        if (is_square_free(p)) {
+            square_free_seq.push_back(p);
+            return square_free_seq;
+        }
+
         if (!p.is_integer()) {
             return {};
         }
 
-        auto square_free_seq = xmath::square_free_decomposition<T>::polynomial_sequence();
         auto pp = primitive_part(p);
         auto p_prim = pp.derive();
         auto q = euclidean_algorithm<T>::euclidean(pp, p_prim).to_integer();
