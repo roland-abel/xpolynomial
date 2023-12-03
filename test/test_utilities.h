@@ -1,5 +1,5 @@
 /// @file test_utilities.h
-/// @brief
+/// @brief Helper functions for testing.
 ///
 /// @author Roland Abel
 /// @date October 24, 2023
@@ -26,8 +26,11 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-#ifndef XPOLYNOMIAL_TEST_UTILITIES_H
-#define XPOLYNOMIAL_TEST_UTILITIES_H
+#ifndef TEST_UTILITIES_H
+#define TEST_UTILITIES_H
+
+#include <vector>
+#include <algorithm>
 
 template<typename T>
 bool unique(const std::vector<T> &vec, T epsilon) {
@@ -55,4 +58,4 @@ bool unique(const std::vector<T> &vec, T epsilon) {
 #define ASSERT_UNIQUE(vec, epsilon)        \
   ASSERT_TRUE(unique(vec, epsilon));       \
 
-#endif
+#endif // TEST_UTILITIES_H
