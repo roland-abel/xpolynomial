@@ -38,14 +38,8 @@ namespace {
 }
 
 int main() {
-    // Create a polynomial
     auto p = X * (X - 4) * (X + 3.).pow(2) * (X.pow(2) + X).pow(3) * (X.pow(2) + X).pow(4);
     cout << "p = " << p << endl;
-
-    if (!p.is_integer()) {
-        cout << "The coefficients of the polynomial must be integers." << endl;
-        return -1;
-    }
 
     auto square_free_seq = SquareFree::yun_algorithm(p).value();
     for (int k = 0; k < square_free_seq.size(); ++k) {
