@@ -1,5 +1,5 @@
 /// @file quadratic_roots.cpp
-/// @brief Example to demonstrate polynomial creation and root finding.
+/// @brief Example to demonstrating polynomial creation and root finding.
 ///
 /// This program creates a cubic polynomial and finds its roots using the RootFinder class.
 /// It then prints the polynomial and the calculated roots.
@@ -42,15 +42,12 @@ namespace {
 int main() {
     // Create cubic polynomial
     auto p = 3.5 * (X - 7.125).pow(2) * (X - 4.5);
+    cout << "p(x) = " << p << endl;
 
     // Find root for the polynomial p
-    auto [r1, r2, r3] = RootFinder::cubic_roots(p);
-
-    cout << "Polynomial: " << p << endl
-         << "Roots:" << endl
-         << "r1 = " << r1 << endl
-         << "r2 = " << r2 << endl
-         << "r3 = " << r3 << endl;
-
+    cout << "Roots of p" << endl;
+    for (auto r: RootFinder::cubic_roots(p)) {
+        cout << r << endl;
+    }
     return 0;
 }

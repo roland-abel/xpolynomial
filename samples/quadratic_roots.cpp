@@ -1,5 +1,5 @@
 /// @file quadratic_roots.cpp
-/// @brief Sample to demonstrate quadratic polynomial creation and root finding.
+/// @brief Example to demonstrating quadratic polynomial creation and root finding.
 ///
 /// This program creates a quadratic polynomial and finds its roots using the `real_polynomial_root_finder<>` class.
 ///

@@ -1,5 +1,5 @@
 /// @file nth_roots_of_unity.cpp
-/// @brief Sample to demonstrate finding nth roots of unity and checking polynomial roots.
+/// @brief Example to demonstrating   finding nth roots of unity and checking polynomial roots.
 ///
 /// This program calculates the nth roots of unity and checks if a corresponding polynomial has those roots.
 /// It then prints whether the polynomial has roots and the calculated n-th roots.

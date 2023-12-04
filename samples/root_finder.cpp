@@ -1,5 +1,5 @@
 /// @file sturm_sequence.cpp
-/// @brief Sample to demonstrate polynomial creation and finding roots with multiplicities.
+/// @brief Example to demonstrating polynomial creation and finding roots with multiplicities.
 ///
 /// This program creates a polynomial and finds its roots along with their multiplicities using
 /// the `real_polynomial_root_finder<>` class.

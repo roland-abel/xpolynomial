@@ -1,5 +1,5 @@
 /// @file square_free.cpp
-/// @brief Sample for the `square-free decomposition` class.
+/// @brief Example to demonstrating a square-free decomposition of a polynomial.
 ///
 /// @author Roland Abel
 /// @date November 28, 2023
@@ -51,7 +51,5 @@ int main() {
     for (int k = 0; k < square_free_seq.size(); ++k) {
         cout << "q" << k << " = " << square_free_seq[k] << endl;
     }
-
-    cout << "p = " << SquareFree::from_square_free_decomposition(square_free_seq) << endl << endl;
     return 0;
 }
