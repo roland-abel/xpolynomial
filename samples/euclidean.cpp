@@ -41,7 +41,9 @@ namespace {
 int main() {
     auto p = X.pow(4) - 2 * X.pow(3) - 6 * X.pow(2) + 12 * X + 15;
     auto q = X.pow(3) + X.pow(2) - 4 * X - 4;
-    auto [s, t, g] = Euclidean::extended_euclidean(p, q); // s, t, g such that g = gcd(p, q) = s*p + t*q
+
+    // s, t, g such that g = gcd(p, q) = s*p + t*q
+    auto [s, t, g] = Euclidean::extended_euclidean(p, q);
 
     cout << "p = " << p.to_string() << endl
          << "q = " << q.to_string() << endl << endl

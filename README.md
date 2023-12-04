@@ -4,58 +4,118 @@ C++ template project provides a flexible way to work with polynomials and calcul
 
 ## Overview
 
-This C++ template library provides functionality for working with polynomials.
-It includes basic operations such as addition, subtraction, multiplication,
-and division, as well as polynomial evaluation.
+This C++ template project provides a flexible way of working with polynomials and the 
+calculation of their real roots.
 
 ## Features
 
 ### Polynomial
 
-The `polynomial<T>` class allows you to create and manipulate polynomials in a single variable. This template class
-designed to handle polynomials with coefficients of various numerical data types and provides a wide range of
-functionalities for working with polynomials, including basic operations, evaluation, normalization, and more.
+The `polynomial<T>` class allows you to create and manipulate polynomials in a single variable. 
+This template class is designed to handle polynomials with coefficients of various numeric 
+data types and provides a wide range of functions for working with polynomials, including 
+basic operations, evaluation, normalization, and more.
+
+```c++
+#include <numeric>
+#include <vector>
+#include <iostream>
+#include "polynomial.h"
+
+using namespace std;
+using namespace xmath;
+
+namespace {
+    auto X = polynomial<double>::monomial(1, 1.0);
+}
+
+int main() {
+    // Create a 4th degree polynomial
+    auto p = 3 * X.pow(4) - 2.5 * X.pow(3) + X.pow(2) - X + 1;
+
+    // Evaluate the polynomial for a range of values
+    vector<double> values(10);
+    iota(values.begin(), values.end(), 1);
+
+    for (auto x: values) {
+        cout << "p(" << x << ") = " << p(x) << endl;
+    }
+    return 0;
+}
+```
 
 ### Euclidean Algorithm
 
-The primary functionalities of the `euclidean_algorithm<>` template is computing the greatest common divisor (gcd)
+The primary functions of the `euclidean_algorithm<>` template are to compute the greatest common divisor (gcd)
 of two polynomials and the extended Euclidean algorithm for polynomials.
+
+```c++
+#include <iostream>
+#include "euclidean_algorithm.h"
+
+using namespace std;
+using namespace xmath;
+
+namespace {
+    auto X = polynomial<double>::monomial(1, 1.0);
+    using Euclidean = euclidean_algorithm<double>;
+}
+
+int main() {
+    auto p = X.pow(4) - 2 * X.pow(3) - 6 * X.pow(2) + 12 * X + 15;
+    auto q = X.pow(3) + X.pow(2) - 4 * X - 4;
+    
+    // s, t, g such that g = gcd(p, q) = s*p + t*q
+    auto [s, t, g] = Euclidean::extended_euclidean(p, q); 
+
+    cout << "p = " << p.to_string() << endl
+         << "q = " << q.to_string() << endl << endl
+         << "g = gcd(p, q) = " << g << endl
+         << "s = " << s << endl
+         << "t = " << t << endl
+         << "g = s*p + t*q = " << s * p + t * q << endl;
+
+    return 0;
+}
+```
 
 ### Chebyshev Polynomial
 
 The `chebyshev_polynomial<>` template class provides a set of methods for working with Chebyshev polynomials
-of the first kind. These polynomials are integral in various mathematical applications, and the class facilitates
-their generation, evaluation, and interpolation.
+of the first kind. These polynomials are an integral part of several mathematical applications, and the 
+class facilitates their generation, evaluation, and interpolation.
+
+```c++
+#include "chebyshev_polynomial.h"
+#include "real_polynomial_root_finder.h"
+
+using namespace std;
+using namespace xmath;
+
+namespace {
+    using ChebyshevPolynomial = chebyshev_polynomial<double>;
+    using RootFinder = real_polynomial_root_finder<double>;
+}
+
+int main() {
+    const auto max_order = 10;
+
+    cout << "Chebyshev Polynomials of 1st kind: " << endl;
+    for (int n = 0; n <= max_order; ++n) {
+        auto T_n = ChebyshevPolynomial::create_1st_kind(n);
+        cout << "T_" << n << ": " << T_n << endl;
+    }
+    return 0;
+}
+```
 
 ### Root Finding Algorithm
 
 The `real_polynomial_root_finder<>` and `complex_polynomial_root_finder<>` classes are utility classes specifically
 designed for finding roots of polynomials with real and complex coefficients, respectively.
-These classes provide various numerical methods to achieve accurate root approximations.
+These classes provide various numerical methods to obtain accurate root approximations.
 
-Sturm's method plays a crucial role in identifying, counting, and isolating roots within intervals.
-Its effectiveness lies in constructing a sequence of polynomials whose sign variations provide information
-about the distribution of roots. The algorithm's complexity is polynomial in nature, making it suitable for a wide
-range of polynomial degrees.
-
-### Square-free Decomposition
-
-The `square_free_decomposition<>` class identifies whether a polynomial is square-free and employs Yun's algorithm
-for square-free decomposition. Additionally, it provides a method to reconstruct the original polynomial
-from its square-free decomposition.
-
-### Polynomial Interpolation
-
-The `polynomial_interpolation<>` class provides functionality for Lagrange polynomial interpolation,
-a method to construct a polynomial that passes through a given set of data points.
-
-
-## Usage
-
-To use this project, you can include the `polynomial<double>` and `real_polynomial_root_finder<double>` classes in your
-C++ code and use them as follows:
-
-```cpp
+```c++
 #include "real_polynomial_root_finder.h"
 
 using namespace std;
@@ -67,22 +127,64 @@ namespace {
 }
 
 int main() {
-    // Create a polynomial
-    auto p = (X + 1 / 3.).pow(3) * (X - 1.5) * (X.pow(2) + X - 2).pow(2);
+    auto p = (X + 3.).pow(3) * (X - 1.) * (X.pow(2) + X - 2).pow(3);
     auto [roots, multiplicities] = RootFinder::find_roots(p);
 
     cout << "Polynomial: " << p << endl << endl;
     for (int k = 0; k < roots.size(); ++k) {
-        cout << "Root: r[" << k << "] = " << roots[k]
-             << ", Multiplicity: " << multiplicities[k] << endl;
+        cout << "Root: r[" << k << "] = " << roots[k] << ", Multiplicity: "
+             << multiplicities[k] << endl;
     }
     return 0;
 }
 ```
 
-## Usage
+### Square-free Decomposition
 
-todo:
+The `square_free_decomposition<>` class determines whether a polynomial is square-free and uses Yun's algorithm
+for square-free decomposition. In addition, this class provides a method for constructing the original polynomial
+from its square-free decomposition.
+
+```c++
+#include <iostream>
+#include "square_free_decomposition.h"
+
+using namespace std;
+using namespace xmath;
+
+namespace {
+    auto X = polynomial<double>::monomial(1, 1.0);
+    using SquareFree = square_free_decomposition<double>;
+}
+
+int main() {
+// Create a polynomial
+auto p = X * (X - 4) * (X + 3.).pow(2) * (X.pow(2) + X).pow(3) * (X.pow(2) + X).pow(4);
+cout << "p = " << p << endl;
+
+    if (!p.is_integer()) {
+        cout << "The coefficients of the polynomial must be integers." << endl;
+        return -1;
+    }
+
+    auto square_free_seq = SquareFree::yun_algorithm(p).value();
+    for (int k = 0; k < square_free_seq.size(); ++k) {
+        cout << "q" << k << " = " << square_free_seq[k] << endl;
+    }
+
+    cout << "p = " << SquareFree::from_square_free_decomposition(square_free_seq) << endl << endl;
+    return 0;
+}
+```
+
+### Polynomial Interpolation
+
+The `polynomial_interpolation<>` class provides functionality for Lagrange polynomial interpolation,
+a method to construct a polynomial that passes through a given set of data points.
+
+```c++
+
+```
 
 ## Author
 

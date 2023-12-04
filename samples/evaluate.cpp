@@ -42,8 +42,7 @@ namespace {
 }
 
 int main() {
-
-    // Create a 4th degree polynomial p = 3X^4 - 2.5X^3 + X^2 - X +1
+    // Create a 4th degree polynomial
     auto p = 3 * X.pow(4) - 2.5 * X.pow(3) + X.pow(2) - X + 1;
 
     // Evaluate the polynomial for a range of values
