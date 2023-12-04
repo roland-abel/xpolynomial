@@ -1,5 +1,5 @@
 /// @file chebyshev_1st.cpp
-/// @brief Example to demonstrate the computation of Chebyshev Polynomials of the 1st kind.
+/// @brief Example to demonstrating the computation of Chebyshev Polynomials of the 1st kind.
 ///
 /// This program calculates and prints Chebyshev Polynomials of the 1st kind up to a specified maximum order.
 /// It uses the `chebyshev_polynomial<>` class to generate the polynomials.

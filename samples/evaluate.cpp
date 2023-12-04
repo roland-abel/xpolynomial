@@ -1,5 +1,5 @@
 /// @file evaluate.cpp
-/// @brief Exsample to demonstrate polynomial creation and evaluation.
+/// @brief Example to demonstrating polynomial creation and evaluation.
 ///
 /// This program creates a 4th-degree polynomial and evaluates it for a range of values.
 /// It then prints the result of the polynomial evaluation for each value.
