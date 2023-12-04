@@ -53,7 +53,7 @@ namespace xmath {
         /// @param x_values The vector containing the x coordinates of the interpolation points.
         /// @param y_values The vector containing the corresponding y coordinates of the interpolation points.
         /// @return A polynomial representing the Lagrange interpolation polynomial.
-        static polynomial<T> lagrange_interpolation(const values_type &x_values, const values_type &y_values);
+        static std::optional<polynomial<T>> lagrange_interpolation(const values_type &x_values, const values_type &y_values);
     };
 }
 

@@ -26,3 +26,6 @@ target_include_directories(euclidean PRIVATE ../include)
 
 add_executable(square_free square_free.cpp)
 target_include_directories(square_free PRIVATE ../include)
+
+add_executable(interpolation interpolation.cpp)
+target_include_directories(interpolation PRIVATE ../include)
