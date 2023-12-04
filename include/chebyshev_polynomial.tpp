@@ -162,9 +162,4 @@ namespace xmath {
         }
         return (pi / N) * value;
     }
-
-    template<typename T>
-    polynomial<T> chebyshev_polynomial<T>::interpolate(std::function<value_type(value_type)> func, uint32_t degree) {
-        return polynomial<T>();
-    }
 }

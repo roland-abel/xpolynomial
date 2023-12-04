@@ -83,12 +83,6 @@ namespace xmath {
         /// w_i = π/N and x_i's are the Chebyshev nodes.
         static value_type chebyshev_quadrature(std::function<value_type(value_type)> func, uint32_t N = 5);
 
-        /// Interpolates a function at the Chebyshev nodes of the 1st kind.
-        /// @param func The function to be interpolated.
-        /// @param degree The degree of the interpolating polynomial.
-        /// @return The interpolating Chebyshev polynomial.
-        static polynomial<T> interpolate(std::function<value_type(value_type)> func, uint32_t degree);
-
     private:
         static polynomial_sequence chebyshev_1st_kind_polynomials_;
     };
