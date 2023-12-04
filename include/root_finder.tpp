@@ -35,15 +35,13 @@
 namespace xmath {
 
     template<typename T>
-    root_finder<T>::value_type root_finder<T>::bisection(
+    std::optional<T> root_finder<T>::bisection(
             const std::function<value_type(value_type)> &func,
             const real_interval<value_type> &I,
             value_type epsilon) {
 
-        const auto NaN = std::numeric_limits<T>::quiet_NaN();
-
         if (greater_than_or_equal(func(I.lower()) * func(I.upper()), 0., epsilon)) {
-            return NaN; // incorrect endpoints a and b.
+            return {}; // incorrect endpoints a and b.
         }
 
         auto bisection = [&](value_type a, value_type b) {
@@ -65,15 +63,13 @@ namespace xmath {
     }
 
     template<typename T>
-    root_finder<T>::value_type root_finder<T>::regula_falsi(
+    std::optional<T> root_finder<T>::regula_falsi(
             const std::function<value_type(value_type)> &func,
             const real_interval<value_type> &I,
             value_type epsilon) {
 
-        const auto NaN = std::numeric_limits<T>::quiet_NaN();
-
         if (greater_than_or_equal(func(I.lower()) * func(I.upper()), 0., epsilon)) {
-            return NaN; // incorrect endpoints a and b.
+            return {}; // incorrect endpoints a and b.
         }
 
         auto regula_falsi = [&](value_type a, value_type b) {
@@ -95,14 +91,12 @@ namespace xmath {
     }
 
     template<typename T>
-    root_finder<T>::value_type root_finder<T>::newton_raphson(
+    std::optional<T> root_finder<T>::newton_raphson(
             const std::function<value_type(const value_type &)> &func,
             const std::function<value_type(const value_type &)> &derive,
             value_type initial,
             int max_iterations,
             value_type epsilon) {
-
-        const auto NaN = std::numeric_limits<T>::quiet_NaN();
 
         auto num_itr = 1;
         auto x = initial;
@@ -112,7 +106,7 @@ namespace xmath {
 
         while (std::abs(y) >= epsilon && num_itr < max_iterations) {
             if (nearly_zero(dfdx, epsilon)) {
-                return NaN;
+                return {};
             }
 
             x = x - (y / dfdx);
