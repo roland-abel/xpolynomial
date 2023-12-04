@@ -64,12 +64,10 @@ namespace xmath {
     }
 
     template<typename T>
-    std::tuple<typename polynomial<T>::value_type, typename polynomial<T>::value_type>
+    std::optional<std::tuple<T, T>>
     real_polynomial_root_finder<T>::quadratic_roots(const polynomial<T> &p) {
-        const auto NaN = std::numeric_limits<T>::quiet_NaN();
-
         if (!p.is_quadratic()) {
-            return std::make_pair(NaN, NaN);
+            return {};
         }
 
         const auto a = p[2];
@@ -79,7 +77,7 @@ namespace xmath {
         auto d = b * b - 4 * a * c;
 
         if (d < 0) {
-            return std::make_pair(NaN, NaN);
+            return {};
         }
 
         return std::make_tuple(
@@ -95,12 +93,9 @@ namespace xmath {
     }
 
     template<typename T>
-    std::tuple<typename polynomial<T>::value_type, typename polynomial<T>::value_type, typename polynomial<T>::value_type>
-    real_polynomial_root_finder<T>::cubic_roots(const polynomial<T> &p) {
-        const auto NaN = std::numeric_limits<T>::quiet_NaN();
-
+    std::vector<T> real_polynomial_root_finder<T>::cubic_roots(const polynomial<T> &p) {
         if (!p.is_cubic()) {
-            return std::make_tuple(NaN, NaN, NaN);
+            return {};
         }
 
         // Transform into the cubic normal form polynomial Y^3 + aY + b by the substitution X = Y - p[2]/3.
@@ -114,20 +109,13 @@ namespace xmath {
         auto roots = cubic_normal_form_roots(p_normal);
 
         // Re-substitution the roots
-        auto rsub = [&q](T r) { return r - q[2] / 3.; };
-        return std::make_tuple(
-                rsub(std::get<0>(roots)),
-                rsub(std::get<1>(roots)),
-                rsub(std::get<2>(roots)));
+        return to_vector(roots | std::views::transform([&q](T r) { return r - q[2] / 3.; }));
     }
 
     template<typename T>
-    std::tuple<typename polynomial<T>::value_type, typename polynomial<T>::value_type, typename polynomial<T>::value_type>
-    real_polynomial_root_finder<T>::cubic_normal_form_roots(const polynomial<T> &p) {
-        const auto NaN = std::numeric_limits<T>::quiet_NaN();
-
+    std::vector<T> real_polynomial_root_finder<T>::cubic_normal_form_roots(const polynomial<T> &p) {
         if (!has_cubic_normal_form(p)) {
-            return std::make_tuple(NaN, NaN, NaN);
+            return {};
         }
 
         // The polynomial p is given by the normal form p = X^3 + aX + b
@@ -136,19 +124,18 @@ namespace xmath {
 
         const auto w = (std::pow(b, 2) / 4.) + (std::pow(a, 3) / 27.);
         if (nearly_zero(w)) {
-            // There are three real roots of which at least two are equal
             if (nearly_zero(b)) {
-                return std::make_tuple(0., 0., 0.);
+                return {0., 0., 0.};
             }
 
             auto r1 = std::sqrt(-a / 3.);
             auto r2 = -2 * r1;
 
             if (b > 0) {
-                return std::make_tuple(r2, r1, r1);
+                return {r2, r1, r1};
             }
             if (b < 0) {
-                return std::make_tuple(r2, -r1, -r1);
+                return {r2, -r1, -r1};
             }
         }
 
@@ -157,7 +144,7 @@ namespace xmath {
             const auto A = std::pow(-b / 2. + std::sqrt(w), 1. / 3.);
             const auto B = std::pow(-b / 2. - std::sqrt(w), 1. / 3.);
 
-            return std::make_tuple(A + B, NaN, NaN);
+            return {A + B};
         }
 
         // There are three unequal real roots (w < 0)
@@ -168,11 +155,11 @@ namespace xmath {
             return 2 * std::sqrt(-a / 3.) * std::cos((phi + 2 * k * std::numbers::pi) / 3.);
         };
 
-        return std::make_tuple(root(0), root(1), root(2));
+        return {root(0), root(1), root(2)};
     }
 
     template<typename T>
-    polynomial<T>::value_type real_polynomial_root_finder<T>::newton_raphson(
+    std::optional<T> real_polynomial_root_finder<T>::newton_raphson(
             const polynomial<T> &p,
             value_type initial,
             int max_iterations,
@@ -192,9 +179,9 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::value_type real_polynomial_root_finder<T>::cauchy_bounds(const polynomial<T> &p) {
+    std::optional<T> real_polynomial_root_finder<T>::cauchy_bounds(const polynomial<T> &p) {
         if (p.is_zero()) {
-            return std::numeric_limits<T>::quiet_NaN();
+            return {};
         }
 
         const auto zero = polynomial<T>::spec::zero;
@@ -210,9 +197,9 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::value_type real_polynomial_root_finder<T>::lagrange_bounds(const polynomial<T> &p) {
+    std::optional<T> real_polynomial_root_finder<T>::lagrange_bounds(const polynomial<T> &p) {
         if (p.is_zero()) {
-            return std::numeric_limits<T>::quiet_NaN();
+            return {};
         }
         const auto zero = polynomial<T>::spec::zero;
         const auto one = polynomial<T>::spec::one;
@@ -259,15 +246,13 @@ namespace xmath {
     }
 
     template<typename T>
-    int real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p, const real_interval<T> &I) {
-        auto NaN = std::numeric_limits<int>::quiet_NaN();
-
+    std::optional<int> real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p, const real_interval<T> &I) {
         if (!I.is_lower_open() || !I.is_upper_closed()) {
-            return NaN;
+            return {};
         }
 
         if (!square_free_decomposition<T>::is_square_free(p)) {
-            return NaN;
+            return {};
         }
 
         auto seq = sturm_sequence(p);
@@ -276,13 +261,14 @@ namespace xmath {
     }
 
     template<typename T>
-    int real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p) {
-        auto bound = cauchy_bounds(p);
-        return number_distinct_roots(p, real_interval<T>(
-                -bound,
-                bound,
-                real_interval<T>::interval_bounds::opened,
-                real_interval<T>::interval_bounds::closed));
+    std::optional<int> real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p) {
+        return cauchy_bounds(p).and_then([&p](T bound) {
+            return number_distinct_roots(p, real_interval<T>(
+                    -bound,
+                    bound,
+                    real_interval<T>::interval_bounds::opened,
+                    real_interval<T>::interval_bounds::closed));
+        });
     }
 
     template<typename T>
@@ -319,8 +305,11 @@ namespace xmath {
             }
         };
 
-        auto a = cauchy_bounds(p);
-        root_isolation(real_interval<T>(-a, a));
+        auto bounds = cauchy_bounds(p);
+        if (bounds.has_value()) {
+            const auto a = bounds.value();
+            root_isolation(real_interval<T>(-a, a));
+        }
 
         return intervals;
     }
@@ -332,14 +321,18 @@ namespace xmath {
         auto roots = std::vector<value_type>();
         auto multiplicities = std::vector<unsigned short>();
 
-        auto square_free_seq = square_free_decomposition<T>::yun_algorithm(p);
+        auto square_free_seq = square_free_decomposition<T>::yun_algorithm(p).value();
         for (int k = 0; k < square_free_seq.size(); ++k) {
             auto q = square_free_seq[k];
             auto intervals = root_isolation(q);
 
             for (auto I: intervals) {
                 multiplicities.push_back(k + 1);
-                roots.push_back(root_finder<T>::bisection(q, I, epsilon));
+
+                auto root = root_finder<T>::bisection(q, I, epsilon);
+                if (root.has_value()) {
+                    roots.push_back(root.value());
+                }
             }
         }
         return std::make_tuple(roots, multiplicities);

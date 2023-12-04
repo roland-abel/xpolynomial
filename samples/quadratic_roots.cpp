@@ -43,7 +43,7 @@ int main() {
     auto p = .25 * X.pow(2) - 1.5 * X - 1;
 
     // Find root for the polynomial p
-    auto [r1, r2] = RootFinder::quadratic_roots(p);
+    auto [r1, r2] = RootFinder::quadratic_roots(p).value();
 
     cout << "Polynomial: " << p << endl
          << "Roots:" << endl

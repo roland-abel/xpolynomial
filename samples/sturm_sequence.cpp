@@ -45,7 +45,7 @@ int main() {
     auto p = (X + 2.3) * (X + 1.25) * (X - 0.75) * (X - 1.45) * (X - 2.85);
 
     auto canonical_seq = RootFinder::sturm_sequence(p);
-    auto number_roots = RootFinder::number_distinct_roots(p);
+    auto number_roots = RootFinder::number_distinct_roots(p).value();
 
     cout << "Polynomial: " << p << endl << endl
          << "Number of roots: " << number_roots << endl

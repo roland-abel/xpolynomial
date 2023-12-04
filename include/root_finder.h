@@ -33,6 +33,7 @@
 #include <iostream>
 #include <vector>
 #include <functional>
+#include <optional>
 
 namespace xmath {
 
@@ -44,13 +45,12 @@ namespace xmath {
         using value_type = T;
 
         /// @brief Perform the bisection method to find a zero point of the given function within the specified real_interval.
+        /// This method failed if the Intermediate Value Theorem conditions are not met (The function has the same sign at both real_interval boundaries).
         /// @param func The function for which the zero point needs to be found.
         /// @param I The real interval.
         /// @param epsilon The desired accuracy for the root approximation (default is 1e-15).
-        /// @return The approximate zero point of the function within the given real_interval,
-        /// or NaN if the Intermediate Value Theorem conditions are not met (The function has the same sign at both
-        /// real_interval boundaries).
-        static value_type bisection(
+        /// @return The approximate zero point of the function within the given real_interval.
+        static std::optional<T> bisection(
                 const std::function<value_type(value_type)> &func,
                 const real_interval<value_type> &I,
                 value_type epsilon = 1e-15);
@@ -61,9 +61,8 @@ namespace xmath {
         /// @param epsilon The desired accuracy for the root approximation (default is 1e-15).
         /// @return The approximate zero point of the function within the given real_interval.
         ///
-        /// @note If no solution is found, an undefined value may be returned (NaN).
-        /// It is recommended to check the validity of the result.
-        static value_type regula_falsi(
+        /// @note If no solution is found, the returned optional<> has not a value.
+        static std::optional<T> regula_falsi(
                 const std::function<value_type(value_type)> &func,
                 const real_interval<value_type> &I,
                 value_type epsilon = 1e-15);
@@ -76,9 +75,8 @@ namespace xmath {
         /// @param epsilon The epsilon for the approximation to the root (default: 1e-15).
         /// @return The approximation of the solution for the equation.
         ///
-        /// @note If no solution is found, an undefined value may be returned (NaN).
-        /// It is recommended to check the validity of the result.
-        static value_type newton_raphson(
+        /// @note If no solution is found, the returned optional<> has not a value.
+        static std::optional<T> newton_raphson(
                 const std::function<value_type(const value_type &)> &func,
                 const std::function<value_type(const value_type &)> &derive,
                 value_type initial,

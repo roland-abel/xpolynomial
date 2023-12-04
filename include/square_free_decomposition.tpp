@@ -40,9 +40,9 @@ namespace xmath {
     }
 
     template<typename T>
-    T square_free_decomposition<T>::content(const polynomial<T> &p) {
+    std::optional<T> square_free_decomposition<T>::content(const polynomial<T> &p) {
         if (!p.is_integer()) {
-            return std::numeric_limits<T>::quiet_NaN();
+            return {};
         }
 
         auto integer_coeffs = p.coefficients() | std::views::transform([](double coefficient) {
@@ -57,8 +57,8 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T> square_free_decomposition<T>::primitive_part(const polynomial<T> &p) {
-        return p / content(p);
+    std::optional<polynomial<T>> square_free_decomposition<T>::primitive_part(const polynomial<T> &p) {
+        return content(p).transform([&p](auto c) { return p / c; });
     }
 
     template<typename T>
@@ -73,7 +73,7 @@ namespace xmath {
     }
 
     template<typename T>
-    square_free_decomposition<T>::polynomial_sequence
+    std::optional<typename square_free_decomposition<T>::polynomial_sequence>
     square_free_decomposition<T>::yun_algorithm(const polynomial<T> &p) {
         auto square_free_seq = xmath::square_free_decomposition<T>::polynomial_sequence();
         if (is_square_free(p)) {
@@ -81,29 +81,26 @@ namespace xmath {
             return square_free_seq;
         }
 
-        if (!p.is_integer()) {
-            return {};
-        }
-
-        auto pp = primitive_part(p);
-        auto p_prim = pp.derive();
-        auto q = euclidean_algorithm<T>::euclidean(pp, p_prim).to_integer();
-        auto b = pp / q;
-        auto c = p_prim / q;
-        auto d = c - b.derive();
-
-        q = euclidean_algorithm<T>::euclidean(b, d);
-        square_free_seq.push_back(q);
-
-        while (!d.is_zero()) {
-            b = b / q;
-            c = d / q;
-            d = c - b.derive();
+        return primitive_part(p).transform([&](auto pp) {
+            auto p_prim = pp.derive();
+            auto q = euclidean_algorithm<T>::euclidean(pp, p_prim).to_integer();
+            auto b = pp / q;
+            auto c = p_prim / q;
+            auto d = c - b.derive();
 
             q = euclidean_algorithm<T>::euclidean(b, d);
             square_free_seq.push_back(q);
-        }
-        return square_free_seq;
+
+            while (!d.is_zero()) {
+                b = b / q;
+                c = d / q;
+                d = c - b.derive();
+
+                q = euclidean_algorithm<T>::euclidean(b, d);
+                square_free_seq.push_back(q);
+            }
+            return square_free_seq;
+        });
     }
 }
 
