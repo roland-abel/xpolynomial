@@ -47,7 +47,7 @@ int main() {
         return -1;
     }
 
-    auto square_free_seq = SquareFree::yun_algorithm(p);
+    auto square_free_seq = SquareFree::yun_algorithm(p).value();
     for (int k = 0; k < square_free_seq.size(); ++k) {
         cout << "q" << k << " = " << square_free_seq[k] << endl;
     }
