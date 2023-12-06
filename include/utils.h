@@ -1,5 +1,5 @@
 /// @file utils.h
-/// @brief
+/// @brief Provides some numeric helper functions.
 ///
 /// @author Roland Abel
 /// @date October 8, 2023
