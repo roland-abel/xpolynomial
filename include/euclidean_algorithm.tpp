@@ -1,5 +1,5 @@
 /// @file euclidean_algorithm.tpp
-/// @brief
+/// @brief Implements the Euclidean algorithm for polynomials.
 ///
 /// @author Roland Abel
 /// @date October 8, 2023

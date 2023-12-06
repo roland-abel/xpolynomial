@@ -1,5 +1,5 @@
 /// @file polynomial_interpolation.h
-/// @brief
+/// @brief Lagrange polynomial interpolation.
 ///
 /// @author Roland Abel
 /// @date November 25, 2023

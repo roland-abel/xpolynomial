@@ -1,5 +1,5 @@
 /// @file euclidean_algorithm.h
-/// @brief
+/// @brief Implements the Euclidean algorithm for polynomials.
 ///
 /// @author Roland Abel
 /// @date October 20, 2023

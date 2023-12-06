@@ -1,5 +1,5 @@
 /// @file polynomial.tpp
-/// @brief This file contains the implementation of the polynomial class.
+/// @brief This file contains the declaration of the polynomial class and related functions.
 ///
 /// @author Roland Abel
 /// @date August 19, 2023

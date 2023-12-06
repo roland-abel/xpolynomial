@@ -1,5 +1,5 @@
 /// @file chebyshev_polynomial.h
-/// @brief
+/// @brief Template class provides a set of methods for working with Chebyshev polynomials of the first kind.
 ///
 /// @author Roland Abel
 /// @date October 8, 2023
