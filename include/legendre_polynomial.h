@@ -1,5 +1,5 @@
 /// @file legendre_polynomial.h
-/// @brief
+/// @brief Creates Legendre polynomials.
 ///
 /// @author Roland Abel
 /// @date October 8, 2023
