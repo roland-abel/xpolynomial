@@ -1,5 +1,6 @@
 /// @file square_free_decomposition.h
-/// @brief
+/// @brief Implements Yun's algorithm for for square-free decomposition.
+/// @see https://en.wikipedia.org/wiki/Square-free_polynomial
 ///
 /// @author Roland Abel
 /// @date October 8, 2023

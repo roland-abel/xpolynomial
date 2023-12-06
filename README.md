@@ -113,7 +113,7 @@ int main() {
 
 The `real_polynomial_root_finder<>` and `complex_polynomial_root_finder<>` classes are utility classes specifically
 designed for finding roots of polynomials with real and complex coefficients, respectively.
-These classes provide various numerical methods to obtain accurate root approximations.
+These classes provide various numerical methods to obtain root approximations.
 
 ```c++
 #include "real_polynomial_root_finder.h"

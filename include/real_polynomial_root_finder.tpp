@@ -1,5 +1,5 @@
 /// @file real_polynomial_root_finder.tpp
-/// @brief
+/// @brief Root finder class of polynomials with real coefficients.
 ///
 /// @author Roland Abel
 /// @date October 8, 2023

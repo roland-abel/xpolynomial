@@ -1,5 +1,5 @@
 /// @file root_finder.h
-/// @brief
+/// @brief Root finder class using various numerical methods.
 ///
 /// @author Roland Abel
 /// @date October 8, 2023

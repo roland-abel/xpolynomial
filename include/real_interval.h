@@ -1,5 +1,5 @@
 /// @file real_interval.h
-/// @brief
+/// @brief Interval over real numbers.
 ///
 /// @author Roland Abel
 /// @date November 7, 2023

@@ -1,5 +1,5 @@
 /// @file complex_polynomial_root_finder.tpp
-/// @brief
+/// @brief Defines template classes for polynomials with complex coefficients.
 ///
 /// @author Roland Abel
 /// @date October 20, 2023
