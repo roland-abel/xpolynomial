@@ -39,7 +39,7 @@ namespace {
     auto X = polynomial<double>::monomial(1, 1.0);
 }
 
-int main() {
+auto main() -> int {
     // Create cubic polynomial
     auto p = 3.5 * (X - 7.125).pow(2) * (X - 4.5);
     cout << "p(x) = " << p << endl;

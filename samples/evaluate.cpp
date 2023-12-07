@@ -41,7 +41,7 @@ namespace {
     auto X = polynomial<double>::monomial(1, 1.0);
 }
 
-int main() {
+auto main() -> int {
     // Create a 4th degree polynomial
     auto p = 3 * X.pow(4) - 2.5 * X.pow(3) + X.pow(2) - X + 1;
 

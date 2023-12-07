@@ -40,7 +40,7 @@ namespace {
     using RootFinder = real_polynomial_root_finder<double>;
 }
 
-int main() {
+auto main() -> int {
     const auto max_order = 10;
 
     cout << "Chebyshev Polynomials of 1st kind: " << endl;

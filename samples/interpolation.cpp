@@ -40,7 +40,7 @@ namespace {
     using Interpolation = polynomial_interpolation<double>;
 }
 
-int main() {
+auto main() -> int {
     const auto x_values = {-3., -2., -1., 0., 1., 2., 3.};
     const auto y_values = {-2.4, -1.5, 1.1, 2.5, -3.6, -1.25, -2.1};
 
