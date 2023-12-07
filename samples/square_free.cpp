@@ -37,7 +37,7 @@ namespace {
     using SquareFree = square_free_decomposition<double>;
 }
 
-int main() {
+auto main() -> int {
     auto p = X * (X - 4) * (X + 3.).pow(2) * (X.pow(2) + X).pow(3) * (X.pow(2) + X).pow(4);
     cout << "p = " << p << endl;
 

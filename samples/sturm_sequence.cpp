@@ -40,7 +40,7 @@ namespace {
     auto X = polynomial<double>::monomial(1, 1.0);
 }
 
-int main() {
+auto main() -> int {
     // Create a polynomial with 5 distinct read roots.
     auto p = (X + 2.3) * (X + 1.25) * (X - 0.75) * (X - 1.45) * (X - 2.85);
 

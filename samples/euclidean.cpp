@@ -38,7 +38,7 @@ namespace {
     using Euclidean = euclidean_algorithm<double>;
 }
 
-int main() {
+auto main() -> int {
     auto p = X.pow(4) - 2 * X.pow(3) - 6 * X.pow(2) + 12 * X + 15;
     auto q = X.pow(3) + X.pow(2) - 4 * X - 4;
 

@@ -38,7 +38,7 @@ namespace {
     auto X = polynomial<double>::monomial(1, 1.0);
 }
 
-int main() {
+auto main() -> int {
     // Create quadratic polynomial
     auto p = .25 * X.pow(2) - 1.5 * X - 1;
 

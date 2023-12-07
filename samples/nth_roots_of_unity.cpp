@@ -45,7 +45,7 @@ namespace {
     auto Z = ComplexPolynomial::monomial(1, 1.0);
 }
 
-int main() {
+auto main() -> int {
     auto n = 13;
     auto p = Z.pow(n) - 1.; // p(Z) = Z^n - 1
     auto roots = RootFinder::nth_roots_of_unity(n);
