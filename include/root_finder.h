@@ -29,9 +29,6 @@
 #ifndef ROOT_FINDER_H_
 #define ROOT_FINDER_H_
 
-#include <utility>
-#include <iostream>
-#include <vector>
 #include <functional>
 #include <optional>
 

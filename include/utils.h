@@ -42,7 +42,7 @@ namespace xmath {
     /// @param epsilon The epsilon value for comparison (default is machine epsilon).
     /// @return True if the value is nearly zero; otherwise, false.
     template<typename T, typename FP = T>
-    inline bool nearly_zero(T a, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+    bool nearly_zero(T a, FP epsilon = std::numeric_limits<FP>::epsilon()) {
         return std::abs(a) < epsilon;
     }
 
@@ -54,7 +54,7 @@ namespace xmath {
     /// @param epsilon The epsilon value for comparison (default is machine epsilon).
     /// @return True if the values are nearly equal; otherwise, false.
     template<typename T, typename FP = T>
-    inline bool nearly_equal(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+    bool nearly_equal(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
         return nearly_zero(a - b, epsilon);
     }
 
@@ -66,7 +66,7 @@ namespace xmath {
     /// @param epsilon The epsilon value for comparison (default is machine epsilon).
     /// @return True if the first value is greater than the second; otherwise, false.
     template<typename T, typename FP = T>
-    inline bool greater_than(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+    bool greater_than(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
         return a - epsilon > b;
     }
 
@@ -78,7 +78,7 @@ namespace xmath {
     /// @param epsilon The epsilon value for comparison (default is machine epsilon).
     /// @return True if the first value is greater than or equal to the second; otherwise, false.
     template<typename T, typename FP = T>
-    inline bool greater_than_or_equal(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+    bool greater_than_or_equal(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
         return a + epsilon > b;
     }
 
@@ -90,7 +90,7 @@ namespace xmath {
     /// @param epsilon The epsilon value for comparison (default is machine epsilon).
     /// @return True if the first value is less than the second; otherwise, false.
     template<typename T, typename FP = T>
-    inline bool less_than(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+    bool less_than(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
         return a + epsilon < b;
     }
 
@@ -102,7 +102,7 @@ namespace xmath {
     /// @param epsilon The epsilon value for comparison (default is machine epsilon).
     /// @return True if the first value is less than or equal to the second; otherwise, false.
     template<typename T, typename FP = T>
-    inline bool less_than_or_equal(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+    bool less_than_or_equal(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
         return a - epsilon < b;
     }
 

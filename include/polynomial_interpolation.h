@@ -39,10 +39,10 @@ namespace xmath {
     class polynomial_interpolation {
     public:
         using polynomial_sequence = std::vector<polynomial<T>>;
-        using value_type = polynomial<T>::value_type;
-        using values_type = polynomial<T>::values_type;
+        using value_type = typename polynomial<T>::value_type;
+        using values_type = typename polynomial<T>::values_type;
 
-        static_assert(std::is_floating_point<T>::value, "The type parameter must be a floating point type.");
+        static_assert(std::is_floating_point_v<T>, "The type parameter must be a floating point type.");
 
         /// Gets the Lagrange basis for polynomials of degree k = xs.size().
         /// @param xs The distinct x points x_0, ..., x_k.

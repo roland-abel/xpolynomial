@@ -43,10 +43,10 @@ namespace xmath {
     class chebyshev_polynomial {
     public:
         using polynomial_sequence = std::vector<polynomial<T>>;
-        using value_type = polynomial<T>::value_type;
-        using values_type = polynomial<T>::values_type;
+        using value_type = typename polynomial<T>::value_type;
+        using values_type = typename polynomial<T>::values_type;
 
-        static_assert(std::is_floating_point<T>::value, "The type parameter must be a floating point type.");
+        static_assert(std::is_floating_point_v<T>, "The type parameter must be a floating point type.");
 
         /// @brief Creates first kind Chebyshev polynomial T_n for the given N.
         /// @param N The N of the polynomial.
@@ -61,6 +61,7 @@ namespace xmath {
 
         /// @brief Computes the Chebyshev nodes for a given N within a specified interval.
         /// @param N  The N of the Chebyshev nodes.
+        /// @param I The interval.
         /// @return A vector containing the Chebyshev nodes for the specified N within the interval.
         static values_type chebyshev_nodes(size_t N, const real_interval<T> &I = real_interval<value_type>(-1., 1.));
 
