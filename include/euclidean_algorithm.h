@@ -29,7 +29,6 @@
 #ifndef EUCLIDEAN_ALGORITHM_H_
 #define EUCLIDEAN_ALGORITHM_H_
 
-#include <vector>
 #include "polynomial.h"
 
 namespace xmath {

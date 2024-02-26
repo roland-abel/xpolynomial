@@ -43,7 +43,7 @@ namespace xmath {
     template<typename T>
     class square_free_decomposition {
     public:
-        using value_type = polynomial<T>::value_type;
+        using value_type = typename polynomial<T>::value_type;
         using polynomial_sequence = std::vector<polynomial<T>>;
 
         /// @brief Checks if the given polynomial is square-free. A polynomial p is square-free if and only

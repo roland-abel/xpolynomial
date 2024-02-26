@@ -42,7 +42,7 @@ namespace xmath {
     template<typename T>
     class real_polynomial_root_finder {
     public:
-        using value_type = polynomial<T>::value_type;
+        using value_type = typename polynomial<T>::value_type;
         using polynomial_sequence = std::vector<polynomial<T>>;
         using roots_type = std::vector<value_type>;
         using multiplicities_type = std::vector<unsigned short>;

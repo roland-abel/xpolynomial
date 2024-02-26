@@ -34,16 +34,14 @@
 
 namespace xmath {
 
-    namespace {
-        using std::ranges::views::transform;
-    }
+    using std::ranges::views::transform;
 
     /// @brief Specialization of polynomial_specification for complex numbers.
     /// @tparam T The data type of the coefficients in the complex polynomial.
     template<typename T>
     struct polynomial_specification<std::complex<T>> {
 
-        static_assert(std::is_floating_point<T>::value, "The type parameter must be a floating point type.");
+        static_assert(std::is_floating_point_v<T>, "The type parameter must be a floating point type.");
 
         using value_type = std::complex<T>;
         using size_type = size_t;
@@ -86,17 +84,17 @@ namespace xmath {
     }
 
     template<typename T>
-    inline complex_polynomial<T> operator*(const complex_type<T> &z, const real_polynomial<T> &p) {
+    complex_polynomial<T> operator*(const complex_type<T> &z, const real_polynomial<T> &p) {
         return p * z;
     }
 
     template<typename T>
-    inline complex_polynomial<T> operator+(const complex_polynomial<T> &p, const real_polynomial<T> &q) {
+    complex_polynomial<T> operator+(const complex_polynomial<T> &p, const real_polynomial<T> &q) {
         return p + std::complex<T>(1, 0) * q;
     }
 
     template<typename T>
-    inline complex_polynomial<T> operator+(const real_polynomial<T> &q, const complex_polynomial<T> &p) {
+    complex_polynomial<T> operator+(const real_polynomial<T> &q, const complex_polynomial<T> &p) {
         return p + q;
     }
 

@@ -33,7 +33,6 @@
 #define POLYNOMIAL_H_
 
 #include <utility>
-#include <iostream>
 #include <vector>
 #include <ranges>
 
@@ -75,9 +74,9 @@ namespace xmath {
     class polynomial<T, polynomial_specification<T>> {
     public:
         using spec = polynomial_specification<T>;
-        using value_type = spec::value_type;
-        using size_type = spec::size_type;
-        using floating_point_type = spec::floating_point_type;
+        using value_type = typename spec::value_type;
+        using size_type = typename spec::size_type;
+        using floating_point_type = typename spec::floating_point_type;
         using values_type = std::vector<value_type>;
         static constexpr floating_point_type epsilon = spec::epsilon;
 
@@ -174,7 +173,7 @@ namespace xmath {
         /// @param degree The degree of the monomial.
         /// @param coeff The coefficient.
         /// @return The polynomial which representing the monomial coeff X^degree.
-        static polynomial<T> monomial(size_type degree, value_type coeff = (value_type) 1);
+        static polynomial<T> monomial(size_type degree, value_type coeff = static_cast<value_type>(1));
 
         /// @brief Constructs a polynomial from the given roots.
         /// @param roots The vector of roots of the polynomial.
@@ -336,7 +335,6 @@ namespace xmath {
         friend std::ostream &operator<<(std::ostream &os, const polynomial<C> &p);
 
         /// @brief Divides two polynomials and returns the quotient and remainder (Euclidean Division).
-        /// @param dividend The polynomial to be divided.
         /// @param divisor The polynomial by which to divide.
         /// @return The result (q, r) of polynomial division containing quotient and remainder
         /// such that polynomial = divisor * q + r.
@@ -345,7 +343,7 @@ namespace xmath {
         /// @brief Composes the current polynomial with another polynomial, resulting in the composition p(q(x)).
         /// @param q The polynomial q(x) to be composed with the current polynomial p.
         /// @return The polynomial resulting from the composition p(q(x)).
-        polynomial<T> compose(const polynomial<T> &q) const;
+        polynomial compose(const polynomial<T> &q) const;
 
         /// @brief Raises the polynomial to a given non-negative integer exponent.
         /// @param exponent The exponent to raise the polynomial to.
@@ -385,7 +383,7 @@ namespace xmath {
         static inline bool nearly_equal(value_type a, value_type b);
 
         /// @brief Checks if a value is nearly zero within a small epsilon.
-        static inline bool nearly_zero(value_type a);
+        static bool nearly_zero(value_type a);
 
     private:
         values_type coeffs_;

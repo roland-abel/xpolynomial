@@ -26,12 +26,12 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
+#ifndef COMPLEX_POLYNOMIAL_ROOT_FINDER_H_
+#define COMPLEX_POLYNOMIAL_ROOT_FINDER_H_
+
 #include <vector>
 #include <complex>
 #include "complex_polynomial.h"
-
-#ifndef COMPLEX_POLYNOMIAL_ROOT_FINDER_H_
-#define COMPLEX_POLYNOMIAL_ROOT_FINDER_H_
 
 namespace xmath {
 
