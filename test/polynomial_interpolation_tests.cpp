@@ -61,8 +61,8 @@ TEST(PolynomialInterpolation, LagrangeBasisFunctionsTest) {
 }
 
 TEST(PolynomialInterpolation, LagrangeInterpolationTest) {
-    const std::vector<double> x_values = {1.0, 2.0, 3.0};
-    const std::vector<double> y_values = {2.0, 4.0, 6.0};
+    const std::vector x_values = {1.0, 2.0, 3.0};
+    const std::vector y_values = {2.0, 4.0, 6.0};
     const auto p = Interpolation::lagrange_interpolation(x_values, y_values).value();
 
     EXPECT_DOUBLE_EQ(p(1.0), 2.0);

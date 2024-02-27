@@ -36,10 +36,7 @@ using namespace xmath;
 namespace {
     using Polynomial = polynomial<double>;
     using SquareFree = square_free_decomposition<double>;
-    using value_type = Polynomial::value_type;
 
-    constexpr auto epsilon = Polynomial::epsilon;
-    auto zero = Polynomial::zero();
     auto one = Polynomial::one();
     auto X = Polynomial::monomial(1);
 }
@@ -71,42 +68,42 @@ TEST(SquareFreeDecompositionTests, PrimitivePartTest) {
 }
 
 TEST(SquareFreeDecompositionTests, YunAlgorithmNotIntegralPolynomialTest) {
-    auto p = Polynomial ::from_roots({{1., 2., 1. / 4.}});
+    const auto p = Polynomial ::from_roots({{1., 2., 1. / 4.}});
     ASSERT_TRUE(SquareFree::is_square_free(p) && !p.is_integer());
     EXPECT_EQ(SquareFree::yun_algorithm(p).value().size(), 1);
 
-    auto q = Polynomial ::from_roots({{1., 2., 1., 1./2., 3.}});
+    const auto q = Polynomial ::from_roots({{1., 2., 1., 1./2., 3.}});
     ASSERT_TRUE(!SquareFree::is_square_free(q) && !q.is_integer());
     EXPECT_FALSE(SquareFree::yun_algorithm(q).has_value());
 }
 
 TEST(SquareFreeDecompositionTests, YunAlgorithm1Test) {
-    auto p = (X - 3.).pow(3) * (X - 2.).pow(2) * (X - 1.);
-    auto seq = SquareFree::yun_algorithm(p).value();
+    const auto p = (X - 3.).pow(3) * (X - 2.).pow(2) * (X - 1.);
+    const auto seq = SquareFree::yun_algorithm(p).value();
 
     EXPECT_EQ(seq.size(), 3);
     EXPECT_EQ(p, SquareFree::from_square_free_decomposition(seq));
 }
 
 TEST(SquareFreeDecompositionTests, YunAlgorithm2Test) {
-    auto p = X.pow(2) * (X.pow(2) + 2).pow(3);
-    auto seq = SquareFree::yun_algorithm(p).value();
+    const auto p = X.pow(2) * (X.pow(2) + 2).pow(3);
+    const auto seq = SquareFree::yun_algorithm(p).value();
 
     EXPECT_EQ(seq.size(), 3);
     EXPECT_EQ(p, SquareFree::from_square_free_decomposition(seq));
 }
 
 TEST(SquareFreeDecompositionTests, YunAlgorithm3Test) {
-    auto p = (X - 4.) * (X + 3.).pow(2) * (X.pow(2) + X - 3.).pow(2) * (X.pow(2) + X).pow(4);
-    auto seq = SquareFree::yun_algorithm(p).value();
+    const auto p = (X - 4.) * (X + 3.).pow(2) * (X.pow(2) + X - 3.).pow(2) * (X.pow(2) + X).pow(4);
+    const auto seq = SquareFree::yun_algorithm(p).value();
 
     EXPECT_EQ(seq.size(), 4);
     EXPECT_EQ(p, SquareFree::from_square_free_decomposition(seq));
 }
 
 TEST(SquareFreeDecompositionTests, YunAlgorithm4Test) {
-    auto p = (X + 2).pow(2) * (X + 1).pow(3) * X.pow(4) * (X - 1).pow(5) * (X - 2).pow(6);
-    auto seq = SquareFree::yun_algorithm(p).value();
+    const auto p = (X + 2).pow(2) * (X + 1).pow(3) * X.pow(4) * (X - 1).pow(5) * (X - 2).pow(6);
+    const auto seq = SquareFree::yun_algorithm(p).value();
 
     EXPECT_EQ(seq.size(), 6);
 

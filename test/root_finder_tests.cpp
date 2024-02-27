@@ -42,22 +42,22 @@ namespace {
 }
 
 TEST(RootFinderTests, BisectionWithIncorrectsEndpointsTest) {
-    auto I = real_interval(3., 4.);
-    auto root = RootFinder::bisection(X, I);
+    const auto I = real_interval(3., 4.);
+    const auto root = RootFinder::bisection(X, I);
 
     EXPECT_FALSE(root.has_value());
 }
 
 TEST(RootFinderTests, BisectionTest) {
-    auto p = 4 * X.pow(2) + .5 * X - 4;
+    const auto p = 4 * X.pow(2) + .5 * X - 4;
 
     EXPECT_NEAR(RootFinder::bisection(p, real_interval(.0, 2.)).value(), (std::sqrt(257) - 1.) / 16., epsilon);
     EXPECT_NEAR(RootFinder::bisection(p, real_interval(-2., .0)).value(), (-1. - std::sqrt(257)) / 16., epsilon);
 }
 
 TEST(RootFinderTests, Bisection2Test) {
-    auto p = Polynomial::from_roots({-2, 0, -1, 1});
-    auto root = RootFinder::bisection(p, real_interval(-3., -1.5)).value();
+    const auto p = Polynomial::from_roots({-2, 0, -1, 1});
+    const auto root = RootFinder::bisection(p, real_interval(-3., -1.5)).value();
 
     ASSERT_NEAR(root, -2., epsilon);
     ASSERT_NEAR(p(root), 0., epsilon);
@@ -66,8 +66,8 @@ TEST(RootFinderTests, Bisection2Test) {
 }
 
 TEST(RootFinderTests, Bisection3Test) {
-    auto p = X.pow(3) - .75 * X;
-    auto root = RootFinder::bisection(p, real_interval(-.875, -.4375)).value();
+    const auto p = X.pow(3) - .75 * X;
+    const auto root = RootFinder::bisection(p, real_interval(-.875, -.4375)).value();
 
     EXPECT_NEAR(root, -std::sqrt(.75), epsilon);
     EXPECT_NEAR(p(root), 0., epsilon);
@@ -75,15 +75,15 @@ TEST(RootFinderTests, Bisection3Test) {
 }
 
 TEST(RootFinderTests, NewtonRaphsonForQudraticPolynomialTest) {
-    auto p = 4 * X.pow(2) + .5 * X - 4;
-    auto q = p.derive();
+    const auto p1 = 4 * X.pow(2) + .5 * X - 4;
+    const auto q1 = p1.derive();
 
-    EXPECT_NEAR(RootFinder::newton_raphson(p, q, 0.5).value(), 0.939451, epsilon);
-    EXPECT_NEAR(RootFinder::newton_raphson(p, q, -0.5).value(), -1.06445, epsilon);
+    EXPECT_NEAR(RootFinder::newton_raphson(p1, q1, 0.5).value(), 0.939451, epsilon);
+    EXPECT_NEAR(RootFinder::newton_raphson(p1, q1, -0.5).value(), -1.06445, epsilon);
 
-    p = X.pow(3) - 3;
-    q = p.derive();
-    EXPECT_NEAR(RootFinder::newton_raphson(p, q, 1.).value(), 1.44224, epsilon);
+    const auto p2 = X.pow(3) - 3;
+    const auto q2 = p2.derive();
+    EXPECT_NEAR(RootFinder::newton_raphson(X.pow(3) - 3, q2, 1.).value(), 1.44224, epsilon);
 }
 
 TEST(RootFinderTests, NewtonRaphsonForCubicPolynomialTest) {
@@ -99,7 +99,7 @@ TEST(RootFinderTests, NewtonRaphsonCosTest) {
     auto func = [](const auto &x) { return std::cos(x); };
     auto f_prim = [](auto x) { return -std::sin(x); };
 
-    const auto pi_half = std::numbers::pi / 2.;
+    constexpr auto pi_half = std::numbers::pi / 2.;
     EXPECT_NEAR(RootFinder::newton_raphson(func, f_prim, 1.1, 100).value(), pi_half, epsilon);
 }
 
@@ -111,17 +111,17 @@ TEST(RootFinderTests, NewtonRaphsonFailTest) {
 }
 
 TEST(RootFinderTests, RegulaFalsiTest) {
-    auto func = [](double x) { return 2 * std::cos(x); };
-    auto I = real_interval(0.25, std::numbers::pi);
-    auto zero_point = RootFinder::regula_falsi(func, I).value();
+    const auto func = [](const double x) { return 2 * std::cos(x); };
+    const auto I = real_interval(0.25, std::numbers::pi);
+    const auto zero_point = RootFinder::regula_falsi(func, I).value();
 
     EXPECT_NEAR(zero_point, .5 * std::numbers::pi, epsilon);
 }
 
 TEST(RootFinderTests, RegulaFalsi2Test) {
-    auto p = X.pow(5) - 10 * X.pow(4) + 40 * X.pow(3) - 80 * X.pow(2) + 80 * X - 30;
-    auto I = real_interval(0., 2.);
-    auto root = RootFinder::regula_falsi(p, I).value();
+    const auto p = X.pow(5) - 10 * X.pow(4) + 40 * X.pow(3) - 80 * X.pow(2) + 80 * X - 30;
+    const auto I = real_interval(0., 2.);
+    const auto root = RootFinder::regula_falsi(p, I).value();
 
     EXPECT_NEAR(root, 0.85130254011, epsilon);
 }

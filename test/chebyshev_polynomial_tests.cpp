@@ -1,4 +1,4 @@
-/// @file chebyshev_polynomial_tests.h
+/// @file chebyshev_polynomial_tests.cpp
 /// @brief
 ///
 /// @author Roland Abel
@@ -39,7 +39,6 @@ namespace {
     using ChebyshevPolynomial = chebyshev_polynomial<double>;
 
     constexpr auto epsilon = Polynomial::epsilon;
-    auto zero = Polynomial::zero();
     auto one = Polynomial::one();
     auto X = Polynomial::monomial(1, 1.0);
 }
@@ -82,41 +81,41 @@ TEST(ChebyshvPolynomialTest, FirstKindChebyshvPolynomialsTest) {
 TEST(ChebyshvPolynomialTest, FirstKindChebyshvPolynomialsWithEmptyCacheTest) {
     ChebyshevPolynomial::polynomial_sequence chebyshev_cache;
 
-    auto T_0 = ChebyshevPolynomial::create_1st_kind(0, chebyshev_cache);
+    const auto T_0 = ChebyshevPolynomial::create_1st_kind(0, chebyshev_cache);
     EXPECT_EQ(T_0, one);
 
-    auto T_1 = ChebyshevPolynomial::create_1st_kind(1, chebyshev_cache);
+    const auto T_1 = ChebyshevPolynomial::create_1st_kind(1, chebyshev_cache);
     EXPECT_EQ(T_1, X);
 
-    auto T_2 = ChebyshevPolynomial::create_1st_kind(2, chebyshev_cache);
+    const auto T_2 = ChebyshevPolynomial::create_1st_kind(2, chebyshev_cache);
     EXPECT_EQ(T_2, 2 * X.pow(2) - 1);
 
-    auto T_9 = ChebyshevPolynomial::create_1st_kind(9, chebyshev_cache);
+    const auto T_9 = ChebyshevPolynomial::create_1st_kind(9, chebyshev_cache);
     EXPECT_EQ(T_9, 256 * X.pow(9) - 576 * X.pow(7) + 432 * X.pow(5) - 120 * X.pow(3) + 9 * X);
 
-    auto T_10 = ChebyshevPolynomial::create_1st_kind(10, chebyshev_cache);
+    const auto T_10 = ChebyshevPolynomial::create_1st_kind(10, chebyshev_cache);
     EXPECT_EQ(T_10, 512 * X.pow(10) - 1280 * X.pow(8) + 1120 * X.pow(6) - 400 * X.pow(4) + 50 * X.pow(2) - 1);
 
     EXPECT_EQ(11, chebyshev_cache.size());
 }
 
 TEST(ChebyshvPolynomialTest, Roots1stKindZeroOrderTest) {
-    auto roots = ChebyshevPolynomial::chebyshev_nodes(0, Interval(-1., 1.));
+    const auto roots = ChebyshevPolynomial::chebyshev_nodes(0, Interval(-1., 1.));
     EXPECT_EQ(roots.size(), 0);
 }
 
 TEST(ChebyshvPolynomialTest, ChebyshevNodesTest) {
-    size_t n = 15;
+    constexpr size_t n = 15;
     auto nodes = ChebyshevPolynomial::chebyshev_nodes(n, Interval(-1., 1.));
-    auto T_n = ChebyshevPolynomial::create_1st_kind(n);
+    const auto T_n = ChebyshevPolynomial::create_1st_kind(n);
 
     EXPECT_EQ(nodes.size(), n);
     EXPECT_TRUE(T_n.has_roots(nodes));
     EXPECT_UNIQUE(nodes, epsilon);}
 
 TEST(ChebyshvPolynomialTest, ChebyshevNodesForIntervalTest) {
-    const auto n = 5;
-    auto I = Interval(-2.0, 3.0);
+    constexpr auto n = 5;
+    const auto I = Interval(-2.0, 3.0);
 
     const auto A = .5 * (I.lower() + I.upper());
     const auto B = .5 * (I.upper() - I.lower());

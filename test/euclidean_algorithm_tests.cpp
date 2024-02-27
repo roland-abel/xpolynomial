@@ -35,10 +35,6 @@ using namespace xmath;
 namespace {
     using Polynomial = polynomial<double>;
     using EuclideanAlgorithm = euclidean_algorithm<double>;
-
-    constexpr auto epsilon = Polynomial::epsilon;
-    auto zero = Polynomial::zero();
-    auto one = Polynomial::one();
     auto X = Polynomial::monomial(1, 1.0);
 }
 
@@ -55,7 +51,7 @@ TEST(EuclideanAlgorithmTests, ExtendedEuclideanTest) {
     auto [s, t, g] = EuclideanAlgorithm::extended_euclidean(p, q); // s, t, g such that g = gcd(p, q) = s*p + t*q
 
     EXPECT_EQ(g, 5 * (X + 1));
-    EXPECT_EQ(s, (-1) * X + 3);
+    EXPECT_EQ(s, -1 * X + 3);
     EXPECT_EQ(t, X.pow(2) - 6 * X + 10);
     EXPECT_EQ(s * p + t * q, g);
 }
