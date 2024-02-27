@@ -39,7 +39,6 @@ namespace {
     using Polynomial = polynomial<double>;
     using RootFinder = real_polynomial_root_finder<double>;
     using ChebyshevPolynomial = chebyshev_polynomial<double>;
-    using value_type = Polynomial::spec::value_type;
 
     constexpr auto epsilon = Polynomial::spec::epsilon;
     auto zero = Polynomial::zero();
@@ -58,56 +57,56 @@ TEST(RealPolynomialRootFinderTests, QuadraticPolynomialWhitoutRealRootsTest) {
 }
 
 TEST(RealPolynomialRootFinderTests, QuadraticPolynomialWithTwoRootsTest) {
-    auto p = 4 * X.pow(2) + .5 * X - 4;
-    auto roots = RootFinder::quadratic_roots(p).value();
+    const auto p = 4 * X.pow(2) + .5 * X - 4;
+    const auto roots = RootFinder::quadratic_roots(p).value();
 
     EXPECT_NEAR(get<0>(roots), (-.5 + std::sqrt(64.25)) / 8., epsilon);
     EXPECT_NEAR(get<1>(roots), (-.5 - std::sqrt(64.25)) / 8., epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, QuadraticPolynomialWithOneRootTest) {
-    auto p = (X - 0.3).pow(2);
-    auto roots = RootFinder::quadratic_roots(p).value();
+    const auto p = (X - 0.3).pow(2);
+    const auto roots = RootFinder::quadratic_roots(p).value();
 
     EXPECT_NEAR(get<0>(roots), .3, epsilon);
     EXPECT_NEAR(get<1>(roots), .3, epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, CubicPolynomialWithOneRootsTest) {
-    auto p = X.pow(3) - 5.;
-    auto roots = RootFinder::cubic_roots(p);
+    const auto p = X.pow(3) - 5.;
+    const auto roots = RootFinder::cubic_roots(p);
 
     EXPECT_EQ(roots.size(), 1);
     EXPECT_NEAR(roots[0], std::pow(5., 1. / 3.), epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, CubicNormalFormPolynomialWithThreeUnequalRootsTest) {
-    auto p = X.pow(3) - 2 * X + 1;
+    const auto p = X.pow(3) - 2 * X + 1;
 
     EXPECT_EQ((X - 1) * (X.pow(2) + X - 1), p);
     EXPECT_TRUE(p.has_roots({1., -.5 + std::sqrt(5. / 4.), -.5 - std::sqrt(5. / 4.)}));
 
-    auto roots = RootFinder::cubic_roots(p);
+    const auto roots = RootFinder::cubic_roots(p);
     EXPECT_NEAR(roots[0], 1., epsilon);
     EXPECT_NEAR(roots[1], -.5 - std::sqrt(5. / 4.), epsilon);
     EXPECT_NEAR(roots[2], -.5 + std::sqrt(5. / 4.), epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, CubicPolynomialWithThreeUnequalRootsTest) {
-    auto p = (X - 2.) * (X + 4.) * (X - 5.);
+    const auto p = (X - 2.) * (X + 4.) * (X - 5.);
     EXPECT_TRUE(p.has_roots({5., 2., -4}));
 
-    auto roots = RootFinder::cubic_roots(p);
+    const auto roots = RootFinder::cubic_roots(p);
     EXPECT_NEAR(roots[0], 5., epsilon);
     EXPECT_NEAR(roots[1], -4., epsilon);
     EXPECT_NEAR(roots[2], 2., epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, CubicPolynomialWithTwoEqualRootsTest) {
-    auto p = 3.5 * (X - 7.).pow(2) * (X - 4.);
+    const auto p = 3.5 * (X - 7.).pow(2) * (X - 4.);
     EXPECT_TRUE(p.has_roots({7., 4.}));
 
-    auto roots = RootFinder::cubic_roots(p);
+    const auto roots = RootFinder::cubic_roots(p);
     EXPECT_NEAR(roots[0], 4., epsilon);
     EXPECT_NEAR(roots[1], 7., epsilon);
     EXPECT_NEAR(roots[2], 7., epsilon);
@@ -151,8 +150,8 @@ TEST(RealPolynomialRootFinderTests, LagrangesBoundsTest) {
 }
 
 TEST(RealPolynomialRootFinderTests, SturmSequenceTest) {
-    auto p = X.pow(4) + X.pow(3) - X - 1;
-    auto seq = RootFinder::sturm_sequence(p);
+    const auto p = X.pow(4) + X.pow(3) - X - 1;
+    const auto seq = RootFinder::sturm_sequence(p);
 
     EXPECT_EQ(seq.size(), 5);
     EXPECT_EQ(seq[0], p);
@@ -165,8 +164,8 @@ TEST(RealPolynomialRootFinderTests, SturmSequenceTest) {
 }
 
 TEST(RealPolynomialRootFinderTests, SignVariationsTest) {
-    auto p = X.pow(4) + X.pow(3) - X - 1;
-    auto seq = RootFinder::sturm_sequence(p);
+    const auto p = X.pow(4) + X.pow(3) - X - 1;
+    const auto seq = RootFinder::sturm_sequence(p);
 
     auto variations = RootFinder::sign_variations(seq, -10);
     EXPECT_EQ(variations, std::vector<short>({+1, -1, +1, +1, -1}));
@@ -176,28 +175,28 @@ TEST(RealPolynomialRootFinderTests, SignVariationsTest) {
 }
 
 TEST(RealPolynomialRootFinderTests, NumberDistinctRootsTest) {
-    auto p = X.pow(4) + X.pow(3) - X - 1;
+    const auto p = X.pow(4) + X.pow(3) - X - 1;
     EXPECT_EQ(RootFinder::number_distinct_roots(p).value(), 2);
 
-    p = Polynomial::from_roots({-2.5, -1.15, 0., .5, 1.25, 4.125, 6.5}); // 7 roots
-    EXPECT_EQ(RootFinder::number_distinct_roots(p), 7);
+    const auto q = Polynomial::from_roots({-2.5, -1.15, 0., .5, 1.25, 4.125, 6.5}); // 7 roots
+    EXPECT_EQ(RootFinder::number_distinct_roots(q), 7);
 }
 
 TEST(RealPolynomialRootFinderTests, NonSquareFreePolynomialTest) {
-    auto p = (X - 2).pow(3); // non square-free polynomial
+    const auto p = (X - 2).pow(3); // non square-free polynomial
     EXPECT_FALSE(RootFinder::number_distinct_roots(p).has_value());
 }
 
 TEST(RealPolynomialRootFinderTests, NonSquareRootIsolationTest) {
-    auto p = (X - 2).pow(3); // non square-free polynomial
-    auto intervals = RootFinder::root_isolation(p);
+    const auto p = (X - 2).pow(3); // non square-free polynomial
+    const auto intervals = RootFinder::root_isolation(p);
 
     EXPECT_TRUE(intervals.empty());
 }
 
 TEST(RealPolynomialRootFinderTests, RootIsolationTest) {
-    auto p = Polynomial::from_roots({-2.5, -1.15, 0., .5, 1.25, 4.125, 6.5}); // 7 roots (is square-free polynomial)
-    auto intervals = RootFinder::root_isolation(p);
+    const auto p = Polynomial::from_roots({-2.5, -1.15, 0., .5, 1.25, 4.125, 6.5}); // 7 roots (is square-free polynomial)
+    const auto intervals = RootFinder::root_isolation(p);
 
     EXPECT_EQ(intervals.size(), 7);
     for (auto I: intervals) {
@@ -206,7 +205,7 @@ TEST(RealPolynomialRootFinderTests, RootIsolationTest) {
 }
 
 TEST(RealPolynomialRootFinderTests, FindRootsTest) {
-    auto p = Polynomial::from_roots({-2, 0, 0, -1, 1});
+    const auto p = Polynomial::from_roots({-2, 0, 0, -1, 1});
     ASSERT_TRUE(p.is_integer());
 
     auto [roots, _] = RootFinder::find_roots(p);
@@ -217,7 +216,7 @@ TEST(RealPolynomialRootFinderTests, FindRootsTest) {
 }
 
 TEST(RealPolynomialRootFinderTests, FindRootsForPolynomialWithMultipleRootsTest) {
-    auto p = Polynomial::from_roots({-2, -1, 1, 5, 5, 5});
+    const auto p = Polynomial::from_roots({-2, -1, 1, 5, 5, 5});
     ASSERT_TRUE(p.is_integer());
 
     auto [roots, multiplicities] = RootFinder::find_roots(p);
@@ -228,12 +227,12 @@ TEST(RealPolynomialRootFinderTests, FindRootsForPolynomialWithMultipleRootsTest)
 }
 
 TEST(RealPolynomialRootFinderTests, NewtonRaphsonTest) {
-    auto p = X.pow(2) - 2;
+    const auto p = X.pow(2) - 2;
     EXPECT_NEAR(RootFinder::newton_raphson(p, 1.1).value(), std::sqrt(2), epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, FindChebyshevRootsTest) {
-    const auto n = 17;
+    constexpr auto n = 17;
 
     const auto T_n = ChebyshevPolynomial::create_1st_kind(n);
     const auto [roots, multiplicities] = RootFinder::find_roots(T_n);

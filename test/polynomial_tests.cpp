@@ -42,11 +42,10 @@ namespace {
     auto X = Polynomial::monomial(1, 1.0);
 
     void check_polynomial_division(
-            const Polynomial &p,
-            const Polynomial &q,
-            const Polynomial &s,
-            const Polynomial &r) {
-
+        const Polynomial &p,
+        const Polynomial &q,
+        const Polynomial &s,
+        const Polynomial &r) {
         auto [s_prim, r_prim] = p.divide(q);
         EXPECT_EQ(s_prim, s);
         EXPECT_EQ(r_prim, r);
@@ -56,14 +55,14 @@ namespace {
 
 // Tests for the default constructor.
 TEST(PolynomialTests, DefaultConstructor) {
-    auto p = Polynomial();
+    const auto p = Polynomial();
     EXPECT_EQ(p.degree(), 0);
 }
 
 // Tests for the copy constructor.
 TEST(PolynomialTests, CopyConstructor) {
-    auto p = Polynomial({1, 2, 3});
-    auto q = Polynomial(p);
+    const auto p = Polynomial({1, 2, 3});
+    const auto q = Polynomial(p);
 
     EXPECT_TRUE(p == q);
 }
@@ -72,9 +71,9 @@ TEST(PolynomialTests, CopyConstructor) {
 TEST(PolynomialTests, ConstructorWithCoefficients) {
     EXPECT_EQ(Polynomial({0}).degree(), 0);
     EXPECT_EQ(Polynomial({0, 0, 0}).degree(), 0);
-    EXPECT_EQ(Polynomial({0, 0, 1}).degree(), 2);   // x^2
-    EXPECT_EQ(Polynomial({0, 1, -1}).degree(), 2);  // x - x^2
-    EXPECT_EQ(Polynomial({1, 2, 1}).degree(), 2);   // 1 + 2x + x^2
+    EXPECT_EQ(Polynomial({0, 0, 1}).degree(), 2); // x^2
+    EXPECT_EQ(Polynomial({0, 1, -1}).degree(), 2); // x - x^2
+    EXPECT_EQ(Polynomial({1, 2, 1}).degree(), 2); // 1 + 2x + x^2
 }
 
 // Tests for the zero polynomial.
@@ -119,9 +118,9 @@ TEST(PolynomialTests, LinearPolynomialTest) {
 
 // Tests for quadratic polynomials (degree = 2).
 TEST(PolynomialTests, QuadraticPolynomialTest) {
-    EXPECT_TRUE(Polynomial({0, 0, 1}).is_quadratic());// x^2
-    EXPECT_TRUE(Polynomial({0, 1, 1}).is_quadratic());// x + x^2
-    EXPECT_TRUE(Polynomial({1, 2, -1}).is_quadratic());// 1 + 2x - x^2
+    EXPECT_TRUE(Polynomial({0, 0, 1}).is_quadratic()); // x^2
+    EXPECT_TRUE(Polynomial({0, 1, 1}).is_quadratic()); // x + x^2
+    EXPECT_TRUE(Polynomial({1, 2, -1}).is_quadratic()); // 1 + 2x - x^2
 
     EXPECT_FALSE(Polynomial({0, 0, 1, 2, -1}).is_quadratic());
     EXPECT_FALSE(Polynomial({3, 0, 0, 1, 2, -1}).is_quadratic());
@@ -167,7 +166,7 @@ TEST(PolynomialTests, ToStringTest) {
 
 // Tests for the equal operator.
 TEST(PolynomialTests, EqualOperatorTest) {
-    auto p = Polynomial({1, 2, 3});
+    const auto p = Polynomial({1, 2, 3});
 
     EXPECT_TRUE(p == Polynomial({1, 2, 3}));
     EXPECT_TRUE(p == Polynomial({1, 2, 3, 0, 0}));
@@ -176,7 +175,7 @@ TEST(PolynomialTests, EqualOperatorTest) {
 
 // Tests for the not equal operator.
 TEST(PolynomialTests, NotEqualOperatorTest) {
-    auto p = Polynomial({1, 2, 3, 4});
+    const auto p = Polynomial({1, 2, 3, 4});
 
     EXPECT_FALSE(p != Polynomial({1, 2, 3, 4}));
     EXPECT_FALSE(p != Polynomial({1, 2, 3, 4, 0, 0}));
@@ -184,19 +183,19 @@ TEST(PolynomialTests, NotEqualOperatorTest) {
 }
 
 TEST(PolynomialTests, UnitaryPlusOperatorTest) {
-    auto p = Polynomial({1, -2, 3, -4});
+    const auto p = Polynomial({1, -2, 3, -4});
     EXPECT_EQ(+p, p);
 }
 
 TEST(PolynomialTests, UnitaryMinusOperatorTest) {
-    auto p = Polynomial({-1, 2, -3, 4});
+    const auto p = Polynomial({-1, 2, -3, 4});
     EXPECT_EQ(-p, Polynomial({1, -2, 3, -4}));
     EXPECT_EQ(-(-p), p);
 }
 
 // Tests for the index operator.
 TEST(PolynomialTests, IndexOperatorTest) {
-    auto p = Polynomial({0.5, 2.3, 4, -1, 3.6});
+    const auto p = Polynomial({0.5, 2.3, 4, -1, 3.6});
 
     EXPECT_NEAR(p[4], 3.6, epsilon);
     EXPECT_NEAR(p[3], -1, epsilon);
@@ -207,7 +206,7 @@ TEST(PolynomialTests, IndexOperatorTest) {
 
 // Tests for the power function.
 TEST(PolynomialTests, PowerFunctionTest) {
-    Polynomial p = Polynomial({0, 1});
+    const auto p = Polynomial({0, 1});
 
     EXPECT_EQ(p.pow(0), one);
     EXPECT_EQ(p.pow(1), p);
@@ -229,22 +228,22 @@ TEST(PolynomialTests, IndexOperatorGetZeroWhenOutOfRangeTest) {
 
 // Tests polynomial addition with a scalar.
 TEST(PolynomialTests, AdditionWithScalarTest) {
-    auto p = Polynomial({1, 2, 3, 4});  // 1 + 2x + 3x^2 + 4x^3
+    const auto p = Polynomial({1, 2, 3, 4}); // 1 + 2x + 3x^2 + 4x^3
     EXPECT_EQ((p + 3.5), Polynomial({4.5, 2, 3, 4}));
 
-    p = Polynomial({1, 2, 3, 0});
-    EXPECT_EQ((p + 3.5), Polynomial({4.5, 2, 3}));
-    EXPECT_EQ(p, Polynomial({1, 2, 3, 0}));
+    const auto q = Polynomial({1, 2, 3, 0});
+    EXPECT_EQ(q + 3.5, Polynomial({4.5, 2, 3}));
+    EXPECT_EQ(q, Polynomial({1, 2, 3, 0}));
 }
 
 // Tests polynomial subtraction with a scalar.
 TEST(PolynomialTests, SubstrationWithScalarTest) {
-    auto p = Polynomial({1, 2, 3, 4});  // 1 + 2x + 3x^2 + 4x^3
-    EXPECT_EQ((p - 3.5), Polynomial({-2.5, 2, 3, 4}));
+    const auto p = Polynomial({1, 2, 3, 4}); // 1 + 2x + 3x^2 + 4x^3
+    EXPECT_EQ(p - 3.5, Polynomial({-2.5, 2, 3, 4}));
 
-    p = Polynomial({1, 2, 3, 0});
-    EXPECT_EQ((p - 2.5), Polynomial({-1.5, 2, 3}));
-    EXPECT_EQ(p, Polynomial({1, 2, 3, 0}));
+    const auto q = Polynomial({1, 2, 3, 0});
+    EXPECT_EQ((q - 2.5), Polynomial({-1.5, 2, 3}));
+    EXPECT_EQ(q, Polynomial({1, 2, 3, 0}));
 }
 
 // Tests for multiplication with a scalar.
@@ -311,15 +310,15 @@ TEST(PolynomialTests, CompoundAssignmentOperatorPolynomialSubstractionTest) {
 
 // Tests polynomial multiplication.
 TEST(PolynomialTests, PolynomialMultiplicationTest) {
-    auto p = Polynomial({1, 2, 3, 4});  // 1 + 2x + 3x^2 + 4x^3
-    auto q = Polynomial({2, 2, 0});     // 2 + 2x
+    const auto p = Polynomial({1, 2, 3, 4}); // 1 + 2x + 3x^2 + 4x^3
+    const auto q = Polynomial({2, 2, 0}); // 2 + 2x
 
     EXPECT_EQ(p * q, Polynomial({2, 6, 10, 14, 8, 0})); // 2 + 6x + 10x^2 + 14x^3 + 8x^4
 }
 
 // Tests multiplication with a zero polynomial.
 TEST(PolynomialTests, MultiplicationWithZeroPolynomialTest) {
-    auto p = Polynomial({0, 0, 1, 2, 3, 4});
+    const auto p = Polynomial({0, 0, 1, 2, 3, 4});
     EXPECT_TRUE((p * zero).is_zero());
 }
 
@@ -329,21 +328,21 @@ TEST(PolynomialTests, CompoundAssignmentScalarMultiplicationOperatorTest) {
 }
 
 TEST(PolynomialTests, CompoundAssignmentPolynomialMultiplicationOperatorTest) {
-    auto p = Polynomial({1, 2, 3, 4});          // 1 + 2x + 3x^2 + 4x^3
-    const auto q = Polynomial({2, 2, 0});       // 2 + 2x
+    auto p = Polynomial({1, 2, 3, 4}); // 1 + 2x + 3x^2 + 4x^3
+    const auto q = Polynomial({2, 2, 0}); // 2 + 2x
 
     p *= q;
     EXPECT_EQ(p, Polynomial({2, 6, 10, 14, 8, 0})); // 2 + 6x + 10x^2 + 14x^3 + 8x^4
 }
 
 TEST(PolynomialTests, IsNormalizeTest) {
-    auto p = 1 + 2 * X + 3 * X.pow(2) + X.pow(3);
+    const auto p = 1 + 2 * X + 3 * X.pow(2) + X.pow(3);
     EXPECT_TRUE(p.is_normalized());
     EXPECT_TRUE(!(4.3 * p).is_normalized());
 }
 
 TEST(PolynomialTests, NormalizeTest) {
-    auto p = 1 + 2 * X + 3 * X.pow(2) + 4 * X.pow(3);
+    const auto p = 1 + 2 * X + 3 * X.pow(2) + 4 * X.pow(3);
     const auto q = p.normalize();
 
     EXPECT_EQ(q.leading_coefficient(), 1.0);
@@ -362,7 +361,7 @@ TEST(PolynomialTests, IsIntegerTest) {
 
 // Tests the derivative of a first-order polynomial.
 TEST(PolynomialTests, DerivativeOfFirstOrderTest) {
-    auto p = one - 6 * X.pow(2) + 2 * X.pow(3) + 3 * X.pow(4) + 4 * X.pow(5);
+    const auto p = one - 6 * X.pow(2) + 2 * X.pow(3) + 3 * X.pow(4) + 4 * X.pow(5);
     EXPECT_EQ(p.derive(), -12 * X + 6 * X.pow(2) + 12 * X.pow(3) + 20 * X.pow(4));
 
     EXPECT_EQ((X.pow(4) + 1).derive(), 4 * X.pow(3));
@@ -385,40 +384,36 @@ TEST(PolynomialTests, IntegrateTest) {
 
 // Tests polynomial evaluation at different points.
 TEST(PolynomialTests, EvaluateTest) {
-    auto p = Polynomial({1, 1, 2});    // 1 + x + 2x^2
+    const auto p1 = Polynomial({1, 1, 2}); // 1 + x + 2x^2
 
-    EXPECT_NEAR(p.evaluate(-2), 7.0, epsilon);
-    EXPECT_NEAR(p.evaluate(-1), 2.0, epsilon);
-    EXPECT_NEAR(p.evaluate(0), 1.0, epsilon);
-    EXPECT_NEAR(p.evaluate(1), 4.0, epsilon);
-    EXPECT_NEAR(p.evaluate(2), 11.0, epsilon);
+    EXPECT_NEAR(p1.evaluate(-2), 7.0, epsilon);
+    EXPECT_NEAR(p1.evaluate(-1), 2.0, epsilon);
+    EXPECT_NEAR(p1.evaluate(0), 1.0, epsilon);
+    EXPECT_NEAR(p1.evaluate(1), 4.0, epsilon);
+    EXPECT_NEAR(p1.evaluate(2), 11.0, epsilon);
 
-    p = Polynomial({0, -1, 1}); // -x + x^2
-    EXPECT_NEAR(p.evaluate(-1), 2., epsilon);
-    EXPECT_NEAR(p.evaluate(0), 0., epsilon);
-    EXPECT_NEAR(p.evaluate(1), 0., epsilon);
+    const auto p2 = Polynomial({0, -1, 1}); // -x + x^2
+    EXPECT_NEAR(p2.evaluate(-1), 2., epsilon);
+    EXPECT_NEAR(p2.evaluate(0), 0., epsilon);
+    EXPECT_NEAR(p2.evaluate(1), 0., epsilon);
 
-    p = Polynomial({1, -2, 1});
-    EXPECT_NEAR(p.evaluate(1), 0., epsilon);
-    EXPECT_NEAR(p.evaluate(-1), 4., epsilon);
+    const auto p3 = Polynomial({1, -2, 1});
+    EXPECT_NEAR(p3.evaluate(1), 0., epsilon);
+    EXPECT_NEAR(p3.evaluate(-1), 4., epsilon);
 }
 
 // Tests polynomial evaluation using the call operator.
 TEST(PolynomialTests, EvaluateWithOperatorTest) {
-    auto f = [](double x) { return -3 + 2 * x - std::pow(x, 2) + pow(x, 3) + 2 * pow(x, 4); };
-    auto p = -3 + 2 * X - X.pow(2) + X.pow(3) + 2 * X.pow(4);
+    auto f = [](const double x) { return -3 + 2 * x - std::pow(x, 2) + pow(x, 3) + 2 * pow(x, 4); };
+    const auto p = -3 + 2 * X - X.pow(2) + X.pow(3) + 2 * X.pow(4);
 
-    auto xs = {-2.0, -1.0, 0.0, 1.0, 2.0};
-    for (auto x: xs) {
+    for (const auto x: {-2.0, -1.0, 0.0, 1.0, 2.0}) {
         EXPECT_NEAR(p(x), f(x), epsilon);
     }
 }
 
 TEST(PolynomialTests, IsRootTest) {
-    auto p = X - 1.47;
-    EXPECT_TRUE(p.is_root(1.47));
-
-    p = X.pow(2) - 2.;
+    const auto p = X.pow(2) - 2.;
     ASSERT_NEAR(std::sqrt(2) * std::sqrt(2) - 2., 0., epsilon);
     ASSERT_NEAR(p(std::sqrt(2)), 0., epsilon);
 
@@ -456,7 +451,7 @@ TEST(PolynomialTests, FromRootsTest) {
     EXPECT_TRUE(p.is_normalized());
     EXPECT_EQ(p.degree(), 6);
 
-    const auto pi = std::numbers::pi;
+    constexpr auto pi = std::numbers::pi;
     roots = {-pi, pi};
 
     p = Polynomial::from_roots(roots);
@@ -474,37 +469,37 @@ TEST(PolynomialTests, DivideTest) {
     check_polynomial_division(X.pow(2) - 2 * X + 1., X + 2., X - 4., 9. * one);
 
     check_polynomial_division(
-            3 * X.pow(3) + X.pow(2) + X + 5, 5 * X.pow(2) + -3 * X + 1,
-            (3. / 5) * X + (14. / 25), (52. / 25) * X + (111. / 25));
+        3 * X.pow(3) + X.pow(2) + X + 5, 5 * X.pow(2) + -3 * X + 1,
+        3. / 5 * X + (14. / 25), (52. / 25) * X + (111. / 25));
 
     check_polynomial_division(
-            3 * X.pow(3) + X.pow(2) + X + 5, 5 * X.pow(2) + -3 * X + 1,
-            (3. / 5) * X + (14. / 25), (52. / 25) * X + (111. / 25));
+        3 * X.pow(3) + X.pow(2) + X + 5, 5 * X.pow(2) + -3 * X + 1,
+        3. / 5 * X + (14. / 25), (52. / 25) * X + (111. / 25));
 }
 
 TEST(PolynomialTests, DivideWithLargeLeadingCoefficientTest) {
-    const auto lc = 1e10;
-    const auto eps = 1e-13;
+    constexpr auto lc = 1e10;
+    constexpr auto eps = 1e-13;
 
     EXPECT_FALSE(nearly_equal(lc + 1., lc, eps));
     EXPECT_FALSE(nearly_equal(lc - 1., lc, eps));
     EXPECT_FALSE(nearly_zero(1. / lc, eps));
 
     check_polynomial_division(
-            lc * X.pow(4) - 1,
-            X - 1.,
-            lc * (X.pow(3) + X.pow(2) + X.pow(1) + 1.), -one + lc);
+        lc * X.pow(4) - 1,
+        X - 1.,
+        lc * (X.pow(3) + X.pow(2) + X.pow(1) + 1.), -one + lc);
 }
 
 // Tests polynomial divide function.
 TEST(PolynomialTests, DivisionOperatorTest) {
-    auto quotient = (3 * X.pow(3) + X.pow(2) + X + 5) / (5 * X.pow(2) + -3 * X + 1);
-    EXPECT_EQ(quotient, (3. / 5) * X + (14. / 25));
+    const auto quotient = (3 * X.pow(3) + X.pow(2) + X + 5) / (5 * X.pow(2) + -3 * X + 1);
+    EXPECT_EQ(quotient, 3. / 5 * X + (14. / 25));
 }
 
 TEST(PolynomialTests, ModuloOperatorTest) {
-    auto remainder = (3 * X.pow(3) + X.pow(2) + X + 5) % (5 * X.pow(2) + -3 * X + 1);
-    EXPECT_EQ(remainder, (52. / 25) * X + (111. / 25));
+    const auto remainder = (3 * X.pow(3) + X.pow(2) + X + 5) % (5 * X.pow(2) + -3 * X + 1);
+    EXPECT_EQ(remainder, 52. / 25 * X + (111. / 25));
 }
 
 TEST(PolynomialTests, CompoundAssignmentScalarDivisionOperatorTest) {
@@ -530,10 +525,10 @@ TEST(PolynomialTests, CompoundAssignmentPolynomialModuloOperatorTest) {
 
 // Test for the compose function.
 TEST(PolynomialTests, ComposeTest) {
-    Polynomial r = X;
-    Polynomial p = 1 + 2 * X;
-    Polynomial q = 3 + 4 * X;
-    Polynomial s = -1 + 2 * X + 4 * X.pow(2);
+    const Polynomial r = X;
+    const Polynomial p = 1 + 2 * X;
+    const Polynomial q = 3 + 4 * X;
+    const Polynomial s = -1 + 2 * X + 4 * X.pow(2);
 
     EXPECT_EQ(p.compose(r), p);
     EXPECT_EQ(p.compose(q), 1 + 2 * q); // p(q(x))

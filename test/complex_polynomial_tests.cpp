@@ -36,7 +36,7 @@ using namespace xmath;
 
 namespace {
     using ComplexPolynomial = complex_polynomial<double>;
-    using RealPolynomial = polynomial<double, polynomial_specification<double>>;
+    using RealPolynomial = polynomial<double>;
 
     constexpr auto i = std::complex(0., 1.);
     constexpr auto I = ComplexPolynomial::value_type(i);
@@ -53,8 +53,8 @@ namespace {
 TEST(ComplexPolynomialTests, ValueTypeCheck) {
     auto z = ComplexPolynomial::value_type(2. + 4.4 * I);
 
-    EXPECT_NEAR(z.real(), std::complex<double>(2., 4.4).real(), epsilon);
-    EXPECT_NEAR(z.imag(), std::complex<double>(2., 4.4).imag(), epsilon);
+    EXPECT_NEAR(z.real(), std::complex(2., 4.4).real(), epsilon);
+    EXPECT_NEAR(z.imag(), std::complex(2., 4.4).imag(), epsilon);
 }
 
 TEST(ComplexPolynomialTests, DefaultConstructor) {
@@ -106,7 +106,7 @@ TEST(ComplexPolynomialTests, SeparateComplexPolynomialTest) {
 }
 
 TEST(ComplexPolynomialTests, EvaluateTest) {
-    auto p = Z.pow(2) - 1.;
+    const auto p = Z.pow(2) - one;
     EXPECT_COMPLEX_NEAR(p(1), 0. + 0. * i, epsilon);
     EXPECT_COMPLEX_NEAR(p(-1.), 0. + 0. * i, epsilon);
 }
