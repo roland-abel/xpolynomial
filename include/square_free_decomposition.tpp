@@ -26,7 +26,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-#include <vector>
+#pragma once
+
 #include <numeric>
 #include <ranges>
 #include "euclidean_algorithm.h"
@@ -45,7 +46,7 @@ namespace xmath {
             return {};
         }
 
-        auto integer_coeffs = p.coefficients() | std::views::transform([](double coefficient) {
+        auto integer_coeffs = p.coefficients() | std::views::transform([](const double coefficient) {
             return std::abs(static_cast<long>(coefficient));
         });
 
@@ -63,7 +64,7 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> square_free_decomposition<T>::from_square_free_decomposition(
-            const square_free_decomposition::polynomial_sequence &square_free_seq) {
+            const polynomial_sequence &square_free_seq) {
 
         auto q = polynomial<T>::one();
         for (int k = 0; k < square_free_seq.size(); ++k) {

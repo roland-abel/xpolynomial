@@ -26,12 +26,13 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
+#pragma once
+
 #include "complex_polynomial.h"
 
 namespace xmath {
-
     template<typename T>
-    using real_values_type = polynomial<T, polynomial_specification<T>>::values_type;
+    using real_values_type = typename polynomial<T>::values_type;
 
     template<typename T>
     auto separate(const complex_polynomial<T> &polynomial) -> decltype(auto) {
@@ -42,6 +43,6 @@ namespace xmath {
             real_coeffs.push_back(z.real());
             imag_coeffs.push_back(z.imag());
         }
-        return std::pair<real_polynomial < T>, real_polynomial < T >> (real_coeffs, imag_coeffs);
+        return std::pair<real_polynomial<T>, real_polynomial<T> >(real_coeffs, imag_coeffs);
     }
 }

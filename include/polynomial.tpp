@@ -26,20 +26,17 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
+#pragma once
+
 #include <utility>
-#include <limits>
 #include <ranges>
 #include <algorithm>
-#include <iostream>
 #include "utils.h"
 #include "polynomial.h"
 
 namespace xmath {
-
-    namespace {
-        using std::views::transform;
-        using std::ranges::for_each;
-    }
+    using std::views::transform;
+    using std::ranges::for_each;
 
     template<typename T>
     polynomial<T>::polynomial() {
@@ -48,29 +45,29 @@ namespace xmath {
 
     template<typename T>
     polynomial<T>::polynomial(polynomial<T> &&p) noexcept
-            : coeffs_(std::move(p.coeffs_)) {
+        : coeffs_(std::move(p.coeffs_)) {
     }
 
     template<typename T>
     polynomial<T>::polynomial(std::initializer_list<value_type> coeffs)
-            : coeffs_(coeffs) {
+        : coeffs_(coeffs) {
         trim_coefficients();
     }
 
     template<typename T>
     polynomial<T>::polynomial(const values_type &coeffs)
-            : coeffs_(std::move(coeffs)) {
+        : coeffs_(std::move(coeffs)) {
         trim_coefficients();
     }
 
     template<typename T>
     polynomial<T>::polynomial(size_type degree)
-            : coeffs_(std::max(static_cast<size_type>(1), degree + 1)) {
+        : coeffs_(std::max(static_cast<size_type>(1), degree + 1)) {
     }
 
     template<typename T>
     polynomial<T>::polynomial(const std::ranges::range auto &range)
-            : polynomial<T>(std::vector<T>{range.begin(), range.end()}) {
+        : polynomial<T>(std::vector<T>{range.begin(), range.end()}) {
     }
 
     template<typename T>
@@ -102,7 +99,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::size_type polynomial<T>::degree() const {
+    typename polynomial<T>::size_type polynomial<T>::degree() const {
         return coeffs_.size() - 1;
     }
 
@@ -168,32 +165,32 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::value_type polynomial<T>::leading_coefficient() const {
+    typename polynomial<T>::value_type polynomial<T>::leading_coefficient() const {
         return coeffs_.back();
     }
 
     template<typename T>
-    inline const polynomial<T>::values_type &polynomial<T>::coefficients() const {
+    const typename polynomial<T>::values_type &polynomial<T>::coefficients() const {
         return coeffs_;
     }
 
     template<typename T>
-    inline polynomial<T>::value_type polynomial<T>::at(size_type index) const {
+    typename polynomial<T>::value_type polynomial<T>::at(size_type index) const {
         return index > degree() ? spec::zero : coeffs_[index];
     }
 
     template<typename T>
-    inline polynomial<T>::value_type &polynomial<T>::at(size_type index) {
+    typename polynomial<T>::value_type &polynomial<T>::at(size_type index) {
         return coeffs_[index];
     }
 
     template<typename T>
-    inline polynomial<T>::value_type polynomial<T>::operator[](size_type index) const {
+    typename polynomial<T>::value_type polynomial<T>::operator[](size_type index) const {
         return at(index);
     }
 
     template<typename T>
-    inline polynomial<T>::value_type &polynomial<T>::operator[](size_type index) {
+    typename polynomial<T>::value_type &polynomial<T>::operator[](size_type index) {
         return at(index);
     }
 
@@ -206,7 +203,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::value_type polynomial<T>::operator()(value_type x) const {
+    typename polynomial<T>::value_type polynomial<T>::operator()(value_type x) const {
         return evaluate(x);
     }
 
@@ -241,7 +238,7 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> polynomial<T>::operator-() const {
-        return (-1) * *this;
+        return -1 * *this;
     }
 
     template<typename T>
@@ -252,7 +249,7 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> polynomial<T>::operator*(value_type scalar) const {
-        return polynomial<T>(coefficients() | transform([&](const T &c) {
+        return polynomial(coefficients() | transform([&](const T &c) {
             return c * scalar;
         }));
     }
@@ -267,7 +264,7 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> polynomial<T>::operator/(value_type scalar) const {
-        return polynomial<T>(coefficients() | transform([&](const T &c) {
+        return polynomial(coefficients() | transform([&](const T &c) {
             return c / scalar;
         }));
     }
@@ -282,7 +279,7 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> polynomial<T>::operator+(const polynomial<T> &p) const {
-        auto sum = polynomial<T>(std::max(p.degree(), degree()));
+        auto sum = polynomial(std::max(p.degree(), degree()));
         for (auto i = 0; i < sum.degree() + 1; ++i) {
             sum[i] = at(i) + p[i];
         }
@@ -296,7 +293,7 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> polynomial<T>::operator*(const polynomial<T> &p) const {
-        auto product = polynomial<T>(p.degree() + degree());
+        auto product = polynomial(p.degree() + degree());
         for (auto i = 0; i < p.degree() + 1; ++i) {
             for (auto j = 0; j < degree() + 1; ++j) {
                 product[i + j] += p[i] * at(j);
@@ -364,9 +361,11 @@ namespace xmath {
     polynomial<T> polynomial<T>::pow(unsigned int exponent) const {
         if (exponent == 0) {
             return one();
-        } else if (exponent == 1) {
+        }
+        if (exponent == 1) {
             return *this;
-        } else if (exponent == 2) {
+        }
+        if (exponent == 2) {
             return *this * *this;
         }
 
@@ -391,7 +390,7 @@ namespace xmath {
 
         auto derivative = polynomial<T>(degree() - 1);
         auto index_coeff_pairs =
-                std::views::iota((size_t) 1, degree() + 1) | transform([&](int index) {
+                std::views::iota(static_cast<size_t>(1), degree() + 1) | transform([&](int index) {
                     return std::make_pair(index, at(index));
                 });
 
@@ -410,15 +409,15 @@ namespace xmath {
             return {0, at(0)};
         }
 
-        auto primitive = polynomial<T>(degree() + 1);
+        auto primitive = polynomial(degree() + 1);
         auto index_coeff_pairs =
-                std::views::iota((size_t) 1, primitive.degree() + 1) | transform([&](int index) {
+                std::views::iota(static_cast<size_t>(1), primitive.degree() + 1) | transform([&](int index) {
                     return std::make_pair(index, at(index - 1));
                 });
 
         auto anti_derive = [&](const auto &index_value) {
             auto [exponent, coeff] = index_value;
-            primitive[exponent] = (value_type)(1. / exponent) * at(exponent - 1);
+            primitive[exponent] = static_cast<value_type>(1. / exponent) * at(exponent - 1);
         };
 
         for_each(index_coeff_pairs, anti_derive);
@@ -426,7 +425,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::value_type polynomial<T>::evaluate(value_type x) const {
+    typename polynomial<T>::value_type polynomial<T>::evaluate(value_type x) const {
         auto value = leading_coefficient();
         for (long i = static_cast<long>(degree()) - 1; i >= 0; --i) {
             value = value * x + at(i);
@@ -440,7 +439,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T> operator*(typename polynomial<T>::value_type scalar, const polynomial <T> &polynomial) {
+    polynomial<T> operator*(typename polynomial<T>::value_type scalar, const polynomial<T> &polynomial) {
         return polynomial.operator*(scalar);
     }
 
@@ -450,7 +449,7 @@ namespace xmath {
         if (num_roots == 0) {
             return one();
         } else if (num_roots == 1) {
-            return polynomial<T>({-roots.front(), spec::one});
+            return polynomial({-roots.front(), spec::one});
         }
 
         auto polynomial = one();
@@ -479,13 +478,13 @@ namespace xmath {
     }
 
     template<typename T>
-    std::tuple<polynomial<T>, polynomial<T>> polynomial<T>::divide(const polynomial<T> &divisor) const {
+    std::tuple<polynomial<T>, polynomial<T> > polynomial<T>::divide(const polynomial &divisor) const {
         auto q = zero();
         auto r = *this;
 
         long delta = static_cast<long>(r.degree() - divisor.degree());
         while (r != zero() && delta >= 0) {
-            const auto t = (r.leading_coefficient() / divisor.leading_coefficient()) * monomial(delta, spec::one);
+            const auto t = r.leading_coefficient() / divisor.leading_coefficient() * monomial(delta, spec::one);
 
             q = q + t;
             r = r - divisor * t;

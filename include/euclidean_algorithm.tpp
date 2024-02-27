@@ -26,10 +26,11 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
+#pragma once
+
 #include "euclidean_algorithm.h"
 
 namespace xmath {
-
     template<typename T>
     polynomial<T> euclidean_algorithm<T>::euclidean(const polynomial<T> &p, const polynomial<T> &q) {
         auto a = p;
@@ -44,7 +45,7 @@ namespace xmath {
     }
 
     template<typename T>
-    std::tuple<polynomial<T>, polynomial<T>, polynomial<T>>
+    std::tuple<polynomial<T>, polynomial<T>, polynomial<T> >
     euclidean_algorithm<T>::extended_euclidean(const polynomial<T> &p, const polynomial<T> &q) {
         auto zero = polynomial<T>::zero();
         auto one = polynomial<T>::one();

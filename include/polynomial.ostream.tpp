@@ -26,11 +26,11 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
+#pragma once
+
 #include <sstream>
-#include "polynomial.h"
 
 namespace xmath {
-
     template<typename T>
     std::string polynomial<T>::to_string() const {
         std::stringstream os;
@@ -41,13 +41,13 @@ namespace xmath {
     template<typename T>
     std::ostream &operator<<(std::ostream &os, const polynomial<T> &p) {
         const auto epsilon = polynomial<T>::epsilon;
-        const auto X = "x";
-        const auto Power = "^";
-        const auto Space = " ";
-        const auto Plus = "+";
-        const auto Minus = "-";
+        static const auto X = "x";
+        static const auto Power = "^";
+        static const auto Space = " ";
+        static const auto Plus = "+";
+        static const auto Minus = "-";
 
-        auto to_string = [epsilon](const polynomial<T>::value_type coeff) {
+        auto to_string = [epsilon](const typename polynomial<T>::value_type coeff) {
             return nearly_zero(coeff, epsilon) ? 0.0 : coeff;
         };
 
@@ -89,4 +89,3 @@ namespace xmath {
         return os;
     }
 }
-

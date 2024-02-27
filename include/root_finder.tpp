@@ -26,9 +26,9 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-#include <limits>
+#pragma once
+
 #include <valarray>
-#include <numeric>
 #include "utils.h"
 #include "root_finder.h"
 
