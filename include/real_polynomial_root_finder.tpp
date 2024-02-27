@@ -26,7 +26,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-#include <limits>
+#pragma once
+
 #include <valarray>
 #include <numeric>
 #include "utils.h"
@@ -35,36 +36,33 @@
 #include "real_polynomial_root_finder.h"
 
 namespace xmath {
+    template<typename T, typename FP=double_t>
+    size_t sign_changes(const std::vector<T> &sequence, FP epsilon = 1e-5) {
+        auto changes = 0;
+        auto size = sequence.size();
 
-    namespace {
-        template<typename T, typename FP=double_t>
-        size_t sign_changes(const std::vector<T> &sequence, FP epsilon = 1e-5) {
-            auto changes = 0;
-            auto size = sequence.size();
-
-            if (size <= 1) {
-                return 0; // A sequence with only one value hasn't a sign change.
-            }
-
-            int prev_sign = (sequence[0] >= 0) ? 1 : -1;
-
-            for (int i = 1; i < size; ++i) {
-                if (nearly_zero<T>(sequence[i], epsilon)) {
-                    continue;
-                }
-
-                int current_sign = (sequence[i] >= 0) ? 1 : -1;
-                if (current_sign != prev_sign) {
-                    changes++;
-                    prev_sign = current_sign;
-                }
-            }
-            return changes;
+        if (size <= 1) {
+            return 0; // A sequence with only one value hasn't a sign change.
         }
+
+        int prev_sign = sequence[0] >= 0 ? 1 : -1;
+
+        for (int i = 1; i < size; ++i) {
+            if (nearly_zero<T>(sequence[i], epsilon)) {
+                continue;
+            }
+
+            int current_sign = sequence[i] >= 0 ? 1 : -1;
+            if (current_sign != prev_sign) {
+                changes++;
+                prev_sign = current_sign;
+            }
+        }
+        return changes;
     }
 
     template<typename T>
-    std::optional<std::tuple<T, T>>
+    std::optional<std::tuple<T, T> >
     real_polynomial_root_finder<T>::quadratic_roots(const polynomial<T> &p) {
         if (!p.is_quadratic()) {
             return {};
@@ -81,8 +79,8 @@ namespace xmath {
         }
 
         return std::make_tuple(
-                (-b + std::sqrt(d)) / (2. * a),
-                (-b - std::sqrt(d)) / (2. * a));
+            (-b + std::sqrt(d)) / (2. * a),
+            (-b - std::sqrt(d)) / (2. * a));
     }
 
     template<typename T>
@@ -151,7 +149,7 @@ namespace xmath {
         auto t = std::sqrt(-(std::pow(b, 2) / 4.) / (std::pow(a, 3) / 27.));
         auto phi = std::acos(b > 0 ? -t : t);
 
-        auto root = [a, phi](int k) {
+        auto root = [a, phi](const int k) {
             return 2 * std::sqrt(-a / 3.) * std::cos((phi + 2 * k * std::numbers::pi) / 3.);
         };
 
@@ -160,17 +158,16 @@ namespace xmath {
 
     template<typename T>
     std::optional<T> real_polynomial_root_finder<T>::newton_raphson(
-            const polynomial<T> &p,
-            value_type initial,
-            int max_iterations,
-            value_type tolerance) {
-
+        const polynomial<T> &p,
+        value_type initial,
+        int max_iterations,
+        value_type tolerance) {
         return root_finder<T>::newton_raphson(
-                p,
-                p.derive(),
-                initial,
-                max_iterations,
-                tolerance);
+            p,
+            p.derive(),
+            initial,
+            max_iterations,
+            tolerance);
     }
 
     template<typename T>
@@ -206,17 +203,17 @@ namespace xmath {
 
         const auto lc = p.leading_coefficient();
         const auto sum = std::accumulate(
-                p.coefficients().begin(),
-                p.coefficients().end() - 1, zero, [=](auto s, auto c) {
-                    return s + std::abs(c / lc);
-                });
+            p.coefficients().begin(),
+            p.coefficients().end() - 1, zero, [=](auto s, auto c) {
+                return s + std::abs(c / lc);
+            });
         return std::max(one, sum);
     }
 
     template<typename T>
-    real_polynomial_root_finder<T>::polynomial_sequence
+    typename real_polynomial_root_finder<T>::polynomial_sequence
     real_polynomial_root_finder<T>::sturm_sequence(const polynomial<T> &p) {
-        auto seq = std::vector<polynomial<T>>();
+        auto seq = std::vector<polynomial<T> >();
 
         seq.push_back(p);
         seq.push_back(p.derive());
@@ -232,9 +229,8 @@ namespace xmath {
 
     template<typename T>
     std::vector<short> real_polynomial_root_finder<T>::sign_variations(
-            const polynomial_sequence &seq,
-            const value_type &x) {
-
+        const polynomial_sequence &seq,
+        const value_type &x) {
         auto variations = std::vector<short>();
         for (auto p: seq) {
             auto y = p(x);
@@ -264,16 +260,16 @@ namespace xmath {
     std::optional<int> real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p) {
         return cauchy_bounds(p).and_then([&p](T bound) {
             return number_distinct_roots(p, real_interval<T>(
-                    -bound,
-                    bound,
-                    real_interval<T>::interval_bounds::opened,
-                    real_interval<T>::interval_bounds::closed));
+                                             -bound,
+                                             bound,
+                                             real_interval<T>::interval_bounds::opened,
+                                             real_interval<T>::interval_bounds::closed));
         });
     }
 
     template<typename T>
-    std::vector<real_interval<T>> real_polynomial_root_finder<T>::root_isolation(const polynomial<T> &p) {
-        auto intervals = std::vector<real_interval<T>>();
+    std::vector<real_interval<T> > real_polynomial_root_finder<T>::root_isolation(const polynomial<T> &p) {
+        auto intervals = std::vector<real_interval<T> >();
         if (p.is_constant() || !square_free_decomposition<T>::is_square_free(p)) {
             return intervals;
         }
@@ -305,8 +301,7 @@ namespace xmath {
             }
         };
 
-        auto bounds = cauchy_bounds(p);
-        if (bounds.has_value()) {
+        if (auto bounds = cauchy_bounds(p); bounds.has_value()) {
             const auto a = bounds.value();
             root_isolation(real_interval<T>(-a, a));
         }
@@ -317,7 +312,6 @@ namespace xmath {
     template<typename T>
     std::tuple<typename real_polynomial_root_finder<T>::roots_type, typename real_polynomial_root_finder<T>::multiplicities_type>
     real_polynomial_root_finder<T>::find_roots(const polynomial<T> &p, T epsilon) {
-
         auto roots = std::vector<value_type>();
         auto multiplicities = std::vector<unsigned short>();
 

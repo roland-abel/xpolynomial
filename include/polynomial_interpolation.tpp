@@ -26,18 +26,17 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
+#pragma once
+
 #include <cstdint>
 #include "polynomial_interpolation.h"
 
 namespace xmath {
-
-    namespace {
-        template<typename T>
-        using polynomial_sequence = polynomial_interpolation<T>::polynomial_sequence;
-    }
+    template<typename T>
+    using polynomial_sequence = typename polynomial_interpolation<T>::polynomial_sequence;
 
     template<typename T>
-    polynomial_interpolation<T>::polynomial_sequence
+    typename polynomial_interpolation<T>::polynomial_sequence
     polynomial_interpolation<T>::lagrange_basis(const std::vector<T> &xs) {
         const auto &one = polynomial<T>::one();
         const auto &X = polynomial<T>::monomial(1);
@@ -62,12 +61,11 @@ namespace xmath {
     }
 
     template<typename T>
-    std::optional<polynomial<T>> polynomial_interpolation<T>::lagrange_interpolation(
-            const values_type &x_values,
-            const values_type &y_values) {
-
+    std::optional<polynomial<T> > polynomial_interpolation<T>::lagrange_interpolation(
+        const values_type &x_values,
+        const values_type &y_values) {
         if (x_values.size() != y_values.size() || x_values.empty()) {
-            return{};
+            return {};
         }
 
         const auto basis_polynomials = lagrange_basis(x_values);
