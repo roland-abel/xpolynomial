@@ -20,4 +20,4 @@ set(PROJECT_NAME xpolynomial)
 set(UNIT_TEST_NAME unit-tests)
 
 add_subdirectory(samples)
-add_subdirectory(tests)
+add_subdirectory(test)
