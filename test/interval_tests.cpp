@@ -1,10 +1,10 @@
-/// @file real_interval_tests.cpp
+/// @file interval_tests.cpp
 /// @brief
 ///
 /// @author Roland Abel
-/// @date November 7, 2023
+/// @date February 27, 2024
 ///
-/// Copyright (c) 2023 Roland Abel
+/// Copyright (c) 2024 Roland Abel
 ///
 /// This software is released under the MIT License.
 ///
@@ -26,6 +26,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
+#include <numbers>
 #include <gtest/gtest.h>
 #include "interval.h"
 
@@ -40,8 +41,8 @@ namespace {
     constexpr double epsilon = 1e-9;
 }
 
-TEST(RealIntervalTests, DefaultConstructorTest) {
-    const auto I = Interval();
+TEST(IntervalTests, default_ctor_test) {
+    const auto I = Interval{};
     EXPECT_NEAR(I.lower(), 0.0, epsilon);
     EXPECT_NEAR(I.upper(), 1.0, epsilon);
     EXPECT_FALSE(I.is_empty());
@@ -50,8 +51,8 @@ TEST(RealIntervalTests, DefaultConstructorTest) {
     EXPECT_TRUE(I.is_half_open());
 }
 
-TEST(RealIntervalTests, ConstructorTest) {
-    const auto I = Interval(-1., 1.);
+TEST(IntervalTests, ctor_test) {
+    const auto I = Interval{-1., 1.};
     EXPECT_NEAR(I.lower(), -1.0, epsilon);
     EXPECT_NEAR(I.upper(), 1.0, epsilon);
 
@@ -59,55 +60,55 @@ TEST(RealIntervalTests, ConstructorTest) {
     EXPECT_TRUE(Interval().is_upper_closed());
 }
 
-TEST(RealIntervalTests, IsOpenedTest) {
+TEST(IntervalTests, is_opened_test) {
     EXPECT_FALSE(Interval(0., 1., closed, closed).is_opened());
     EXPECT_FALSE(Interval(0., 1., opened, closed).is_opened());
     EXPECT_FALSE(Interval(0., 1., closed, opened).is_opened());
     EXPECT_TRUE(Interval(0., 1., opened, opened).is_opened());
 }
 
-TEST(RealIntervalTests, IsLowerClosed) {
+TEST(IntervalTests, is_lower_closed_test) {
     EXPECT_TRUE(Interval(0., 1., closed, closed).is_lower_closed());
     EXPECT_FALSE(Interval(0., 1., opened, closed).is_lower_closed());
     EXPECT_TRUE(Interval(0., 1., closed, opened).is_lower_closed());
     EXPECT_FALSE(Interval(0., 1., opened, opened).is_lower_closed());
 }
 
-TEST(RealIntervalTests, IsUpperClosed) {
+TEST(IntervalTests, is_upper_closed_test) {
     EXPECT_TRUE(Interval(0., 1., closed, closed).is_upper_closed());
     EXPECT_TRUE(Interval(0., 1., opened, closed).is_upper_closed());
     EXPECT_FALSE(Interval(0., 1., closed, opened).is_upper_closed());
     EXPECT_FALSE(Interval(0., 1., opened, opened).is_upper_closed());
 }
 
-TEST(RealIntervalTests, IsLowerOpen) {
+TEST(IntervalTests, is_lower_open_test) {
     EXPECT_FALSE(Interval(0., 1., closed, closed).is_lower_open());
     EXPECT_TRUE(Interval(0., 1., opened, closed).is_lower_open());
     EXPECT_FALSE(Interval(0., 1., closed, opened).is_lower_open());
     EXPECT_TRUE(Interval(0., 1., opened, opened).is_lower_open());
 }
 
-TEST(RealIntervalTests, IsUpperOpen) {
+TEST(IntervalTests, is_upper_open_test) {
     EXPECT_FALSE(Interval(0., 1., closed, closed).is_upper_open());
     EXPECT_FALSE(Interval(0., 1., opened, closed).is_upper_open());
     EXPECT_TRUE(Interval(0., 1., closed, opened).is_upper_open());
     EXPECT_TRUE(Interval(0., 1., opened, opened).is_upper_open());
 }
 
-TEST(RealIntervalTests, IsClosedTest) {
+TEST(IntervalTests, is_closed_test) {
     EXPECT_FALSE(Interval(0., 1., opened, opened).is_closed());
     EXPECT_FALSE(Interval(0., 1., opened, closed).is_closed());
     EXPECT_FALSE(Interval(0., 1., closed, opened).is_closed());
     EXPECT_TRUE(Interval(0., 1., closed, closed).is_closed());
 }
 
-TEST(RealIntervalTests, IsDegenerateTest) {
+TEST(IntervalTests, is_degenerate_test) {
     EXPECT_FALSE(Interval(1., -1.).is_degenerate());
     EXPECT_TRUE(Interval(1., 1., opened, opened).is_degenerate());
     EXPECT_TRUE(Interval(2., 2., closed, closed).is_degenerate());
 }
 
-TEST(RealIntervalTests, IsEmptyTest) {
+TEST(IntervalTests, is_empty_test) {
     EXPECT_TRUE(Interval(1., -1.).is_empty());
     EXPECT_TRUE(Interval(2., 2., opened, opened).is_empty());
     EXPECT_TRUE(Interval(2., 2., closed, opened).is_empty());
@@ -115,7 +116,7 @@ TEST(RealIntervalTests, IsEmptyTest) {
     EXPECT_FALSE(Interval(2., 2., closed, closed).is_empty());
 }
 
-TEST(RealIntervalTests, IsHalfOpen) {
+TEST(IntervalTests, is_half_open_test) {
     EXPECT_TRUE(Interval(1., -1.).is_half_open());
     EXPECT_FALSE(Interval(2., 2., opened, opened).is_half_open());
     EXPECT_TRUE(Interval(2., 2., closed, opened).is_half_open());
@@ -123,9 +124,9 @@ TEST(RealIntervalTests, IsHalfOpen) {
     EXPECT_FALSE(Interval(2., 2., closed, closed).is_half_open());
 }
 
-TEST(RealIntervalTests, LinearTransform1Test) {
-    const auto I = Interval(-1., 1.);
-    const auto J = Interval(2., 5.);
+TEST(IntervalTests, linear_transform1_test) {
+    const auto I = Interval{-1., 1.};
+    const auto J = Interval{2., 5.};
     const auto map = I.linear_transform(J);
 
     EXPECT_NEAR(map(-1.), 2., epsilon);
@@ -133,9 +134,9 @@ TEST(RealIntervalTests, LinearTransform1Test) {
     EXPECT_NEAR(map(0.), 3.5, epsilon);
 }
 
-TEST(RealIntervalTests, LinearTransform2Test) {
-    const auto I = Interval(-1., 1.);
-    const auto J = Interval(0., 2 * pi);
+TEST(IntervalTests, linear_transform2_test) {
+    const auto I = Interval{-1., 1.};
+    const auto J = Interval{0., 2 * pi};
     const auto map = I.linear_transform(J);
 
     EXPECT_NEAR(map(-1.), 0., epsilon);
@@ -145,8 +146,8 @@ TEST(RealIntervalTests, LinearTransform2Test) {
     EXPECT_NEAR(map(1.), 2 * pi, epsilon);
 }
 
-TEST(RealIntervalTests, BisectTest) {
-    const auto I = Interval(-2., 1.);
+TEST(IntervalTests, bisect_test) {
+    const auto I = Interval{-2., 1.};
     const auto [I1, I2] = I.bisect();
 
     EXPECT_NEAR(I1.lower(), -2., epsilon);
@@ -155,8 +156,8 @@ TEST(RealIntervalTests, BisectTest) {
     EXPECT_NEAR(I2.upper(), 1., epsilon);
 }
 
-TEST(RealIntervalTests, BisectHalfOpenIntervalsTest) {
-    const auto I = Interval(-2., 1.);
+TEST(IntervalTests, bisect_half_open_intervals_test) {
+    const auto I = Interval{-2., 1.};
     const auto [I1, I2] = I.bisect(opened, closed);
 
     EXPECT_TRUE(I1.is_lower_open());

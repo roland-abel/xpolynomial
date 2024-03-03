@@ -26,8 +26,8 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-#ifndef REAL_INTERVAL_H_
-#define REAL_INTERVAL_H_
+#ifndef _INTERVAL_H_
+#define _INTERVAL_H_
 
 #include <cmath>
 #include <functional>
@@ -175,4 +175,4 @@ namespace xmath {
     };
 }
 
-#endif // REAL_INTERVAL_H_
+#endif // _INTERVAL_H_
