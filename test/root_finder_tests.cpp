@@ -42,7 +42,7 @@ namespace {
 }
 
 TEST(RootFinderTests, BisectionWithIncorrectsEndpointsTest) {
-    const auto I = real_interval(3., 4.);
+    const auto I = interval(3., 4.);
     const auto root = RootFinder::bisection(X, I);
 
     EXPECT_FALSE(root.has_value());
@@ -51,13 +51,13 @@ TEST(RootFinderTests, BisectionWithIncorrectsEndpointsTest) {
 TEST(RootFinderTests, BisectionTest) {
     const auto p = 4 * X.pow(2) + .5 * X - 4;
 
-    EXPECT_NEAR(RootFinder::bisection(p, real_interval(.0, 2.)).value(), (std::sqrt(257) - 1.) / 16., epsilon);
-    EXPECT_NEAR(RootFinder::bisection(p, real_interval(-2., .0)).value(), (-1. - std::sqrt(257)) / 16., epsilon);
+    EXPECT_NEAR(RootFinder::bisection(p, interval(.0, 2.)).value(), (std::sqrt(257) - 1.) / 16., epsilon);
+    EXPECT_NEAR(RootFinder::bisection(p, interval(-2., .0)).value(), (-1. - std::sqrt(257)) / 16., epsilon);
 }
 
 TEST(RootFinderTests, Bisection2Test) {
     const auto p = Polynomial::from_roots({-2, 0, -1, 1});
-    const auto root = RootFinder::bisection(p, real_interval(-3., -1.5)).value();
+    const auto root = RootFinder::bisection(p, interval(-3., -1.5)).value();
 
     ASSERT_NEAR(root, -2., epsilon);
     ASSERT_NEAR(p(root), 0., epsilon);
@@ -67,7 +67,7 @@ TEST(RootFinderTests, Bisection2Test) {
 
 TEST(RootFinderTests, Bisection3Test) {
     const auto p = X.pow(3) - .75 * X;
-    const auto root = RootFinder::bisection(p, real_interval(-.875, -.4375)).value();
+    const auto root = RootFinder::bisection(p, interval(-.875, -.4375)).value();
 
     EXPECT_NEAR(root, -std::sqrt(.75), epsilon);
     EXPECT_NEAR(p(root), 0., epsilon);
@@ -112,7 +112,7 @@ TEST(RootFinderTests, NewtonRaphsonFailTest) {
 
 TEST(RootFinderTests, RegulaFalsiTest) {
     const auto func = [](const double x) { return 2 * std::cos(x); };
-    const auto I = real_interval(0.25, std::numbers::pi);
+    const auto I = interval(0.25, std::numbers::pi);
     const auto zero_point = RootFinder::regula_falsi(func, I).value();
 
     EXPECT_NEAR(zero_point, .5 * std::numbers::pi, epsilon);
@@ -120,7 +120,7 @@ TEST(RootFinderTests, RegulaFalsiTest) {
 
 TEST(RootFinderTests, RegulaFalsi2Test) {
     const auto p = X.pow(5) - 10 * X.pow(4) + 40 * X.pow(3) - 80 * X.pow(2) + 80 * X - 30;
-    const auto I = real_interval(0., 2.);
+    const auto I = interval(0., 2.);
     const auto root = RootFinder::regula_falsi(p, I).value();
 
     EXPECT_NEAR(root, 0.85130254011, epsilon);

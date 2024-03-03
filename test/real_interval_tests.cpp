@@ -27,16 +27,16 @@
 /// THE SOFTWARE.
 
 #include <gtest/gtest.h>
-#include "real_interval.h"
+#include "interval.h"
 
 using namespace xmath;
 
 namespace {
     using std::numbers::pi;
-    using Interval = real_interval<double>;
+    using Interval = interval<double>;
 
-    auto opened = real_interval<double>::interval_bounds::opened;
-    auto closed = real_interval<double>::interval_bounds::closed;
+    auto opened = interval<double>::interval_bounds::opened;
+    auto closed = interval<double>::interval_bounds::closed;
     constexpr double epsilon = 1e-9;
 }
 

@@ -32,7 +32,7 @@
 #include <vector>
 #include <functional>
 #include <cstdint>
-#include "real_interval.h"
+#include "interval.h"
 #include "polynomial.h"
 
 namespace xmath {
@@ -63,7 +63,7 @@ namespace xmath {
         /// @param N  The N of the Chebyshev nodes.
         /// @param I The interval.
         /// @return A vector containing the Chebyshev nodes for the specified N within the interval.
-        static values_type chebyshev_nodes(size_t N, const real_interval<T> &I = real_interval<value_type>(-1., 1.));
+        static values_type chebyshev_nodes(size_t N, const interval<T> &I = interval<value_type>(-1., 1.));
 
         /// Calculates the Chebyshev series of order n for the given point and the coefficients alphas.
         /// @param alphas A vector containing the coefficients for the Chebyshev series polynomial.
