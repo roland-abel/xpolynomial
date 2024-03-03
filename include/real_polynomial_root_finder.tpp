@@ -242,7 +242,7 @@ namespace xmath {
     }
 
     template<typename T>
-    std::optional<int> real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p, const real_interval<T> &I) {
+    std::optional<int> real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p, const interval<T> &I) {
         if (!I.is_lower_open() || !I.is_upper_closed()) {
             return {};
         }
@@ -259,29 +259,29 @@ namespace xmath {
     template<typename T>
     std::optional<int> real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p) {
         return cauchy_bounds(p).and_then([&p](T bound) {
-            return number_distinct_roots(p, real_interval<T>(
-                                             -bound,
-                                             bound,
-                                             real_interval<T>::interval_bounds::opened,
-                                             real_interval<T>::interval_bounds::closed));
+            return number_distinct_roots(p, interval<T>(
+                    -bound,
+                    bound,
+                    interval<T>::interval_bounds::opened,
+                    interval<T>::interval_bounds::closed));
         });
     }
 
     template<typename T>
-    std::vector<real_interval<T> > real_polynomial_root_finder<T>::root_isolation(const polynomial<T> &p) {
-        auto intervals = std::vector<real_interval<T> >();
+    std::vector<interval<T> > real_polynomial_root_finder<T>::root_isolation(const polynomial<T> &p) {
+        auto intervals = std::vector<interval<T> >();
         if (p.is_constant() || !square_free_decomposition<T>::is_square_free(p)) {
             return intervals;
         }
 
         auto seq = sturm_sequence(p); // The Sturm's polynomial sequence.
 
-        auto number_of_roots = [&seq](const real_interval<T> &I) {
-            // Gets the number of roots of the polynomial p within the real_interval I.
+        auto number_of_roots = [&seq](const interval<T> &I) {
+            // Gets the number of roots of the polynomial p within the interval I.
             return xmath::sign_changes(sign_variations(seq, I.lower())) - xmath::sign_changes(sign_variations(seq, I.upper()));
         };
 
-        std::function<void(const real_interval<T> &)> root_isolation = [&, p, number_of_roots](const real_interval<T> &I) {
+        std::function<void(const interval<T> &)> root_isolation = [&, p, number_of_roots](const interval<T> &I) {
             const auto epsilon = polynomial<T>::epsilon;
             auto r = number_of_roots(I);
             if (r == 0) {
@@ -293,8 +293,8 @@ namespace xmath {
                 const auto c = (I.lower() + I.upper()) / static_cast<T>(2.);
                 const auto t = nearly_zero(p(c), epsilon) ? epsilon : 0;
 
-                const auto J_left = real_interval(I.lower(), c + t);
-                const auto J_right = real_interval(c + t, I.upper());
+                const auto J_left = interval(I.lower(), c + t);
+                const auto J_right = interval(c + t, I.upper());
 
                 root_isolation(J_left);
                 root_isolation(J_right);
@@ -303,7 +303,7 @@ namespace xmath {
 
         if (auto bounds = cauchy_bounds(p); bounds.has_value()) {
             const auto a = bounds.value();
-            root_isolation(real_interval<T>(-a, a));
+            root_isolation(interval<T>(-a, a));
         }
 
         return intervals;

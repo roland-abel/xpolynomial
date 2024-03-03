@@ -32,7 +32,7 @@
 #include <utility>
 #include <iostream>
 #include <vector>
-#include "real_interval.h"
+#include "interval.h"
 #include "polynomial.h"
 
 namespace xmath {
@@ -117,9 +117,9 @@ namespace xmath {
         /// if the given polynomial is square-free polynomial.
         /// @param p The square-free polynomial for which the number of roots are to determined.
         /// @param I The real half-open interval (a, b] in which to find the roots of p.
-        /// @return The number of distinct real roots within the specified real_interval,
+        /// @return The number of distinct real roots within the specified interval,
         /// or no value if the polynomial p is not square-free.
-        static std::optional<int> number_distinct_roots(const polynomial<T> &p, const real_interval<T> &I);
+        static std::optional<int> number_distinct_roots(const polynomial<T> &p, const interval<T> &I);
 
         /// @brief Counts the number of distinct real roots of a square-free polynomial.
         /// @param p The square-free polynomial for which the number of roots are to determined.
@@ -130,7 +130,7 @@ namespace xmath {
         /// @param p The polynomial for which to isolate the real roots.
         /// @return A vector of intervals containing the isolated real roots
         /// or an empty vector if no roots are found or if polynomial is not square-free.
-        static std::vector<real_interval<T>> root_isolation(const polynomial<T> &p);
+        static std::vector<interval<T>> root_isolation(const polynomial<T> &p);
 
         /// @brief Finds the roots of a polynomial. This method requires a polynomial whose coefficients
         /// are given exactly as integers.

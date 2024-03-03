@@ -35,7 +35,7 @@ using namespace xmath;
 namespace {
     using std::numbers::pi;
     using Polynomial = polynomial<double>;
-    using Interval = real_interval<double>;
+    using Interval = interval<double>;
     using ChebyshevPolynomial = chebyshev_polynomial<double>;
 
     constexpr auto epsilon = Polynomial::epsilon;

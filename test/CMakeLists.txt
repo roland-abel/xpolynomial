@@ -13,6 +13,7 @@ add_executable(${UNIT_TEST_NAME}
         real_interval_tests.cpp
         polynomial_interpolation_tests.cpp
         utils_tests.cpp
+        polynomial_parser_tests.cpp
 )
 
 target_include_directories(${UNIT_TEST_NAME} PUBLIC ../include)

@@ -37,7 +37,7 @@ namespace xmath {
     template<typename T>
     std::optional<T> root_finder<T>::bisection(
             const std::function<value_type(value_type)> &func,
-            const real_interval<value_type> &I,
+            const interval<value_type> &I,
             value_type epsilon) {
 
         if (greater_than_or_equal(func(I.lower()) * func(I.upper()), 0., epsilon)) {
@@ -65,7 +65,7 @@ namespace xmath {
     template<typename T>
     std::optional<T> root_finder<T>::regula_falsi(
             const std::function<value_type(value_type)> &func,
-            const real_interval<value_type> &I,
+            const interval<value_type> &I,
             value_type epsilon) {
 
         if (greater_than_or_equal(func(I.lower()) * func(I.upper()), 0., epsilon)) {

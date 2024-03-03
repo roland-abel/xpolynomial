@@ -94,7 +94,7 @@ namespace xmath {
     template<typename T>
     typename chebyshev_polynomial<T>::values_type chebyshev_polynomial<T>::chebyshev_nodes(
         size_t N,
-        const real_interval<T> &I) {
+        const interval<T> &I) {
         if (N == 0) {
             xmath::chebyshev_polynomial<T>::values_type();
         }

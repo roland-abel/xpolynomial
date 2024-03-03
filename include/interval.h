@@ -1,4 +1,4 @@
-/// @file real_interval.h
+/// @file interval.h
 /// @brief Interval over real numbers.
 ///
 /// @author Roland Abel
@@ -62,7 +62,7 @@ namespace xmath {
     /// @tparam T The data type of the interval endpoints.
     /// @tparam FT The floating-point specification type.
     template<typename T, typename FT = floating_point_specification<T>>
-    class real_interval : std::pair<T, T> {
+    class interval : std::pair<T, T> {
     public:
         using spec = floating_point_specification<T>;
         using floating_point_type = typename spec::floating_point_type;
@@ -81,8 +81,8 @@ namespace xmath {
 
     public:
         /// @brief Creates the closed interval [0., 1.].
-        real_interval()
-                : real_interval(spec::zero, spec::one) {
+        interval()
+                : interval(spec::zero, spec::one) {
         }
 
         /// Constructor that creates a closed/opened interval with the boundaries `a` and `b`.
@@ -90,7 +90,7 @@ namespace xmath {
         /// @param b The upper endpoint of the interval.
         /// @param lower The lower boundary closed or opened (default opened).
         /// @param upper The lower boundary closed or opened (default closed).
-        real_interval(T a, T b, interval_bounds lower = opened, interval_bounds upper = closed)
+        interval(T a, T b, interval_bounds lower = opened, interval_bounds upper = closed)
                 : std::pair<T, T>(a, b) {
             lower_ = lower;
             upper_ = upper;
@@ -148,18 +148,18 @@ namespace xmath {
 
         /// Gets a tuple of two intervals created by the current interval by bisection.
         /// @return A tuple of two intervals.
-        std::pair<real_interval<T>, real_interval<T>>
+        std::pair<interval<T>, interval<T>>
         bisect(interval_bounds lower_bounds = opened, interval_bounds upper_bounds = closed) const {
             const auto c = (lower() + upper()) / static_cast<T>(2.);
             return std::make_pair(
-                    real_interval(lower(), c, lower_bounds, upper_bounds),
-                    real_interval(c, upper(), lower_bounds, upper_bounds));
+                    interval(lower(), c, lower_bounds, upper_bounds),
+                    interval(c, upper(), lower_bounds, upper_bounds));
         }
 
         /// Gets a function that map linear the interval to the given interval.
         /// @param I The interval.
         /// @return The linear mapping function.
-        std::function<T(const T &x)> linear_transform(const real_interval<T> &I) const {
+        std::function<T(const T &x)> linear_transform(const interval<T> &I) const {
             const auto a = lower(), b = upper(), alpha = I.lower(), beta = I.upper();
             const auto m = (beta - alpha) / (b - a), c = (alpha * b - beta * a) / (b - a);
 

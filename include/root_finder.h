@@ -41,27 +41,27 @@ namespace xmath {
     public:
         using value_type = T;
 
-        /// @brief Perform the bisection method to find a zero point of the given function within the specified real_interval.
-        /// This method failed if the Intermediate Value Theorem conditions are not met (The function has the same sign at both real_interval boundaries).
+        /// @brief Perform the bisection method to find a zero point of the given function within the specified interval.
+        /// This method failed if the Intermediate Value Theorem conditions are not met (The function has the same sign at both interval boundaries).
         /// @param func The function for which the zero point needs to be found.
         /// @param I The real interval.
         /// @param epsilon The desired accuracy for the root approximation (default is 1e-15).
-        /// @return The approximate zero point of the function within the given real_interval.
+        /// @return The approximate zero point of the function within the given interval.
         static std::optional<T> bisection(
                 const std::function<value_type(value_type)> &func,
-                const real_interval<value_type> &I,
+                const interval<value_type> &I,
                 value_type epsilon = 1e-15);
 
-        /// @brief Perform the regula falsi method to find a zero point of the given function within the specified real_interval.
+        /// @brief Perform the regula falsi method to find a zero point of the given function within the specified interval.
         /// @param func The function for which the zero point needs to be found.
-        /// @param I The real_interval.
+        /// @param I The interval.
         /// @param epsilon The desired accuracy for the root approximation (default is 1e-15).
-        /// @return The approximate zero point of the function within the given real_interval.
+        /// @return The approximate zero point of the function within the given interval.
         ///
         /// @note If no solution is found, the returned optional<> has not a value.
         static std::optional<T> regula_falsi(
                 const std::function<value_type(value_type)> &func,
-                const real_interval<value_type> &I,
+                const interval<value_type> &I,
                 value_type epsilon = 1e-15);
 
         /// @brief Computes an approximation of a root for an equation using the Newton-Raphson method.
