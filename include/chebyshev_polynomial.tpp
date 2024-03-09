@@ -29,6 +29,7 @@
 #pragma once
 
 #include <ranges>
+#include <numbers>
 #include "chebyshev_polynomial.h"
 
 namespace xmath {

@@ -30,6 +30,7 @@
 
 #include <valarray>
 #include <numeric>
+#include <numbers>
 #include "utils.h"
 #include "root_finder.h"
 #include "square_free_decomposition.h"

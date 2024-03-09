@@ -44,7 +44,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::polynomial(polynomial<T> &&p) noexcept
+    polynomial<T>::polynomial(polynomial<T>&& p) noexcept
         : coeffs_(std::move(p.coeffs_)) {
     }
 
@@ -55,7 +55,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::polynomial(const values_type &coeffs)
+    polynomial<T>::polynomial(const values_type& coeffs)
         : coeffs_(std::move(coeffs)) {
         trim_coefficients();
     }
@@ -66,7 +66,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T>::polynomial(const std::ranges::range auto &range)
+    polynomial<T>::polynomial(const std::ranges::range auto& range)
         : polynomial<T>(std::vector<T>{range.begin(), range.end()}) {
     }
 
@@ -104,12 +104,17 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T> &polynomial<T>::trim_coefficients() {
-        auto coeff = coeffs_.rbegin();
-        while (coeffs_.size() > 1 && nearly_zero(*coeff)) {
-            coeffs_.pop_back();
-            ++coeff;
+    polynomial<T>& polynomial<T>::trim_coefficients() {
+        auto const is_not_zero = [](const auto& coeff) { return !nearly_zero(coeff); };
+
+        if (coeffs_.empty()) {
+            coeffs_.push_back(spec::zero);
+            return *this;
         }
+
+        auto first_non_zero = std::find_if(coeffs_.rbegin(), coeffs_.rend() - 1, is_not_zero);
+        coeffs_.erase(first_non_zero.base(), coeffs_.end());
+
         return *this;
     }
 
@@ -170,7 +175,7 @@ namespace xmath {
     }
 
     template<typename T>
-    const typename polynomial<T>::values_type &polynomial<T>::coefficients() const {
+    const typename polynomial<T>::values_type& polynomial<T>::coefficients() const {
         return coeffs_;
     }
 
@@ -180,7 +185,7 @@ namespace xmath {
     }
 
     template<typename T>
-    typename polynomial<T>::value_type &polynomial<T>::at(size_type index) {
+    typename polynomial<T>::value_type& polynomial<T>::at(size_type index) {
         return coeffs_[index];
     }
 
@@ -190,16 +195,16 @@ namespace xmath {
     }
 
     template<typename T>
-    typename polynomial<T>::value_type &polynomial<T>::operator[](size_type index) {
+    typename polynomial<T>::value_type& polynomial<T>::operator[](size_type index) {
         return at(index);
     }
 
     template<typename T>
-    bool polynomial<T>::operator==(const polynomial<T> &p) const {
+    bool polynomial<T>::operator==(const polynomial<T>& p) const {
         auto is_equal = [](value_type a, value_type b) { return nearly_equal(a, b); };
         return (p.degree() == degree())
-               && std::equal(coefficients().cbegin(), coefficients().cend(),
-                             p.coefficients().cbegin(), is_equal);
+            && std::equal(coefficients().cbegin(), coefficients().cend(),
+                          p.coefficients().cbegin(), is_equal);
     }
 
     template<typename T>
@@ -208,7 +213,7 @@ namespace xmath {
     }
 
     template<typename T>
-    bool polynomial<T>::operator!=(const polynomial<T> &p) const {
+    bool polynomial<T>::operator!=(const polynomial<T>& p) const {
         return !(*this == p);
     }
 
@@ -226,7 +231,7 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T> &polynomial<T>::operator+=(value_type scalar) {
+    polynomial<T>& polynomial<T>::operator+=(value_type scalar) {
         at(0) += scalar;
         return *this;
     }
@@ -242,21 +247,21 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T> &polynomial<T>::operator-=(value_type scalar) {
+    polynomial<T>& polynomial<T>::operator-=(value_type scalar) {
         at(0) -= scalar;
         return *this;
     }
 
     template<typename T>
     polynomial<T> polynomial<T>::operator*(value_type scalar) const {
-        return polynomial(coefficients() | transform([&](const T &c) {
+        return polynomial(coefficients() | transform([&](const T& c) {
             return c * scalar;
         }));
     }
 
     template<typename T>
-    polynomial<T> &polynomial<T>::operator*=(value_type scalar) {
-        for_each(coeffs_, [&](value_type &c) {
+    polynomial<T>& polynomial<T>::operator*=(value_type scalar) {
+        for_each(coeffs_, [&](value_type& c) {
             c *= scalar;
         });
         return *this;
@@ -264,21 +269,21 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> polynomial<T>::operator/(value_type scalar) const {
-        return polynomial(coefficients() | transform([&](const T &c) {
+        return polynomial(coefficients() | transform([&](const T& c) {
             return c / scalar;
         }));
     }
 
     template<typename T>
-    polynomial<T> &polynomial<T>::operator/=(value_type scalar) {
-        for_each(coeffs_, [&](value_type &c) {
+    polynomial<T>& polynomial<T>::operator/=(value_type scalar) {
+        for_each(coeffs_, [&](value_type& c) {
             c /= scalar;
         });
         return *this;
     }
 
     template<typename T>
-    polynomial<T> polynomial<T>::operator+(const polynomial<T> &p) const {
+    polynomial<T> polynomial<T>::operator+(const polynomial<T>& p) const {
         auto sum = polynomial(std::max(p.degree(), degree()));
         for (auto i = 0; i < sum.degree() + 1; ++i) {
             sum[i] = at(i) + p[i];
@@ -287,12 +292,12 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T> polynomial<T>::operator-(const polynomial<T> &p) const {
+    polynomial<T> polynomial<T>::operator-(const polynomial<T>& p) const {
         return *this + (-1) * p;
     }
 
     template<typename T>
-    polynomial<T> polynomial<T>::operator*(const polynomial<T> &p) const {
+    polynomial<T> polynomial<T>::operator*(const polynomial<T>& p) const {
         auto product = polynomial(p.degree() + degree());
         for (auto i = 0; i < p.degree() + 1; ++i) {
             for (auto j = 0; j < degree() + 1; ++j) {
@@ -303,53 +308,53 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T> &polynomial<T>::operator+=(const polynomial<T> &p) {
+    polynomial<T>& polynomial<T>::operator+=(const polynomial<T>& p) {
         coeffs_.resize(std::max(p.degree(), degree()) + 1);
-        for (auto i = 0; i < coeffs_.size() + 1; ++i) {
+        for (auto i = 0; i < coeffs_.size(); ++i) {
             at(i) += p[i];
         }
         return trim_coefficients();
     }
 
     template<typename T>
-    polynomial<T> &polynomial<T>::operator-=(const polynomial<T> &p) {
+    polynomial<T>& polynomial<T>::operator-=(const polynomial<T>& p) {
         coeffs_.resize(std::max(p.degree(), degree()) + 1);
-        for (auto i = 0; i < coeffs_.size() + 1; ++i) {
+        for (auto i = 0; i < coeffs_.size(); ++i) {
             at(i) -= p[i];
         }
         return trim_coefficients();
     }
 
     template<typename T>
-    polynomial<T> &polynomial<T>::operator*=(const polynomial<T> &p) {
+    polynomial<T>& polynomial<T>::operator*=(const polynomial<T>& p) {
         coeffs_ = std::move(((*this) * p).coeffs_);
         return *this;
     }
 
     template<typename T>
-    polynomial<T> &polynomial<T>::operator/=(const polynomial<T> &p) {
+    polynomial<T>& polynomial<T>::operator/=(const polynomial<T>& p) {
         coeffs_ = std::move(((*this) / p).coeffs_);
         return *this;
     }
 
     template<typename T>
-    polynomial<T> polynomial<T>::operator/(const polynomial<T> &p) const {
+    polynomial<T> polynomial<T>::operator/(const polynomial<T>& p) const {
         return get<0>(divide(p));
     }
 
     template<typename T>
-    polynomial<T> polynomial<T>::operator%(const polynomial<T> &p) const {
+    polynomial<T> polynomial<T>::operator%(const polynomial<T>& p) const {
         return get<1>(divide(p));
     }
 
     template<typename T>
-    polynomial<T> &polynomial<T>::operator%=(const polynomial<T> &p) {
+    polynomial<T>& polynomial<T>::operator%=(const polynomial<T>& p) {
         coeffs_ = std::move(((*this) % p).coeffs_);
         return *this;
     }
 
     template<typename T>
-    polynomial<T> polynomial<T>::compose(const polynomial<T> &q) const {
+    polynomial<T> polynomial<T>::compose(const polynomial<T>& q) const {
         auto composition = zero();
         for (size_t i = 0; i < degree() + 1; ++i) {
             composition = composition + at(i) * q.pow(i);
@@ -390,11 +395,11 @@ namespace xmath {
 
         auto derivative = polynomial<T>(degree() - 1);
         auto index_coeff_pairs =
-                std::views::iota(static_cast<size_t>(1), degree() + 1) | transform([&](int index) {
-                    return std::make_pair(index, at(index));
-                });
+            std::views::iota(static_cast<size_t>(1), degree() + 1) | transform([&](int index) {
+                return std::make_pair(index, at(index));
+            });
 
-        auto derive = [&](const auto &index_value) {
+        auto derive = [&](const auto& index_value) {
             auto [exponent, coeff] = index_value;
             derivative[exponent - 1] = T(exponent) * coeff;
         };
@@ -411,11 +416,11 @@ namespace xmath {
 
         auto primitive = polynomial(degree() + 1);
         auto index_coeff_pairs =
-                std::views::iota(static_cast<size_t>(1), primitive.degree() + 1) | transform([&](int index) {
-                    return std::make_pair(index, at(index - 1));
-                });
+            std::views::iota(static_cast<size_t>(1), primitive.degree() + 1) | transform([&](int index) {
+                return std::make_pair(index, at(index - 1));
+            });
 
-        auto anti_derive = [&](const auto &index_value) {
+        auto anti_derive = [&](const auto& index_value) {
             auto [exponent, coeff] = index_value;
             primitive[exponent] = static_cast<value_type>(1. / exponent) * at(exponent - 1);
         };
@@ -434,26 +439,27 @@ namespace xmath {
     }
 
     template<typename T>
-    polynomial<T> operator+(typename polynomial<T>::value_type scalar, const polynomial<T> &polynomial) {
+    polynomial<T> operator+(typename polynomial<T>::value_type scalar, const polynomial<T>& polynomial) {
         return polynomial.operator+(scalar);
     }
 
     template<typename T>
-    polynomial<T> operator*(typename polynomial<T>::value_type scalar, const polynomial<T> &polynomial) {
+    polynomial<T> operator*(typename polynomial<T>::value_type scalar, const polynomial<T>& polynomial) {
         return polynomial.operator*(scalar);
     }
 
     template<typename T>
-    polynomial<T> polynomial<T>::from_roots(const values_type &roots) {
+    polynomial<T> polynomial<T>::from_roots(const values_type& roots) {
         const auto num_roots = roots.size();
         if (num_roots == 0) {
             return one();
-        } else if (num_roots == 1) {
+        }
+        else if (num_roots == 1) {
             return polynomial({-roots.front(), spec::one});
         }
 
         auto polynomial = one();
-        for (auto root: roots) {
+        for (auto root : roots) {
             polynomial = polynomial * (monomial(1) - root);
         }
         return polynomial.normalize();
@@ -465,20 +471,20 @@ namespace xmath {
     }
 
     template<typename T>
-    bool polynomial<T>::is_root(const value_type &value) const {
+    bool polynomial<T>::is_root(const value_type& value) const {
         const auto y = evaluate(value);
         return nearly_zero(y);
     }
 
     template<typename T>
-    bool polynomial<T>::has_roots(const values_type &values) const {
-        return std::all_of(values.begin(), values.end(), [&](const auto &value) {
+    bool polynomial<T>::has_roots(const values_type& values) const {
+        return std::all_of(values.begin(), values.end(), [&](const auto& value) {
             return is_root(value);
         });
     }
 
     template<typename T>
-    std::tuple<polynomial<T>, polynomial<T> > polynomial<T>::divide(const polynomial &divisor) const {
+    std::tuple<polynomial<T>, polynomial<T>> polynomial<T>::divide(const polynomial& divisor) const {
         auto q = zero();
         auto r = *this;
 
