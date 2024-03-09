@@ -29,6 +29,7 @@
 #pragma once
 
 #include <ranges>
+#include <numbers>
 #include <numeric>
 #include <algorithm>
 #include <vector>
