@@ -394,10 +394,9 @@ namespace xmath {
         }
 
         auto derivative = polynomial<T>(degree() - 1);
-        auto index_coeff_pairs =
-            std::views::iota(static_cast<size_t>(1), degree() + 1) | transform([&](int index) {
-                return std::make_pair(index, at(index));
-            });
+        auto index_coeff_pairs = std::views::iota(static_cast<size_t>(1), degree() + 1) | transform([&](auto index) {
+            return std::make_pair(index, at(index));
+        });
 
         auto derive = [&](const auto& index_value) {
             auto [exponent, coeff] = index_value;
@@ -415,8 +414,7 @@ namespace xmath {
         }
 
         auto primitive = polynomial(degree() + 1);
-        auto index_coeff_pairs =
-            std::views::iota(static_cast<size_t>(1), primitive.degree() + 1) | transform([&](int index) {
+        auto index_coeff_pairs = std::views::iota(static_cast<size_t>(1), primitive.degree() + 1) | transform([&](auto index) {
                 return std::make_pair(index, at(index - 1));
             });
 

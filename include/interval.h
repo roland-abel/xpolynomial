@@ -26,8 +26,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-#ifndef _INTERVAL_H_
-#define _INTERVAL_H_
+#pragma once
 
 #include <cmath>
 #include <functional>
@@ -174,5 +173,3 @@ namespace xmath {
         interval_bounds upper_;
     };
 }
-
-#endif // _INTERVAL_H_

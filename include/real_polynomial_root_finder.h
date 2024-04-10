@@ -119,12 +119,12 @@ namespace xmath {
         /// @param I The real half-open interval (a, b] in which to find the roots of p.
         /// @return The number of distinct real roots within the specified interval,
         /// or no value if the polynomial p is not square-free.
-        static std::optional<int> number_distinct_roots(const polynomial<T> &p, const interval<T> &I);
+        static std::optional<size_t> number_distinct_roots(const polynomial<T> &p, const interval<T> &I);
 
         /// @brief Counts the number of distinct real roots of a square-free polynomial.
         /// @param p The square-free polynomial for which the number of roots are to determined.
         /// @return The number of distinct real roots, or no value if the polynomial p is not square-free.
-        static std::optional<int> number_distinct_roots(const polynomial<T> &p);
+        static std::optional<size_t> number_distinct_roots(const polynomial<T> &p);
 
         /// @brief Isolates the real roots of a polynomial within specified intervals.
         /// @param p The polynomial for which to isolate the real roots.

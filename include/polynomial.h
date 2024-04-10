@@ -385,7 +385,6 @@ namespace xmath {
         /// @brief Checks if a value is nearly zero within a small epsilon.
         static bool nearly_zero(value_type a);
 
-    private:
         values_type coeffs_;
     };
 }
