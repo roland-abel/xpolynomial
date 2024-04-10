@@ -61,9 +61,9 @@ namespace xmath {
     }
 
     template<typename T>
-    std::optional<polynomial<T> > polynomial_interpolation<T>::lagrange_interpolation(
-        const values_type &x_values,
-        const values_type &y_values) {
+    std::optional<polynomial<T>> polynomial_interpolation<T>::lagrange_interpolation(
+            const values_type &x_values,
+            const values_type &y_values) {
         if (x_values.size() != y_values.size() || x_values.empty()) {
             return {};
         }

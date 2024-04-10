@@ -49,7 +49,6 @@ namespace xmath {
     private:
         static polynomial_sequence legendre_polynomial_;
     };
-
 }
 
 #include "legendre_polynomial.tpp"

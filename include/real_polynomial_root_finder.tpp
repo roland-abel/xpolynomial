@@ -159,16 +159,16 @@ namespace xmath {
 
     template<typename T>
     std::optional<T> real_polynomial_root_finder<T>::newton_raphson(
-        const polynomial<T> &p,
-        value_type initial,
-        int max_iterations,
-        value_type tolerance) {
+            const polynomial<T> &p,
+            value_type initial,
+            int max_iterations,
+            value_type tolerance) {
         return root_finder<T>::newton_raphson(
-            p,
-            p.derive(),
-            initial,
-            max_iterations,
-            tolerance);
+                p,
+                p.derive(),
+                initial,
+                max_iterations,
+                tolerance);
     }
 
     template<typename T>
@@ -204,10 +204,10 @@ namespace xmath {
 
         const auto lc = p.leading_coefficient();
         const auto sum = std::accumulate(
-            p.coefficients().begin(),
-            p.coefficients().end() - 1, zero, [=](auto s, auto c) {
-                return s + std::abs(c / lc);
-            });
+                p.coefficients().begin(),
+                p.coefficients().end() - 1, zero, [=](auto s, auto c) {
+                    return s + std::abs(c / lc);
+                });
         return std::max(one, sum);
     }
 
@@ -230,8 +230,8 @@ namespace xmath {
 
     template<typename T>
     std::vector<short> real_polynomial_root_finder<T>::sign_variations(
-        const polynomial_sequence &seq,
-        const value_type &x) {
+            const polynomial_sequence &seq,
+            const value_type &x) {
         auto variations = std::vector<short>();
         for (auto p: seq) {
             auto y = p(x);
@@ -243,7 +243,7 @@ namespace xmath {
     }
 
     template<typename T>
-    std::optional<int> real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p, const interval<T> &I) {
+    std::optional<size_t > real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p, const interval<T> &I) {
         if (!I.is_lower_open() || !I.is_upper_closed()) {
             return {};
         }
@@ -253,12 +253,11 @@ namespace xmath {
         }
 
         auto seq = sturm_sequence(p);
-        return xmath::sign_changes(sign_variations(seq, I.lower()))
-               - xmath::sign_changes(sign_variations(seq, I.upper()));
+        return xmath::sign_changes(sign_variations(seq, I.lower())) - xmath::sign_changes(sign_variations(seq, I.upper()));
     }
 
     template<typename T>
-    std::optional<int> real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p) {
+    std::optional<size_t> real_polynomial_root_finder<T>::number_distinct_roots(const polynomial<T> &p) {
         return cauchy_bounds(p).and_then([&p](T bound) {
             return number_distinct_roots(p, interval<T>(
                     -bound,
@@ -317,7 +316,7 @@ namespace xmath {
         auto multiplicities = std::vector<unsigned short>();
 
         auto square_free_seq = square_free_decomposition<T>::yun_algorithm(p).value();
-        for (int k = 0; k < square_free_seq.size(); ++k) {
+        for (size_t k = 0; k < square_free_seq.size(); ++k) {
             auto q = square_free_seq[k];
             auto intervals = root_isolation(q);
 
