@@ -41,7 +41,7 @@ namespace {
     constexpr double epsilon = 1e-9;
 }
 
-TEST(IntervalTests, default_ctor_test) {
+TEST(IntervalTests, DefaultCtorTest) {
     const auto I = Interval{};
     EXPECT_NEAR(I.lower(), 0.0, epsilon);
     EXPECT_NEAR(I.upper(), 1.0, epsilon);
@@ -51,7 +51,7 @@ TEST(IntervalTests, default_ctor_test) {
     EXPECT_TRUE(I.is_half_open());
 }
 
-TEST(IntervalTests, ctor_test) {
+TEST(IntervalTests, CtorTest) {
     const auto I = Interval{-1., 1.};
     EXPECT_NEAR(I.lower(), -1.0, epsilon);
     EXPECT_NEAR(I.upper(), 1.0, epsilon);
@@ -60,55 +60,55 @@ TEST(IntervalTests, ctor_test) {
     EXPECT_TRUE(Interval().is_upper_closed());
 }
 
-TEST(IntervalTests, is_opened_test) {
+TEST(IntervalTests, IsOpenedTest) {
     EXPECT_FALSE(Interval(0., 1., closed, closed).is_opened());
     EXPECT_FALSE(Interval(0., 1., opened, closed).is_opened());
     EXPECT_FALSE(Interval(0., 1., closed, opened).is_opened());
     EXPECT_TRUE(Interval(0., 1., opened, opened).is_opened());
 }
 
-TEST(IntervalTests, is_lower_closed_test) {
+TEST(IntervalTests, IsLowerClosedTest) {
     EXPECT_TRUE(Interval(0., 1., closed, closed).is_lower_closed());
     EXPECT_FALSE(Interval(0., 1., opened, closed).is_lower_closed());
     EXPECT_TRUE(Interval(0., 1., closed, opened).is_lower_closed());
     EXPECT_FALSE(Interval(0., 1., opened, opened).is_lower_closed());
 }
 
-TEST(IntervalTests, is_upper_closed_test) {
+TEST(IntervalTests, IsUpperClosedTest) {
     EXPECT_TRUE(Interval(0., 1., closed, closed).is_upper_closed());
     EXPECT_TRUE(Interval(0., 1., opened, closed).is_upper_closed());
     EXPECT_FALSE(Interval(0., 1., closed, opened).is_upper_closed());
     EXPECT_FALSE(Interval(0., 1., opened, opened).is_upper_closed());
 }
 
-TEST(IntervalTests, is_lower_open_test) {
+TEST(IntervalTests, IsLowerOpenTest) {
     EXPECT_FALSE(Interval(0., 1., closed, closed).is_lower_open());
     EXPECT_TRUE(Interval(0., 1., opened, closed).is_lower_open());
     EXPECT_FALSE(Interval(0., 1., closed, opened).is_lower_open());
     EXPECT_TRUE(Interval(0., 1., opened, opened).is_lower_open());
 }
 
-TEST(IntervalTests, is_upper_open_test) {
+TEST(IntervalTests, IsUpperOpenTest) {
     EXPECT_FALSE(Interval(0., 1., closed, closed).is_upper_open());
     EXPECT_FALSE(Interval(0., 1., opened, closed).is_upper_open());
     EXPECT_TRUE(Interval(0., 1., closed, opened).is_upper_open());
     EXPECT_TRUE(Interval(0., 1., opened, opened).is_upper_open());
 }
 
-TEST(IntervalTests, is_closed_test) {
+TEST(IntervalTests, IsClosedTest) {
     EXPECT_FALSE(Interval(0., 1., opened, opened).is_closed());
     EXPECT_FALSE(Interval(0., 1., opened, closed).is_closed());
     EXPECT_FALSE(Interval(0., 1., closed, opened).is_closed());
     EXPECT_TRUE(Interval(0., 1., closed, closed).is_closed());
 }
 
-TEST(IntervalTests, is_degenerate_test) {
+TEST(IntervalTests, IsDegenerateTest) {
     EXPECT_FALSE(Interval(1., -1.).is_degenerate());
     EXPECT_TRUE(Interval(1., 1., opened, opened).is_degenerate());
     EXPECT_TRUE(Interval(2., 2., closed, closed).is_degenerate());
 }
 
-TEST(IntervalTests, is_empty_test) {
+TEST(IntervalTests, IsEmptyTest) {
     EXPECT_TRUE(Interval(1., -1.).is_empty());
     EXPECT_TRUE(Interval(2., 2., opened, opened).is_empty());
     EXPECT_TRUE(Interval(2., 2., closed, opened).is_empty());
@@ -116,7 +116,7 @@ TEST(IntervalTests, is_empty_test) {
     EXPECT_FALSE(Interval(2., 2., closed, closed).is_empty());
 }
 
-TEST(IntervalTests, is_half_open_test) {
+TEST(IntervalTests, IsHalfOpenTest) {
     EXPECT_TRUE(Interval(1., -1.).is_half_open());
     EXPECT_FALSE(Interval(2., 2., opened, opened).is_half_open());
     EXPECT_TRUE(Interval(2., 2., closed, opened).is_half_open());
@@ -124,7 +124,7 @@ TEST(IntervalTests, is_half_open_test) {
     EXPECT_FALSE(Interval(2., 2., closed, closed).is_half_open());
 }
 
-TEST(IntervalTests, linear_transform1_test) {
+TEST(IntervalTests, LinearTransform1Test) {
     const auto I = Interval{-1., 1.};
     const auto J = Interval{2., 5.};
     const auto map = I.linear_transform(J);
@@ -134,7 +134,7 @@ TEST(IntervalTests, linear_transform1_test) {
     EXPECT_NEAR(map(0.), 3.5, epsilon);
 }
 
-TEST(IntervalTests, linear_transform2_test) {
+TEST(IntervalTests, LinearTransform2Test) {
     const auto I = Interval{-1., 1.};
     const auto J = Interval{0., 2 * pi};
     const auto map = I.linear_transform(J);
@@ -146,7 +146,7 @@ TEST(IntervalTests, linear_transform2_test) {
     EXPECT_NEAR(map(1.), 2 * pi, epsilon);
 }
 
-TEST(IntervalTests, bisect_test) {
+TEST(IntervalTests, BisectTest) {
     const auto I = Interval{-2., 1.};
     const auto [I1, I2] = I.bisect();
 
@@ -156,7 +156,7 @@ TEST(IntervalTests, bisect_test) {
     EXPECT_NEAR(I2.upper(), 1., epsilon);
 }
 
-TEST(IntervalTests, bisect_half_open_intervals_test) {
+TEST(IntervalTests, BisectHalfOpenIntervalsTest) {
     const auto I = Interval{-2., 1.};
     const auto [I1, I2] = I.bisect(opened, closed);
 
