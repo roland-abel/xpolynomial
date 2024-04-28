@@ -34,8 +34,8 @@ using namespace std;
 using namespace xmath;
 
 namespace {
-    auto X = polynomial<double>::monomial(1, 1.0);
     using Euclidean = euclidean_algorithm<double>;
+    const auto X = polynomial<double>::monomial(1, 1.0);
 }
 
 auto main() -> int {

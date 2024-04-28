@@ -38,7 +38,7 @@ using namespace std;
 using namespace xmath;
 
 namespace {
-    auto X = polynomial<double>::monomial(1, 1.0);
+    const auto X = polynomial<double>::monomial(1, 1.0);
 }
 
 auto main() -> int {

@@ -36,7 +36,7 @@ using namespace xmath;
 
 namespace {
     using RootFinder = real_polynomial_root_finder<double>;
-    auto X = polynomial<double>::monomial(1, 1.0);
+    const auto X = polynomial<double>::monomial(1, 1.0);
 }
 
 auto main() -> int {
