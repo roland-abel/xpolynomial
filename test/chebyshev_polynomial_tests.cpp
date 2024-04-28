@@ -39,8 +39,8 @@ namespace {
     using ChebyshevPolynomial = chebyshev_polynomial<double>;
 
     constexpr auto epsilon = Polynomial::epsilon;
-    auto one = Polynomial::one();
-    auto X = Polynomial::monomial(1, 1.0);
+    const auto one = Polynomial::one();
+    const auto X = Polynomial::monomial(1, 1.0);
 }
 
 TEST(ChebyshvPolynomialTest, FirstKindChebyshvPolynomialsTest) {

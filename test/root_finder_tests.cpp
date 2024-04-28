@@ -39,7 +39,7 @@ namespace {
     using RootFinder = root_finder<double>;
 
     constexpr auto epsilon = 1e-5;
-    auto X = Polynomial::monomial(1u);
+    const auto X = Polynomial::monomial(1u);
 }
 
 TEST(RootFinderTests, BisectionWithIncorrectsEndpointsTest) {

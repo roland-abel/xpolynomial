@@ -41,9 +41,9 @@ namespace {
     using ChebyshevPolynomial = chebyshev_polynomial<double>;
 
     constexpr auto epsilon = Polynomial::spec::epsilon;
-    auto zero = Polynomial::zero();
-    auto one = Polynomial::one();
-    auto X = Polynomial::monomial(1);
+    const auto zero = Polynomial::zero();
+    const auto one = Polynomial::one();
+    const auto X = Polynomial::monomial(1);
 }
 
 TEST(RealPolynomialRootFinderTests, NotQuadraticPolynomialTest) {

@@ -36,8 +36,8 @@ namespace {
     using std::numbers::pi;
     using Interval = interval<double>;
 
-    auto opened = interval<double>::interval_bounds::opened;
-    auto closed = interval<double>::interval_bounds::closed;
+    const auto opened = interval<double>::interval_bounds::opened;
+    const auto closed = interval<double>::interval_bounds::closed;
     constexpr double epsilon = 1e-9;
 }
 
