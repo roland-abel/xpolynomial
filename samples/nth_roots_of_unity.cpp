@@ -40,9 +40,9 @@ namespace {
     using RealPolynomial = polynomial<double, polynomial_specification<double>>;
     using RootFinder = complex_polynomial_root_finder<double>;
 
-    auto X = RealPolynomial::monomial(1, 1.0);
-    auto Y = RealPolynomial::monomial(1, 1.0);
-    auto Z = ComplexPolynomial::monomial(1, 1.0);
+    const auto X = RealPolynomial::monomial(1, 1.0);
+    const auto Y = RealPolynomial::monomial(1, 1.0);
+    const auto Z = ComplexPolynomial::monomial(1, 1.0);
 }
 
 auto main() -> int {
