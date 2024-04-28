@@ -29,3 +29,6 @@ target_include_directories(square_free PRIVATE ../include)
 
 add_executable(interpolation interpolation.cpp)
 target_include_directories(interpolation PRIVATE ../include)
+
+add_executable(parser parser.cpp)
+target_include_directories(parser PRIVATE ../include)
