@@ -38,9 +38,9 @@ namespace {
     using values_type = Polynomial::values_type;
 
     constexpr double epsilon = Polynomial::epsilon;
-    auto zero = Polynomial::zero();
-    auto one = Polynomial::one();
-    auto X = Polynomial::monomial(1, 1.0);
+    const auto zero = Polynomial::zero();
+    const auto one = Polynomial::one();
+    const auto X = Polynomial::monomial(1, 1.0);
 
     void check_polynomial_division(
         const Polynomial &p,

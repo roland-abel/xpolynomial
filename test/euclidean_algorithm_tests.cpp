@@ -35,7 +35,7 @@ using namespace xmath;
 namespace {
     using Polynomial = polynomial<double>;
     using EuclideanAlgorithm = euclidean_algorithm<double>;
-    auto X = Polynomial::monomial(1, 1.0);
+    const auto X = Polynomial::monomial(1, 1.0);
 }
 
 TEST(EuclideanAlgorithmTests, GreatestCommonDivisorTest) {

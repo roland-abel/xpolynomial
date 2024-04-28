@@ -42,12 +42,12 @@ namespace {
     constexpr auto I = ComplexPolynomial::value_type(i);
 
     constexpr double epsilon = ComplexPolynomial::epsilon;
-    auto zero = ComplexPolynomial::zero();
-    auto one = ComplexPolynomial::one();
+    const auto zero = ComplexPolynomial::zero();
+    const auto one = ComplexPolynomial::one();
 
-    auto X = RealPolynomial::monomial(1, 1.0);
-    auto Y = RealPolynomial::monomial(1, 1.0);
-    auto Z = ComplexPolynomial::monomial(1, 1.0);
+    const auto X = RealPolynomial::monomial(1, 1.0);
+    const auto Y = RealPolynomial::monomial(1, 1.0);
+    const auto Z = ComplexPolynomial::monomial(1, 1.0);
 }
 
 TEST(ComplexPolynomialTests, ValueTypeCheck) {

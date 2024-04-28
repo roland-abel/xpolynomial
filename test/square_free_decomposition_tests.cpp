@@ -37,8 +37,8 @@ namespace {
     using Polynomial = polynomial<double>;
     using SquareFree = square_free_decomposition<double>;
 
-    auto one = Polynomial::one();
-    auto X = Polynomial::monomial(1);
+    const auto one = Polynomial::one();
+    const auto X = Polynomial::monomial(1);
 }
 
 TEST(SquareFreeDecompositionTests, IsSquareFreeTest) {
