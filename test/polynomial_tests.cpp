@@ -41,18 +41,18 @@ namespace {
     const auto zero = Polynomial::zero();
     const auto one = Polynomial::one();
     const auto X = Polynomial::monomial(1, 1.0);
+}
 
-    void check_polynomial_division(
+auto check_polynomial_division = [](
         const Polynomial &p,
         const Polynomial &q,
         const Polynomial &s,
         const Polynomial &r) {
-        auto [s_prim, r_prim] = p.divide(q);
-        EXPECT_EQ(s_prim, s);
-        EXPECT_EQ(r_prim, r);
-        EXPECT_EQ(p, s_prim * q + r);
-    }
-}
+    auto [s_prim, r_prim] = p.divide(q);
+    EXPECT_EQ(s_prim, s);
+    EXPECT_EQ(r_prim, r);
+    EXPECT_EQ(p, s_prim * q + r);
+};
 
 // Tests for the default constructor.
 TEST(PolynomialTests, DefaultConstructor) {
@@ -470,12 +470,12 @@ TEST(PolynomialTests, DivideTest) {
     check_polynomial_division(X.pow(2) - 2 * X + 1., X + 2., X - 4., 9. * one);
 
     check_polynomial_division(
-        3 * X.pow(3) + X.pow(2) + X + 5, 5 * X.pow(2) + -3 * X + 1,
-        3. / 5 * X + (14. / 25), (52. / 25) * X + (111. / 25));
+            3 * X.pow(3) + X.pow(2) + X + 5, 5 * X.pow(2) + -3 * X + 1,
+            3. / 5 * X + (14. / 25), (52. / 25) * X + (111. / 25));
 
     check_polynomial_division(
-        3 * X.pow(3) + X.pow(2) + X + 5, 5 * X.pow(2) + -3 * X + 1,
-        3. / 5 * X + (14. / 25), (52. / 25) * X + (111. / 25));
+            3 * X.pow(3) + X.pow(2) + X + 5, 5 * X.pow(2) + -3 * X + 1,
+            3. / 5 * X + (14. / 25), (52. / 25) * X + (111. / 25));
 }
 
 TEST(PolynomialTests, DivideWithLargeLeadingCoefficientTest) {
@@ -487,9 +487,9 @@ TEST(PolynomialTests, DivideWithLargeLeadingCoefficientTest) {
     EXPECT_FALSE(nearly_zero(1. / lc, eps));
 
     check_polynomial_division(
-        lc * X.pow(4) - 1,
-        X - 1.,
-        lc * (X.pow(3) + X.pow(2) + X.pow(1) + 1.), -one + lc);
+            lc * X.pow(4) - 1,
+            X - 1.,
+            lc * (X.pow(3) + X.pow(2) + X.pow(1) + 1.), -one + lc);
 }
 
 // Tests polynomial divide function.
