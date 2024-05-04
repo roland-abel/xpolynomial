@@ -19,5 +19,5 @@ FetchContent_MakeAvailable(google-test)
 set(PROJECT_NAME xpolynomial)
 set(UNIT_TEST_NAME unit-tests)
 
-add_subdirectory(samples)
+add_subdirectory(examples)
 add_subdirectory(test)
