@@ -87,14 +87,26 @@ TEST(PolynomialParserTests, ScanFloatingPointNumberTest) {
     EXPECT_EQ(std::get<number_t>(token).value, 12.45);
 }
 
-TEST(PolynomialParserTests, ScanIdentifierTest) {
-    const auto state = scan_identifier("X");
+TEST(PolynomialParserTests, ScanInvalidFloatingPointNumberTest) {
+    const auto state = scan_number("x12");
+    ASSERT_FALSE(state.has_value());
+
+    EXPECT_EQ(state.error(), error_t::INVALID_NUMBER);
+}
+
+TEST(PolynomialParserTests, ScanVariableTest) {
+    const auto state = scan_variable("Y", 0, 'Y');
     ASSERT_TRUE(state.has_value());
 
     auto [token, pos] = state.value();
 
     EXPECT_EQ(pos, 1);
-    // EXPECT_EQ(std::get<variable_t>(token), identifier_marker);
+    EXPECT_EQ(std::get<variable_t>(token).value, 'Y');
+}
+
+TEST(PolynomialParserTests, ScanInvalidVariableTest) {
+    const auto state = scan_variable("Y", 0, 'X');
+    ASSERT_FALSE(state.has_value());
 }
 
 TEST(PolynomialParserTests, ScanPlusOperatorTest) {
@@ -182,7 +194,7 @@ TEST(PolynomialParserTests, ScanTokenFloatingNumberTest) {
     EXPECT_EQ(std::get<number_t>(token).value, 3.14);
 }
 
-TEST(PolynomialParserTests, ScanTokenIdentifierTest) {
+TEST(PolynomialParserTests, ScanTokenVariableTest) {
     const auto state = scan_token("X");
     ASSERT_TRUE(state.has_value());
 
@@ -310,8 +322,23 @@ TEST(PolynomialParserTests, TokenizeExpressionTest) {
     }
 }
 
-TEST(PolynomialParserTests, ToPostfixTokensTests) {
-    const auto result = tokenize("3 * (5 + 2.8) - X^4").and_then(to_postfix_tokens);
+TEST(PolynomialParserTests, TokenizeInvalidExpressionTest) {
+    const std::vector<std::pair<std::string, error_t>> expected_values = {
+            {"",            error_t::EMPTY_EXPRESSION},
+            {" $ ",         error_t::INVALID_TOKEN},
+            {" 12.34.56  ", error_t::INVALID_TOKEN},
+    };
+
+    for (const auto &[expression, error]: expected_values) {
+        const auto &result = tokenize(expression);
+
+        ASSERT_FALSE(result.has_value());
+        EXPECT_EQ(result.error(), error);
+    }
+}
+
+TEST(PolynomialParserTests, ConvertToPostfixTests) {
+    const auto result = tokenize("3 * (5 + 2.8) - X^4").and_then(convert_to_postfix);
     ASSERT_TRUE(result.has_value());
 
     const auto &tokens = result.value();
@@ -334,143 +361,184 @@ TEST(PolynomialParserTests, ToPostfixTokensTests) {
     }
 }
 
-TEST(PolynomialParserTests, ComputePlusTest) {
+TEST(PolynomialParserTests, ApplyPlusOperatorTest) {
     const auto p = X.pow(2) + 3;
     const auto q = 3 * X.pow(3) - 4;
-    const auto result = compute(operator_t::PLUS, p, q);
+    const auto result = apply_binary_operator(operator_t::PLUS, p, q);
 
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), p + q);
 }
 
-TEST(PolynomialParserTests, ComputeMinusTest) {
+TEST(PolynomialParserTests, ApplyMinusOperatorTest) {
     const auto p = X.pow(2) + 3;
     const auto q = 3 * X.pow(3) - 4;
-    const auto result = compute(operator_t::MINUS, p, q);
+    const auto result = apply_binary_operator(operator_t::MINUS, p, q);
 
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), p - q);
 }
 
-TEST(PolynomialParserTests, ComputeMultiplyTest) {
+TEST(PolynomialParserTests, ApplyMultiplyOperatorTest) {
     const auto p = X.pow(2) + 3;
     const auto q = 3 * X.pow(3) - 4;
-    const auto result = compute(operator_t::MULTIPLY, p, q);
+    const auto result = apply_binary_operator(operator_t::MULTIPLY, p, q);
 
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), p * q);
 }
 
-TEST(PolynomialParserTests, ComputeDivTest) {
+TEST(PolynomialParserTests, ApplyDivideOperatorTest) {
     const auto p = (X.pow(2) + 3).pow(2) * (X.pow(2) + 3);
     const auto q = X.pow(2) + 3;
-    const auto result = compute(operator_t::DIVIDE, p, q);
+    const auto result = apply_binary_operator(operator_t::DIVIDE, p, q);
 
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), p / q);
 }
 
-TEST(PolynomialParserTests, ComputeDivByZeroTest) {
+TEST(PolynomialParserTests, ApplyDivideOperatorWithZeroTest) {
     const auto p = (X.pow(2) + 3).pow(2) * (X.pow(2) + 3);
     const auto q = P(0);
-    const auto result = compute(operator_t::DIVIDE, p, q);
+    const auto result = apply_binary_operator(operator_t::DIVIDE, p, q);
 
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), error_t::DIVISION_BY_ZERO);
 }
 
-TEST(PolynomialParserTests, ComputePowTest) {
+TEST(PolynomialParserTests, ApplyPowOperatorTest) {
     const auto p = X.pow(2) + 3;
-    const auto result = compute(operator_t::POWER, p, P(3));
+    const auto result = apply_binary_operator(operator_t::POWER, p, P(3));
 
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), p.pow(3));
 }
 
-TEST(PolynomialParserTests, ComputeInvaildPowerExpoentTest) {
+TEST(PolynomialParserTests, ApplySignMinusOperatorTest) {
     const auto p = X.pow(2) + 3;
-    const auto result = compute(operator_t::POWER, p, P(3.5));
+    const auto result = apply_unary_operator(operator_t::SIGN_MINUS, p);
+
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result.value(), -p);
+}
+
+TEST(PolynomialParserTests, ApplySignPlusOperatorTest) {
+    const auto p = X.pow(2) + 3;
+    const auto result = apply_unary_operator(operator_t::SIGN_PLUS, p);
+
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result.value(), p);
+}
+
+TEST(PolynomialParserTests, InvaildPowerExpoentTest) {
+    const auto p = X.pow(2) + 3;
+    const auto result = apply_binary_operator(operator_t::POWER, p, P(3.5));
 
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), error_t::INVALID_POWER_EXPONENT);
 }
 
-TEST(PolynomialParserTests, ComputeRpnEmptyTest) {
+TEST(PolynomialParserTests, EvaluateEmptyTest) {
     items_t empty = items_t{};
-    const auto result = evaluate_rpn(empty);
+    const auto result = evaluate(empty);
 
     ASSERT_FALSE(result.has_value());
     EXPECT_EQ(result.error(), error_t::EMPTY_EXPRESSION);
 }
 
-TEST(PolynomialParserTests, ComputeRpnPlusOperatorTest) {
+TEST(PolynomialParserTests, EvaluatePlusOperatorTest) {
     // "3  X +" == "3 + X"
     items_t input = items_t{P(3.0), X, operator_t::PLUS};
-    const auto result = evaluate_rpn(input);
+    const auto result = evaluate(input);
 
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), X + 3.0);
 }
 
-TEST(PolynomialParserTests, ComputeRpnMinusOperatorTest) {
+TEST(PolynomialParserTests, EvaluateMinusOperatorTest) {
     // "3  X -" == "3 - X"
     items_t input = items_t{P(3.0), X, operator_t::MINUS};
-    const auto result = evaluate_rpn(input);
+    const auto result = evaluate(input);
 
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), P(3.0) - X);
 }
 
-TEST(PolynomialParserTests, ComputeRpnMultiOperatorTest) {
+TEST(PolynomialParserTests, EvaluateMultiOperatorTest) {
     // "5  X *" == "5*X"
     items_t input = items_t{P(5.0), X, operator_t::MULTIPLY};
-    const auto result = evaluate_rpn(input);
+    const auto result = evaluate(input);
 
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), P(5.0) * X);
 }
 
-TEST(PolynomialParserTests, ComputeRpnDivOperatorTest) {
+TEST(PolynomialParserTests, EvaluateDivOperatorTest) {
     // "X  2. /" == "X/2"
     items_t input = items_t{X, P(2.0), operator_t::DIVIDE};
-    const auto result = evaluate_rpn(input);
+    const auto result = evaluate(input);
 
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), X / 2.);
 }
 
-TEST(PolynomialParserTests, ComputeRpnPowerOperatorTest) {
+TEST(PolynomialParserTests, EvaluatePowerOperatorTest) {
     // "X  2. ^" == "X^2"
     items_t input = items_t{X, P(2.0), operator_t::POWER};
-    const auto result = evaluate_rpn(input);
+    const auto result = evaluate(input);
 
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), X.pow(2));
 }
 
-TEST(PolynomialParserTests, ComputeRpnTest) {
+TEST(PolynomialParserTests, EvaluateSignMinusOperatorTest) {
+    // "X -" == "-X"
+    items_t input = items_t{X, operator_t::SIGN_MINUS};
+    const auto result = evaluate(input);
+
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result.value(), -X);
+}
+
+TEST(PolynomialParserTests, EvaluateSignPlusOperatorTest) {
+    // "X +" == "+X" == "X"
+    items_t input = items_t{X, operator_t::SIGN_PLUS};
+    const auto result = evaluate(input);
+
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result.value(), X);
+}
+
+TEST(PolynomialParserTests, EvaluateTests) {
     const auto plus = operator_t::PLUS;
     const auto minus = operator_t::MINUS;
-    const auto multi = operator_t::MULTIPLY;
+    const auto multiply = operator_t::MULTIPLY;
     const auto power = operator_t::POWER;
+    const auto sign = operator_t::SIGN_MINUS;
+    const auto sign_plus = operator_t::SIGN_PLUS;
 
     const std::vector<std::pair<items_t, polynomial_t >> rpn_input = {
-            {items_t{P(3.), X, plus},                                                     3. + X},
-            {items_t{P(2.), P(3.), X, plus, multi},                                       2. * (3. + X)},
-            {items_t{X, P(2.), power},                                                    X.pow(2)},
-            {items_t{X, P(2.), power, P(4.), plus, P(3.), X, P(4.), power, minus, multi}, (X.pow(2) + 4.) * (P(3.) - X.pow(4))}
+            {items_t{P(3.), X, plus},                            3. + X},
+            {items_t{P(2.), P(3.), X, plus, multiply},           2. * (3. + X)},
+            {items_t{X, P(2.), power},                           X.pow(2)},
+            {items_t{P(2.), X, minus, X, P(4.), plus, multiply}, (P(2.) - X) * (X + 4.)},
+            {items_t{P(2.), sign},                               -P(2.)},
+            {items_t{X, sign},                                   -X},
+            {items_t{X, sign, sign},                             X},
+            {items_t{X, sign_plus},                              X},
+            {items_t{P(2.), X, plus, sign},                      -(P(2.) + X)}
     };
 
     for (const auto &input: rpn_input) {
-        const auto result = evaluate_rpn(input.first);
-        ASSERT_TRUE(result.has_value());
+        const auto result = evaluate(input.first);
+
+        ASSERT_TRUE(result.has_value()) << "expected value: " << input.second;
         EXPECT_EQ(result, input.second);
     }
 }
 
-TEST(PolynomialParserTests, ParseTest) {
-    using expression_polynomial_t = std::pair<std::string, polynomial_t>;
-    const std::vector<expression_polynomial_t> expected_values = {
+TEST(PolynomialParserTests, ParsePolynomialTest) {
+    const std::vector<std::pair<std::string, polynomial_t>> expected_values = {
             {"0",                               P(0)},
             {"1",                               P(1)},
             {"3.9",                             P(3.9)},
@@ -488,16 +556,48 @@ TEST(PolynomialParserTests, ParseTest) {
             {"3*X",                             3 * X},
             {"3*X + 5",                         3 * X + 5},
             {"3*X + 3",                         3 * X + 3},
+            {"X^9 / X^2",                       X.pow(7)},
+            {"-1",                              -P(1)},
+            {"-(-2)",                           -P(-2)},
+            {"3 - (-2)",                        P(3) - P(-2)},
+            {"+X",                              X},
+            {"-(+X)",                           -X},
+            {"-(X)",                            -(X)},
+            {"-(X - 2)",                        -(X - 2)},
             {"(4 + X^4) * (X^3 - 2)",           (4 + X.pow(4)) * (X.pow(3) - 2)},
             {"(4 + X^4)^2 * ((X^3 - 2)^2) - 1", (4 + X.pow(4)).pow(2) * ((X.pow(3) - 2).pow(2)) - 1},
-            {"X^9 / X^2",                       X.pow(7)},
-            // {"-1", -P(1)},
+            {"-(X - 1)^2",                      -(X - 1).pow(2)},
+            {"-(X - 2*X)",                      X},
+            {"-(X - 2*X)*(X + 3*X)^2",          -(X - 2 * X) * (X + 3 * X).pow(2)},
+            {"-(X^3 - 5*X^2 + 4*X)^2",          -(X.pow(3) - 5 * X.pow(2) + 4 * X).pow(2)},
+            {"-(X^3 - 5*X^2 + 4*X)^2 + 6*X^2",  -(X.pow(3) - 5 * X.pow(2) + 4 * X).pow(2) + 6 * X.pow(2)},
+            {"-(-(X-1)^(-(-2)))",               -(-(X - 1).pow(-(-2)))},
+            {"-((-(X-1)^2)^2)^2",               -((-(X - 1).pow(2)).pow(2)).pow(2)}
     };
 
-    for (const auto &[expr, p]: expected_values) {
-        const auto &result = parse(expr);
+    for (const auto &[expression, polynomial]: expected_values) {
+        const auto &result = parse_polynomial(expression, 'X');
 
-        ASSERT_TRUE(result.has_value());
-        EXPECT_EQ(result.value(), p);
+        ASSERT_TRUE(result.has_value()) << expression;
+        EXPECT_EQ(result.value(), polynomial);
+    }
+}
+
+TEST(PolynomialParserTests, ParseInvalidPolynomialTest) {
+    const std::vector<std::pair<std::string, error_t>> expected_values = {
+            {"  ",              error_t::EMPTY_EXPRESSION},
+            {" $ ",             error_t::INVALID_TOKEN},
+            {" X +  ",          error_t::OPERAND_EXPECTED},
+            {" / X ",           error_t::OPERAND_EXPECTED},
+            {"X / 0",           error_t::DIVISION_BY_ZERO},
+            {"X / (X - X) + 5", error_t::DIVISION_BY_ZERO},
+            {"Y^2 + 5",         error_t::INVALID_VARIABLE}
+    };
+
+    for (const auto &[expression, error]: expected_values) {
+        const auto &result = parse_polynomial(expression, 'X');
+
+        ASSERT_FALSE(result.has_value()) << expression;
+        EXPECT_EQ(result.error(), error);
     }
 }

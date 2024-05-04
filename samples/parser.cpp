@@ -33,14 +33,10 @@ using namespace std;
 using namespace xmath;
 using namespace xmath::parser;
 
-namespace {
-    const auto X = polynomial<double>::monomial(1, 1.0);
-}
-
 auto main() -> int {
-    auto to_string = [](const polynomial_t &p) { cout << p << endl; };
-    parse("(X^3 - 5*X^2 + 4*X)^2 + 6*X^2").transform(to_string);
-
+    parse_polynomial("-(X^3 - 5*X^2 + 4*X)^2 + 6*X^2").transform([](const polynomial_t &p) {
+        cout << p << endl;
+    });
     return 0;
 }
 
