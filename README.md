@@ -1,11 +1,117 @@
 # xpolynomial
 
-C++ template project provides a flexible way to work with polynomials and calculate their real roots.
+xpolynomial is a header-only C++23 template library for creating and manipulating polynomials
+and calculating their roots.
 
 ## Overview
 
-This C++ template project provides a flexible way of working with polynomials and the 
-calculation of their real roots.
+This C++ template library provides a flexible way of working with polynomials in a single
+variable. It supports coefficients of arbitrary numeric types and offers algorithms built
+around polynomials:
+
+- **Polynomials** the `polynomial<T>` and `complex_polynomial<T>` template classes for real
+  and complex-valued polynomials.
+- **Root finding** for real and complex polynomials, including root multiplicities.
+- **Further algorithms** such as square-free decomposition (Yun), polynomial interpolation,
+  Chebyshev and Legendre polynomials, and extended Euclidean algorithms for polynomials.
+- **A parser** to construct polynomials from string expressions such as `"2*X^3 - 3*X + 1"`.
+
+The library is:
+
+- **Header-only** - nothing has to be compiled or linked; installing it just copies headers.
+- **Dependency-free** - it requires only the C++ standard library.
+- **C++23** - a C++23-capable compiler is required.
+
+The complete API is available through a single umbrella header:
+
+```c++
+#include <xpolynomial.h>
+```
+
+Individual headers such as `#include <polynomial.h>` can also be included.
+
+## Integration
+
+The library is built with CMake and is consumed either via `FetchContent` or by installing it
+and using `find_package`.
+
+### Requirements
+
+- CMake 3.22 or newer
+- A compiler with C++23 support (e.g. GCC 14 or newer, Clang 17 or newer, MSVC 19.3x)
+
+### FetchContent
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(xpolynomial
+    GIT_REPOSITORY https://github.com/roland-abel/xpolynomial.git
+    GIT_TAG main)
+FetchContent_MakeAvailable(xpolynomial)
+
+add_executable(demo demo.cpp)
+target_link_libraries(demo PRIVATE xpolynomial::xpolynomial)
+```
+
+### Install and find_package
+
+Build and install the library:
+
+```sh
+cmake -S xpolynomial -B build
+cmake --build build
+cmake --install build --prefix /path/to/install
+```
+
+Use it in your project:
+
+```cmake
+find_package(xpolynomial CONFIG REQUIRED)
+
+add_executable(demo demo.cpp)
+target_link_libraries(demo PRIVATE xpolynomial::xpolynomial)
+```
+
+The `xpolynomial::xpolynomial` target provides all headers, the C++23 language standard and
+the umbrella header `<xpolynomial.h>`.
+
+### Building the tests
+
+The project requires GoogleTest for its test suite. Point `CMAKE_PREFIX_PATH` to an
+installation of GoogleTest and run the tests afterwards:
+
+```sh
+cmake -S . -B build -DCMAKE_PREFIX_PATH=/path/to/gtest
+cmake --build build
+./build/test/unit-tests
+```
+
+### Example
+
+The following program parses a polynomial from a string and computes its real roots via the
+umbrella header:
+
+```c++
+#include <xpolynomial.h>
+
+#include <iostream>
+
+using namespace std;
+using namespace xmath;
+
+int main() {
+    auto poly = parser::parse_polynomial("X^3 - 3*X + 1").value();
+    cout << "p(x) = " << poly << endl;
+
+    auto [roots, multiplicities] = real_polynomial_root_finder<double>::find_roots(poly);
+    for (std::size_t k = 0; k < roots.size(); ++k) {
+        cout << "root r[" << k << "] = " << roots[k]
+             << ", multiplicity = " << multiplicities[k] << endl;
+    }
+    return 0;
+}
+```
 
 ## Features
 
