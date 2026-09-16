@@ -45,18 +45,18 @@ namespace xmath {
             return legendre[order];
         }
 
-        auto P_nm1 = legendre[order - 1]; // P_{n-1}
-        auto P_nm2 = legendre[order - 2]; // P_{n-2}
+        auto P_nm1 = legendre[legendre.size() - 1]; // P_{n-1}
+        auto P_nm2 = legendre[legendre.size() - 2]; // P_{n-2}
 
         auto P_n = zero; // P_n
         for (size_t i = legendre.size(); i <= order; ++i) {
-            const auto n = static_cast<double>(order);
+            const auto n = static_cast<double>(i);
 
             P_n = (2. * n - 1.) / n * X * P_nm1 - (n - 1.) / n * P_nm2;
             legendre.push_back(P_n);
 
-            P_nm1 = P_n;
             P_nm2 = P_nm1;
+            P_nm1 = P_n;
         }
 
         return P_n;
