@@ -12,7 +12,7 @@
 #include <numeric>
 #include <vector>
 #include <iostream>
-#include "polynomial.h"
+#include <xpolynomial.h>
 
 using namespace std;
 using namespace xmath;
@@ -27,7 +27,7 @@ auto main() -> int {
 
     // Evaluate the polynomial for a range of values
     vector<double> values(10);
-    iota(values.begin(), values.end(), 1);
+    std::iota(values.begin(), values.end(), 1);
 
     for (auto x: values) {
         cout << "p(" << x << ") = " << p(x) << endl;
