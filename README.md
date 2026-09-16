@@ -126,7 +126,7 @@ basic operations, evaluation, normalization, and more.
 #include <numeric>
 #include <vector>
 #include <iostream>
-#include "polynomial.h"
+#include <xpolynomial.h>
 
 using namespace std;
 using namespace xmath;
@@ -157,7 +157,7 @@ of two polynomials and the extended Euclidean algorithm for polynomials.
 
 ```c++
 #include <iostream>
-#include "euclidean_algorithm.h"
+#include <xpolynomial.h>
 
 using namespace std;
 using namespace xmath;
@@ -192,8 +192,7 @@ of the first kind. These polynomials are an integral part of several mathematica
 class facilitates their generation, evaluation, and interpolation.
 
 ```c++
-#include "chebyshev_polynomial.h"
-#include "real_polynomial_root_finder.h"
+#include <xpolynomial.h>
 
 using namespace std;
 using namespace xmath;
@@ -222,7 +221,7 @@ designed for finding roots of polynomials with real and complex coefficients, re
 These classes provide various numerical methods to obtain root approximations.
 
 ```c++
-#include "real_polynomial_root_finder.h"
+#include <xpolynomial.h>
 
 using namespace std;
 using namespace xmath;
@@ -253,7 +252,7 @@ from its square-free decomposition.
 
 ```c++
 #include <iostream>
-#include "square_free_decomposition.h"
+#include <xpolynomial.h>
 
 using namespace std;
 using namespace xmath;
@@ -282,7 +281,7 @@ a method to construct a polynomial that passes through a given set of data point
 
 ```c++
 #include <iostream>
-#include "polynomial_interpolation.h"
+#include <xpolynomial.h>
 
 using namespace std;
 using namespace xmath;
