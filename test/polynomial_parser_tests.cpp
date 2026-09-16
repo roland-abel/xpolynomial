@@ -91,7 +91,7 @@ TEST(PolynomialParserTests, ScanInvalidFloatingPointNumberTest) {
     const auto state = scan_number("x12");
     ASSERT_FALSE(state.has_value());
 
-    EXPECT_EQ(state.error(), error_t::INVALID_NUMBER);
+    EXPECT_EQ(state.error(), parser::error_t::INVALID_NUMBER);
 }
 
 TEST(PolynomialParserTests, ScanVariableTest) {
@@ -173,7 +173,7 @@ TEST(PolynomialParserTests, ScanTokenEmptyExpressionTest) {
     const auto state = scan_token("");
     ASSERT_FALSE(state.has_value());
 
-    EXPECT_EQ(state.error(), error_t::EMPTY_EXPRESSION);
+    EXPECT_EQ(state.error(), parser::error_t::EMPTY_EXPRESSION);
 }
 
 TEST(PolynomialParserTests, ScanTokenInvalidPositionTest) {
@@ -181,7 +181,7 @@ TEST(PolynomialParserTests, ScanTokenInvalidPositionTest) {
     const auto state = scan_token("3 + X", invalid_pos);
 
     EXPECT_FALSE(state.has_value());
-    EXPECT_EQ(state.error(), error_t::UNEXPECTED_END);
+    EXPECT_EQ(state.error(), parser::error_t::UNEXPECTED_END);
 }
 
 TEST(PolynomialParserTests, ScanTokenFloatingNumberTest) {
@@ -278,21 +278,21 @@ TEST(PolynomialParserTests, ScanTokenInvalidTokenTest) {
     const auto state = scan_token("$");
     ASSERT_FALSE(state.has_value());
 
-    EXPECT_EQ(state.error(), error_t::INVALID_TOKEN);
+    EXPECT_EQ(state.error(), parser::error_t::INVALID_TOKEN);
 }
 
 TEST(PolynomialParserTests, TokenizeEmptyExpressionTest) {
     const auto result = tokenize("");
     ASSERT_FALSE(result.has_value());
 
-    EXPECT_EQ(result.error(), error_t::EMPTY_EXPRESSION);
+    EXPECT_EQ(result.error(), parser::error_t::EMPTY_EXPRESSION);
 }
 
 TEST(PolynomialParserTests, TokenizeInvaildExpressionTest) {
     const auto result = tokenize("$ + 6");
     ASSERT_FALSE(result.has_value());
 
-    EXPECT_EQ(result.error(), error_t::INVALID_TOKEN);
+    EXPECT_EQ(result.error(), parser::error_t::INVALID_TOKEN);
 }
 
 TEST(PolynomialParserTests, TokenizeExpressionTest) {
@@ -323,10 +323,10 @@ TEST(PolynomialParserTests, TokenizeExpressionTest) {
 }
 
 TEST(PolynomialParserTests, TokenizeInvalidExpressionTest) {
-    const std::vector<std::pair<std::string, error_t>> expected_values = {
-            {"",            error_t::EMPTY_EXPRESSION},
-            {" $ ",         error_t::INVALID_TOKEN},
-            {" 12.34.56  ", error_t::INVALID_TOKEN},
+    const std::vector<std::pair<std::string, parser::error_t>> expected_values = {
+            {"",            parser::error_t::EMPTY_EXPRESSION},
+            {" $ ",         parser::error_t::INVALID_TOKEN},
+            {" 12.34.56  ", parser::error_t::INVALID_TOKEN},
     };
 
     for (const auto &[expression, error]: expected_values) {
@@ -403,7 +403,7 @@ TEST(PolynomialParserTests, ApplyDivideOperatorWithZeroTest) {
     const auto result = apply_binary_operator(operator_t::DIVIDE, p, q);
 
     ASSERT_FALSE(result.has_value());
-    EXPECT_EQ(result.error(), error_t::DIVISION_BY_ZERO);
+    EXPECT_EQ(result.error(), parser::error_t::DIVISION_BY_ZERO);
 }
 
 TEST(PolynomialParserTests, ApplyPowOperatorTest) {
@@ -435,7 +435,7 @@ TEST(PolynomialParserTests, InvaildPowerExpoentTest) {
     const auto result = apply_binary_operator(operator_t::POWER, p, P(3.5));
 
     ASSERT_FALSE(result.has_value());
-    EXPECT_EQ(result.error(), error_t::INVALID_POWER_EXPONENT);
+    EXPECT_EQ(result.error(), parser::error_t::INVALID_POWER_EXPONENT);
 }
 
 TEST(PolynomialParserTests, EvaluateEmptyTest) {
@@ -443,7 +443,7 @@ TEST(PolynomialParserTests, EvaluateEmptyTest) {
     const auto result = evaluate(empty);
 
     ASSERT_FALSE(result.has_value());
-    EXPECT_EQ(result.error(), error_t::EMPTY_EXPRESSION);
+    EXPECT_EQ(result.error(), parser::error_t::EMPTY_EXPRESSION);
 }
 
 TEST(PolynomialParserTests, EvaluatePlusOperatorTest) {
@@ -584,14 +584,14 @@ TEST(PolynomialParserTests, ParsePolynomialTest) {
 }
 
 TEST(PolynomialParserTests, ParseInvalidPolynomialTest) {
-    const std::vector<std::pair<std::string, error_t>> expected_values = {
-            {"  ",              error_t::EMPTY_EXPRESSION},
-            {" $ ",             error_t::INVALID_TOKEN},
-            {" X +  ",          error_t::OPERAND_EXPECTED},
-            {" / X ",           error_t::OPERAND_EXPECTED},
-            {"X / 0",           error_t::DIVISION_BY_ZERO},
-            {"X / (X - X) + 5", error_t::DIVISION_BY_ZERO},
-            {"Y^2 + 5",         error_t::INVALID_VARIABLE}
+    const std::vector<std::pair<std::string, parser::error_t>> expected_values = {
+            {"  ",              parser::error_t::EMPTY_EXPRESSION},
+            {" $ ",             parser::error_t::INVALID_TOKEN},
+            {" X +  ",          parser::error_t::OPERAND_EXPECTED},
+            {" / X ",           parser::error_t::OPERAND_EXPECTED},
+            {"X / 0",           parser::error_t::DIVISION_BY_ZERO},
+            {"X / (X - X) + 5", parser::error_t::DIVISION_BY_ZERO},
+            {"Y^2 + 5",         parser::error_t::INVALID_VARIABLE}
     };
 
     for (const auto &[expression, error]: expected_values) {
