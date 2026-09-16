@@ -133,7 +133,7 @@ namespace xmath {
         std::function<value_type(value_type)> func,
         const uint32_t N) {
         auto value = polynomial<T>::spec::zero;
-        for (int i = 1; i <= N; ++i) {
+        for (uint32_t i = 1; i <= N; ++i) {
             value += func(std::cos((2. * i - 1.) * pi / (2. * N)));
         }
         return pi / N * value;

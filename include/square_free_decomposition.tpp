@@ -47,7 +47,7 @@ namespace xmath {
             const polynomial_sequence &square_free_seq) {
 
         auto q = polynomial<T>::one();
-        for (int k = 0; k < square_free_seq.size(); ++k) {
+        for (unsigned int k = 0; k < square_free_seq.size(); ++k) {
             q *= square_free_seq[k].pow(k + 1);
         }
         return q;

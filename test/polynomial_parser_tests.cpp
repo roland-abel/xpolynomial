@@ -297,7 +297,7 @@ TEST(PolynomialParserTests, TokenizeExpressionTest) {
 
     ASSERT_EQ(tokens.size(), 12);
 
-    for (int i = 0; i < tokens.size(); ++i) {
+    for (std::size_t i = 0; i < tokens.size(); ++i) {
         EXPECT_EQ(tokens[i], expected_tokens[i]);
     }
 }
@@ -336,7 +336,7 @@ TEST(PolynomialParserTests, ConvertToPostfixTests) {
 
     ASSERT_EQ(tokens.size(), expected_tokens.size());
 
-    for (int i = 0; i < tokens.size(); ++i) {
+    for (std::size_t i = 0; i < tokens.size(); ++i) {
         EXPECT_EQ(tokens[i], expected_tokens[i]);
     }
 }

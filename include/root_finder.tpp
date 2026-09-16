@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include <valarray>
 #include "utils.h"
 #include "root_finder.h"
 

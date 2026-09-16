@@ -22,7 +22,7 @@ auto main() -> int {
     cout << "p = " << p << endl;
 
     auto square_free_seq = SquareFree::yun_algorithm(p).value();
-    for (auto k = 0; k < square_free_seq.size(); ++k) {
+    for (std::size_t k = 0; k < square_free_seq.size(); ++k) {
         cout << "q" << k << " = " << square_free_seq[k] << endl;
     }
     return 0;
