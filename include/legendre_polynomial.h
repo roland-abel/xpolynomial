@@ -27,6 +27,7 @@ namespace xmath {
         static polynomial<T> create(size_t order);
 
     private:
+        /// Cache of the calculated Legendre polynomials.
         static polynomial_sequence legendre_polynomial_;
     };
 }

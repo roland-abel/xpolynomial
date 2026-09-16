@@ -14,6 +14,8 @@
 
 namespace xmath {
 
+    /// @brief Specifies the floating-point type and its constants.
+    /// @tparam T The floating-point type.
     template<typename T>
     struct floating_point_specification {
         using floating_point_type = T;
@@ -21,6 +23,7 @@ namespace xmath {
         static constexpr floating_point_type zero = 0.0;
     };
 
+    /// @brief Floating-point specification for `double`.
     template<>
     struct floating_point_specification<double> {
         using floating_point_type = double;
@@ -29,6 +32,7 @@ namespace xmath {
         static constexpr floating_point_type epsilon = 1e-9;
     };
 
+    /// @brief Floating-point specification for `float`.
     template<>
     struct floating_point_specification<float> {
         using floating_point_type = float;
@@ -149,7 +153,9 @@ namespace xmath {
         }
 
     private:
+        /// The lower boundary type of the interval.
         interval_bounds lower_;
+        /// The upper boundary type of the interval.
         interval_bounds upper_;
     };
 }
