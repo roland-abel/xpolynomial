@@ -4,27 +4,7 @@
 /// @author Roland Abel
 /// @date October 20, 2023
 ///
-/// Copyright (c) 2023 Roland Abel
-///
-/// This software is released under the MIT License.
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy
-/// of this software and associated documentation files (the "Software"), to deal
-/// in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-/// copies of the Software, and to permit persons to whom the Software is
-/// furnished to do so, subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in
-/// all copies or substantial portions of the Software.
-///
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-/// THE SOFTWARE.
+/// Copyright (c) 2026 Roland Abel
 
 #ifndef COMPLEX_POLYNOMIAL_H_
 #define COMPLEX_POLYNOMIAL_H_
@@ -63,12 +43,18 @@ namespace xmath {
         return os;
     }
 
+    /// @brief A polynomial with complex coefficients.
+    /// @tparam T The data type of the real and imaginary parts.
     template<typename T>
     using complex_polynomial = polynomial<std::complex<T>, polynomial_specification<std::complex<T>>>;
 
+    /// @brief A polynomial with real coefficients.
+    /// @tparam T The data type of the coefficients.
     template<typename T>
     using real_polynomial = polynomial<T, polynomial_specification<T>>;
 
+    /// @brief A complex number type.
+    /// @tparam T The data type of the real and imaginary parts.
     template<typename T>
     using complex_type = std::complex<T>;
 
@@ -83,16 +69,28 @@ namespace xmath {
         }));
     }
 
+    /// @brief Multiplication operator for a complex number and a real polynomial.
+    /// @param z The complex number.
+    /// @param p The real polynomial.
+    /// @return The resulting complex polynomial.
     template<typename T>
     complex_polynomial<T> operator*(const complex_type<T> &z, const real_polynomial<T> &p) {
         return p * z;
     }
 
+    /// @brief Addition operator for a complex polynomial and a real polynomial.
+    /// @param p The complex polynomial.
+    /// @param q The real polynomial.
+    /// @return The resulting complex polynomial.
     template<typename T>
     complex_polynomial<T> operator+(const complex_polynomial<T> &p, const real_polynomial<T> &q) {
         return p + std::complex<T>(1, 0) * q;
     }
 
+    /// @brief Addition operator for a real polynomial and a complex polynomial.
+    /// @param q The real polynomial.
+    /// @param p The complex polynomial.
+    /// @return The resulting complex polynomial.
     template<typename T>
     complex_polynomial<T> operator+(const real_polynomial<T> &q, const complex_polynomial<T> &p) {
         return p + q;
