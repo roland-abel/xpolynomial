@@ -15,8 +15,8 @@ add_executable(${UNIT_TEST_NAME}
         ${TESTS}
         test_main.cpp)
 
-target_include_directories(${UNIT_TEST_NAME} PUBLIC ../include)
 target_link_libraries(${UNIT_TEST_NAME}
+        xpolynomial::xpolynomial
         GTest::gtest
         GTest::gtest_main
         GTest::gmock
