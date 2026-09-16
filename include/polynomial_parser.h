@@ -143,7 +143,7 @@ namespace xmath::parser {
     /// @param pos The position of the character. Defaults to 0.
     /// @return The character or an error if the end of the expression is reached.
     const auto get_next_character = [](const std::string &expression, const uint16_t pos = 0) noexcept {
-        return pos >= 0 && pos < expression.size()
+        return pos < expression.size()
                ? character_result_t{expression[pos]}
                : std::unexpected<error_t>(error_t::UNEXPECTED_END);
     };
@@ -389,7 +389,7 @@ namespace xmath::parser {
 
         auto process_variable = [&](const variable_t &variable) { postfix.emplace_back(variable); };
         auto process_number = [&](const number_t &number) { postfix.emplace_back(number); };
-        auto process_end = [&](const end_marker_t &end_token) {};
+        auto process_end = [&](const end_marker_t &) {};
 
         auto process_token = [&](const token_t &token) {
             std::visit(overloaded{
@@ -500,7 +500,7 @@ namespace xmath::parser {
                 return is_polynomial(item)
                        ? polynomial_result_t{std::get<polynomial_t>(item)}
                        : std::unexpected{error_t::OPERAND_EXPECTED};
-            }).or_else([](const auto &_) {
+            }).or_else([](const auto &) {
                 return polynomial_result_t{std::unexpected{error_t::OPERAND_EXPECTED}};
             });
         };
@@ -550,7 +550,7 @@ namespace xmath::parser {
                     [](const operator_t &op) { return item_t{op}; },
                     [](const variable_t &) { return item_t{X}; },
                     [](const number_t &number) { return item_t{polynomial_t{number.value}}; },
-                    [](auto x) { return item_t{}; }
+                    [](auto) { return item_t{}; }
             }, token);
         };
 
