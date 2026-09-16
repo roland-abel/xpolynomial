@@ -10,7 +10,7 @@
 /// Copyright (c) 2026 Roland Abel
 
 #include <iostream>
-#include "complex_polynomial_root_finder.h"
+#include <xpolynomial.h>
 
 using namespace std;
 using namespace xmath;

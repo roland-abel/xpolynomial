@@ -9,8 +9,7 @@
 ///
 /// Copyright (c) 2026 Roland Abel
 
-#include "chebyshev_polynomial.h"
-#include "real_polynomial_root_finder.h"
+#include <xpolynomial.h>
 
 using namespace std;
 using namespace xmath;
