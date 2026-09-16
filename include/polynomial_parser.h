@@ -152,7 +152,7 @@ namespace xmath::parser {
     /// @param expression The expression to scan.
     /// @param pos The starting position from which to scan the number. Defaults to 0.
     /// @return The result of scanning the number.
-    scan_result_t scan_number(const std::string &expression, const uint16_t pos = 0) noexcept {
+    inline scan_result_t scan_number(const std::string &expression, const uint16_t pos = 0) noexcept {
         using string_result_t = std::expected<std::string, error_t>;
         static std::regex number_regex("^[0-9]*(\\.[0-9]*)?");
         auto get_substring = [&]() {
@@ -180,7 +180,7 @@ namespace xmath::parser {
     /// @param pos The starting position from which to scan the variable. Defaults to 0.
     /// @param variable The variable used in the expression. Defaults to 'X'.
     /// @return The result of scanning the variable.
-    scan_result_t scan_variable(const std::string &expression, const uint16_t &pos = 0, const char8_t &variable = 'X') noexcept {
+    inline scan_result_t scan_variable(const std::string &expression, const uint16_t &pos = 0, const char8_t &variable = 'X') noexcept {
         auto is_variable = [&](const auto &character) {
             return std::isalnum(character) && variable == character;
         };
@@ -211,7 +211,7 @@ namespace xmath::parser {
     /// @param expression The expression to scan.
     /// @param pos The starting position from which to scan the parenthesis. Defaults to 0.
     /// @return The result of scanning the parenthesis.
-    scan_result_t scan_parenthesis(const std::string &expression, const uint16_t &pos = 0) noexcept {
+    inline scan_result_t scan_parenthesis(const std::string &expression, const uint16_t &pos = 0) noexcept {
         auto make_state = [&](const auto &character) -> scan_result_t {
             return is_parenthesis(character)
                    ? scan_result_t{scan_state_t(to_parenthesis(character), pos + 1)}
@@ -226,7 +226,7 @@ namespace xmath::parser {
     /// @param pos The starting position from which to scan the token. Defaults to 0.
     /// @param variable The variable used in the expression. Defaults to 'X'.
     /// @return The result of scanning the token.
-    scan_result_t scan_token(const std::string &expression, const uint16_t &pos = 0, const char8_t &variable = 'X') noexcept {
+    inline scan_result_t scan_token(const std::string &expression, const uint16_t &pos = 0, const char8_t &variable = 'X') noexcept {
         if (expression.empty()) {
             return std::unexpected{error_t::EMPTY_EXPRESSION};
         }
@@ -266,7 +266,7 @@ namespace xmath::parser {
     /// @param expression The expression to tokenize.
     /// @param variable The variable used in the expression. Defaults to 'X'.
     /// @return The result of tokenizing the expression.
-    tokenize_result_t tokenize(const std::string &expression, const char8_t &variable = 'X') noexcept {
+    inline tokenize_result_t tokenize(const std::string &expression, const char8_t &variable = 'X') noexcept {
         const auto is_end_token = [](const token_t &token) noexcept {
             return std::holds_alternative<end_marker_t>(token);
         };
@@ -290,7 +290,7 @@ namespace xmath::parser {
     /// Converts the tokens so that the PLUS and the MINUS operators are converted to sign operators.
     /// @param tokens The tokens to transform.
     /// @return The transformed tokens.
-    tokenize_result_t convert_tokens_with_signs(const tokens_t &tokens) noexcept {
+    inline tokenize_result_t convert_tokens_with_signs(const tokens_t &tokens) noexcept {
         const auto is_operator_ = [](const token_t &token, const operator_t op) noexcept {
             return std::holds_alternative<operator_t>(token) && (std::get<operator_t>(token) == op);
         };
@@ -324,7 +324,7 @@ namespace xmath::parser {
     /// Converts the given infix token list to a post fix token list by using the shunting-yard algorithm.
     /// @param infix The infix collection to convert.
     /// @return The list of post fix tokens.
-    tokenize_result_t convert_to_postfix(const tokens_t &infix) {
+    inline tokenize_result_t convert_to_postfix(const tokens_t &infix) {
         tokens_t postfix = {};
         std::stack<token_t> operator_stack = {};
 
@@ -414,7 +414,7 @@ namespace xmath::parser {
     /// @param left_operand The left operand polynomial.
     /// @param right_operand The right operand polynomial.
     /// @return The result of applying the binary operator to the polynomials.
-    polynomial_result_t apply_binary_operator(
+    inline polynomial_result_t apply_binary_operator(
             const operator_t op,
             const polynomial_t &left_operand,
             const polynomial_t &right_operand) {
@@ -452,7 +452,7 @@ namespace xmath::parser {
     /// @param op The unary operator to apply.
     /// @param operand The operand polynomial.
     /// @return The result of applying the unary operator to the polynomial.
-    polynomial_result_t apply_unary_operator(const operator_t op, const polynomial_t &operand) {
+    inline polynomial_result_t apply_unary_operator(const operator_t op, const polynomial_t &operand) {
         auto sign_plus = [](const auto &p) { return p; };
         auto sign_minus = [](const auto &p) { return (-1) * p; };
 
@@ -474,7 +474,7 @@ namespace xmath::parser {
     /// Evaluates a postfix expression represented by items.
     /// @param postfix The postfix expression to evaluate.
     /// @return The result of evaluating the postfix expression.
-    polynomial_result_t evaluate(const items_t &postfix) {
+    inline polynomial_result_t evaluate(const items_t &postfix) {
         using item_result_t = std::expected<item_t, error_t>;
 
         if (postfix.empty()) {
@@ -544,7 +544,7 @@ namespace xmath::parser {
     /// Transforms each token form the given list to an item which contains either a polynomial or an operator.
     /// @param tokens The token vector.
     /// @return The list of items (either a polynomial or an operator).
-    items_result_t convert_to_items(const tokens_t &tokens) {
+    inline items_result_t convert_to_items(const tokens_t &tokens) {
         auto to_item = [&](const token_t &token) -> item_t {
             return std::visit(overloaded{
                     [](const operator_t &op) { return item_t{op}; },
@@ -561,7 +561,7 @@ namespace xmath::parser {
     /// @param expression The polynomial expression to parse.
     /// @param variable The variable used in the polynomial expression.
     /// @return The result of the polynomial expression.
-    polynomial_result_t parse_polynomial(const std::string &expression, const char8_t &variable = 'X') {
+    inline polynomial_result_t parse_polynomial(const std::string &expression, const char8_t &variable = 'X') {
         return tokenize(expression, variable)
                 .and_then(convert_tokens_with_signs)
                 .and_then(convert_to_postfix)
