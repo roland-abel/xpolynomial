@@ -4,27 +4,7 @@
 /// @author Roland Abel
 /// @date August 19, 2023
 ///
-/// Copyright (c) 2023 Roland Abel
-///
-/// This software is released under the MIT License.
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy
-/// of this software and associated documentation files (the "Software"), to deal
-/// in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-/// copies of the Software, and to permit persons to whom the Software is
-/// furnished to do so, subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in
-/// all copies or substantial portions of the Software.
-///
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-/// THE SOFTWARE.
+/// Copyright (c) 2026 Roland Abel
 
 #pragma once
 
@@ -155,7 +135,7 @@ namespace xmath {
 
     template<typename T>
     bool polynomial<T>::is_integer() const {
-        return std::all_of(coefficients().begin(), coefficients().end(), [](double c) {
+        return std::all_of(coefficients().begin(), coefficients().end(), [](const value_type c) {
             return nearly_equal(c, std::round(c));
         });
     }
@@ -163,7 +143,7 @@ namespace xmath {
     template<typename T>
     polynomial<T> polynomial<T>::to_integer() const {
         auto q = polynomial<T>(degree());
-        for (auto i = 0; i < degree() + 1; ++i) {
+        for (size_type i = 0; i < degree() + 1; ++i) {
             q[i] = std::round(at(i));
         }
         return q.trim_coefficients();
@@ -285,7 +265,7 @@ namespace xmath {
     template<typename T>
     polynomial<T> polynomial<T>::operator+(const polynomial<T>& p) const {
         auto sum = polynomial(std::max(p.degree(), degree()));
-        for (auto i = 0; i < sum.degree() + 1; ++i) {
+        for (size_type i = 0; i < sum.degree() + 1; ++i) {
             sum[i] = at(i) + p[i];
         }
         return sum.trim_coefficients();
@@ -299,8 +279,8 @@ namespace xmath {
     template<typename T>
     polynomial<T> polynomial<T>::operator*(const polynomial<T>& p) const {
         auto product = polynomial(p.degree() + degree());
-        for (auto i = 0; i < p.degree() + 1; ++i) {
-            for (auto j = 0; j < degree() + 1; ++j) {
+        for (size_type i = 0; i < p.degree() + 1; ++i) {
+            for (size_type j = 0; j < degree() + 1; ++j) {
                 product[i + j] += p[i] * at(j);
             }
         }
@@ -310,7 +290,7 @@ namespace xmath {
     template<typename T>
     polynomial<T>& polynomial<T>::operator+=(const polynomial<T>& p) {
         coeffs_.resize(std::max(p.degree(), degree()) + 1);
-        for (auto i = 0; i < coeffs_.size(); ++i) {
+        for (size_type i = 0; i < coeffs_.size(); ++i) {
             at(i) += p[i];
         }
         return trim_coefficients();
@@ -319,7 +299,7 @@ namespace xmath {
     template<typename T>
     polynomial<T>& polynomial<T>::operator-=(const polynomial<T>& p) {
         coeffs_.resize(std::max(p.degree(), degree()) + 1);
-        for (auto i = 0; i < coeffs_.size(); ++i) {
+        for (size_type i = 0; i < coeffs_.size(); ++i) {
             at(i) -= p[i];
         }
         return trim_coefficients();

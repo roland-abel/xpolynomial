@@ -7,27 +7,7 @@
 /// @author Roland Abel
 /// @date August 19, 2023
 ///
-/// Copyright (c) 2023 Roland Abel
-///
-/// This software is released under the MIT License.
-///
-/// Permission is hereby granted, free of charge, to any person obtaining a copy
-/// of this software and associated documentation files (the "Software"), to deal
-/// in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-/// copies of the Software, and to permit persons to whom the Software is
-/// furnished to do so, subject to the following conditions:
-///
-/// The above copyright notice and this permission notice shall be included in
-/// all copies or substantial portions of the Software.
-///
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-/// THE SOFTWARE.
+/// Copyright (c) 2026 Roland Abel
 
 #ifndef POLYNOMIAL_H_
 #define POLYNOMIAL_H_
@@ -38,10 +18,13 @@
 
 namespace xmath {
 
+    /// @brief Specifies the value, size and floating-point types and constants of a polynomial.
+    /// @tparam T The data type of the coefficients.
     template<typename T>
     struct polynomial_specification {
     };
 
+    /// @brief Polynomial specification for `double`.
     template<>
     struct polynomial_specification<double> {
         using value_type = double;
@@ -52,6 +35,7 @@ namespace xmath {
         static constexpr value_type zero = 0.0;
     };
 
+    /// @brief Polynomial specification for `float`.
     template<>
     struct polynomial_specification<float> {
         using value_type = float;
@@ -82,7 +66,7 @@ namespace xmath {
 
     public:
         /// @brief Default constructor. Creates a zero polynomial.
-        explicit polynomial<T>();
+        explicit polynomial();
 
         /// @brief Copy constructor.
         /// @param p The polynomial to be copied.
@@ -100,8 +84,8 @@ namespace xmath {
         /// @param coeffs The coefficients of the polynomial in descending order.
         explicit polynomial(const values_type &coeffs);
 
-        /// @brief
-        /// @param range
+        /// @brief Constructor that takes a range of coefficients.
+        /// @param range The range of coefficients of the polynomial.
         explicit polynomial(const std::ranges::range auto &range);
 
         /// @brief Destructor.
@@ -374,7 +358,7 @@ namespace xmath {
 
     private:
         /// @brief Constructor that creates a zero polynomial of a given degree.
-        explicit polynomial<T>(size_type degree);
+        explicit polynomial(size_type degree);
 
         /// @brief Trims leading zero coefficients from the polynomial.
         polynomial<T> &trim_coefficients();
