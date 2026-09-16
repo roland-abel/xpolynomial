@@ -8,10 +8,8 @@
 
 #include <gtest/gtest.h>
 #include <cmath>
+#include <xpolynomial.h>
 #include "test_utilities.h"
-#include "polynomial.h"
-#include "real_polynomial_root_finder.h"
-#include "chebyshev_polynomial.h"
 
 using namespace xmath;
 
