@@ -94,7 +94,6 @@ umbrella header:
 
 ```c++
 #include <xpolynomial.h>
-
 #include <iostream>
 
 using namespace std;
