@@ -28,6 +28,7 @@ namespace xmath {
 
         /// @brief Checks if the given polynomial is square-free. A polynomial p is square-free if and only
         /// if the greatest common division of the polynomial p and its derivative p' is constant.
+        /// @param p The polynomial to check.
         /// @return True if the polynomial p is square-free; otherwise false.
         static bool is_square_free(const polynomial<T> &p);
 

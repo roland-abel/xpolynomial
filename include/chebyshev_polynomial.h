@@ -65,6 +65,7 @@ namespace xmath {
         static value_type chebyshev_quadrature(std::function<value_type(value_type)> func, uint32_t N = 5);
 
     private:
+        /// Cache of the calculated Chebyshev polynomials of the first kind.
         static polynomial_sequence chebyshev_1st_kind_polynomials_;
     };
 }

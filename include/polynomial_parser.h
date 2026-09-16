@@ -1,5 +1,5 @@
 /// @file polynomial_parser.h
-/// @brief
+/// @brief Provides a parser for polynomial expressions given as strings.
 ///
 /// @author Roland Abel
 /// @date March 02, 2024
@@ -19,11 +19,14 @@
 #include "polynomial.h"
 
 namespace xmath::parser {
+    /// @brief Helper for creating an overloaded visitor from multiple lambdas.
+    /// @tparam Ts The types of the callables.
     template<class... Ts>
     struct overloaded : Ts ... {
         using Ts::operator()...;
     };
 
+    /// @brief The supported binary and unary operators.
     enum class operator_t {
         PLUS,
         MINUS,
@@ -34,11 +37,13 @@ namespace xmath::parser {
         SIGN_PLUS
     };
 
+    /// @brief The opening and closing parenthesis.
     enum class parenthesis_t {
         OPENED,
         CLOSED
     };
 
+    /// @brief The possible parser errors.
     enum class error_t {
         UNEXPECTED_END,
         EMPTY_EXPRESSION,
@@ -51,14 +56,17 @@ namespace xmath::parser {
         OPERAND_EXPECTED
     };
 
+    /// @brief Marks the end of the token list.
     struct end_marker_t {
         bool operator==(end_marker_t const &) const = default;
 
         bool operator!=(end_marker_t const &) const = default;
     };
 
+    /// The end marker token.
     static end_marker_t END{};
 
+    /// @brief A variable token, e.g. 'X'.
     struct variable_t {
         char8_t value;
 
@@ -67,6 +75,7 @@ namespace xmath::parser {
         bool operator!=(variable_t const &) const = default;
     };
 
+    /// @brief A number token.
     struct number_t {
         double_t value;
 
@@ -75,8 +84,10 @@ namespace xmath::parser {
         bool operator!=(number_t const &) const = default;
     };
 
+    /// @brief The type of a single token.
     using token_t = std::variant<operator_t, parenthesis_t, variable_t, number_t, end_marker_t>;
 
+    /// @brief Pairs a scanned token with the position of the next character.
     struct scan_state_t {
         const token_t token;
         const uint16_t position{};
@@ -93,8 +104,11 @@ namespace xmath::parser {
     using tokenize_result_t = std::expected<tokens_t, error_t>;
     using items_result_t = std::expected<items_t, error_t>;
     using polynomial_result_t = std::expected<polynomial_t, error_t>;
+
+    /// The monomial X used by the parser.
     const auto X = polynomial_t::monomial(1, 1.0);
 
+    /// Maps a character to the corresponding operator.
     static const auto operator_map = std::map<char8_t, operator_t>{
             {'+', operator_t::PLUS},
             {'-', operator_t::MINUS},
@@ -103,21 +117,31 @@ namespace xmath::parser {
             {'^', operator_t::POWER}
     };
 
+    /// Maps a character to the corresponding parenthesis.
     static const auto parenthesis_map = std::map<char8_t, parenthesis_t>{
             {'(', parenthesis_t::OPENED},
             {')', parenthesis_t::CLOSED}
     };
 
+    /// Maps a plus/minus operator to the corresponding sign operator.
     static const auto sign_operator_map = std::map<operator_t, operator_t>{
             {operator_t::PLUS,  operator_t::SIGN_PLUS},
             {operator_t::MINUS, operator_t::SIGN_MINUS}
     };
 
+    /// Checks if the given character is an operator.
     inline const auto is_operator = [](const char8_t &ch) noexcept { return operator_map.contains(ch); };
+    /// Checks if the given character is a parenthesis.
     inline const auto is_parenthesis = [](const char8_t &ch) noexcept { return parenthesis_map.contains(ch); };
+    /// Converts the given character to the corresponding operator.
     inline const auto to_operator = [](const char8_t &ch) { return operator_map.at(ch); };
+    /// Converts the given character to the corresponding parenthesis.
     inline const auto to_parenthesis = [](const char8_t &ch) { return parenthesis_map.at(ch); };
 
+    /// Gets the next character of the expression at the given position.
+    /// @param expression The expression to read from.
+    /// @param pos The position of the character. Defaults to 0.
+    /// @return The character or an error if the end of the expression is reached.
     const auto get_next_character = [](const std::string &expression, const uint16_t pos = 0) noexcept {
         return pos >= 0 && pos < expression.size()
                ? character_result_t{expression[pos]}
@@ -169,6 +193,10 @@ namespace xmath::parser {
                 .and_then(make_state);
     }
 
+    /// Scans an operator from the given expression starting from the specified position.
+    /// @param expression The expression to scan.
+    /// @param pos The starting position from which to scan the operator. Defaults to 0.
+    /// @return The result of scanning the operator.
     inline scan_result_t scan_operator(const std::string &expression, const uint16_t &pos = 0) noexcept {
         auto make_state = [&](const auto &character) -> scan_result_t {
             return is_operator(character)

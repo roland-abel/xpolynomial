@@ -43,12 +43,18 @@ namespace xmath {
         return os;
     }
 
+    /// @brief A polynomial with complex coefficients.
+    /// @tparam T The data type of the real and imaginary parts.
     template<typename T>
     using complex_polynomial = polynomial<std::complex<T>, polynomial_specification<std::complex<T>>>;
 
+    /// @brief A polynomial with real coefficients.
+    /// @tparam T The data type of the coefficients.
     template<typename T>
     using real_polynomial = polynomial<T, polynomial_specification<T>>;
 
+    /// @brief A complex number type.
+    /// @tparam T The data type of the real and imaginary parts.
     template<typename T>
     using complex_type = std::complex<T>;
 
@@ -63,16 +69,28 @@ namespace xmath {
         }));
     }
 
+    /// @brief Multiplication operator for a complex number and a real polynomial.
+    /// @param z The complex number.
+    /// @param p The real polynomial.
+    /// @return The resulting complex polynomial.
     template<typename T>
     complex_polynomial<T> operator*(const complex_type<T> &z, const real_polynomial<T> &p) {
         return p * z;
     }
 
+    /// @brief Addition operator for a complex polynomial and a real polynomial.
+    /// @param p The complex polynomial.
+    /// @param q The real polynomial.
+    /// @return The resulting complex polynomial.
     template<typename T>
     complex_polynomial<T> operator+(const complex_polynomial<T> &p, const real_polynomial<T> &q) {
         return p + std::complex<T>(1, 0) * q;
     }
 
+    /// @brief Addition operator for a real polynomial and a complex polynomial.
+    /// @param q The real polynomial.
+    /// @param p The complex polynomial.
+    /// @return The resulting complex polynomial.
     template<typename T>
     complex_polynomial<T> operator+(const real_polynomial<T> &q, const complex_polynomial<T> &p) {
         return p + q;

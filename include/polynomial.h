@@ -18,10 +18,13 @@
 
 namespace xmath {
 
+    /// @brief Specifies the value, size and floating-point types and constants of a polynomial.
+    /// @tparam T The data type of the coefficients.
     template<typename T>
     struct polynomial_specification {
     };
 
+    /// @brief Polynomial specification for `double`.
     template<>
     struct polynomial_specification<double> {
         using value_type = double;
@@ -32,6 +35,7 @@ namespace xmath {
         static constexpr value_type zero = 0.0;
     };
 
+    /// @brief Polynomial specification for `float`.
     template<>
     struct polynomial_specification<float> {
         using value_type = float;
@@ -80,8 +84,8 @@ namespace xmath {
         /// @param coeffs The coefficients of the polynomial in descending order.
         explicit polynomial(const values_type &coeffs);
 
-        /// @brief
-        /// @param range
+        /// @brief Constructor that takes a range of coefficients.
+        /// @param range The range of coefficients of the polynomial.
         explicit polynomial(const std::ranges::range auto &range);
 
         /// @brief Destructor.
