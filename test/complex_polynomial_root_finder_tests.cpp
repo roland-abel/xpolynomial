@@ -7,7 +7,7 @@
 
 #include <gtest/gtest.h>
 #include "test_utilities.h"
-#include "complex_polynomial_root_finder.h"
+#include <xpolynomial.h>
 
 using namespace xmath;
 

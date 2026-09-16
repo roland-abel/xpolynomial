@@ -7,7 +7,7 @@
 /// Copyright (c) 2026 Roland Abel
 
 #include <gtest/gtest.h>
-#include "polynomial_interpolation.h"
+#include <xpolynomial.h>
 
 using namespace xmath;
 
