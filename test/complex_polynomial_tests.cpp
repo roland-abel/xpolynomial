@@ -10,7 +10,7 @@
 #include <cmath>
 #include <complex>
 #include "test_utilities.h"
-#include "complex_polynomial.h"
+#include <xpolynomial.h>
 
 using namespace xmath;
 

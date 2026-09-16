@@ -8,7 +8,7 @@
 
 #include <numbers>
 #include <gtest/gtest.h>
-#include "interval.h"
+#include <xpolynomial.h>
 
 using namespace xmath;
 
