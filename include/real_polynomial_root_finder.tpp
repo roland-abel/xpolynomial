@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include <valarray>
 #include <numeric>
 #include <numbers>
 #include "utils.h"
@@ -28,7 +27,7 @@ namespace xmath {
 
         int prev_sign = sequence[0] >= 0 ? 1 : -1;
 
-        for (int i = 1; i < size; ++i) {
+        for (size_t i = 1; i < size; ++i) {
             if (nearly_zero<T>(sequence[i], epsilon)) {
                 continue;
             }
@@ -168,7 +167,7 @@ namespace xmath {
         auto num_coefficients = p.coefficients().size();
         auto max = zero;
 
-        for (auto i = 0; i < num_coefficients - 1; ++i) {
+        for (size_t i = 0; i < num_coefficients - 1; ++i) {
             max = std::max(max, std::abs(p[i]));
         }
         return one + max / std::abs(p.leading_coefficient());

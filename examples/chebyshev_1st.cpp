@@ -32,7 +32,7 @@ auto main() -> int {
 
     cout << "Roots of T_10:" << endl;
     auto [roots, multiplicities] = RootFinder::find_roots(ChebyshevPolynomial::create_1st_kind(10));
-    for (int k = 0; k < roots.size(); ++k) {
+    for (std::size_t k = 0; k < roots.size(); ++k) {
         cout << "r[" << k << "] = " << roots[k] << endl;
     }
 

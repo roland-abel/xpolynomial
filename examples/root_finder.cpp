@@ -25,7 +25,7 @@ auto main() -> int {
     auto [roots, multiplicities] = RootFinder::find_roots(p);
 
     cout << "Polynomial: " << p << endl << endl;
-    for (int k = 0; k < roots.size(); ++k) {
+    for (std::size_t k = 0; k < roots.size(); ++k) {
         cout << "Root: r[" << k << "] = " << roots[k] << ", Multiplicity: "
              << multiplicities[k] << endl;
     }

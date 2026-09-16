@@ -62,7 +62,7 @@ namespace xmath {
 
     public:
         /// @brief Default constructor. Creates a zero polynomial.
-        explicit polynomial<T>();
+        explicit polynomial();
 
         /// @brief Copy constructor.
         /// @param p The polynomial to be copied.
@@ -354,7 +354,7 @@ namespace xmath {
 
     private:
         /// @brief Constructor that creates a zero polynomial of a given degree.
-        explicit polynomial<T>(size_type degree);
+        explicit polynomial(size_type degree);
 
         /// @brief Trims leading zero coefficients from the polynomial.
         polynomial<T> &trim_coefficients();

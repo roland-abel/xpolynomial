@@ -135,7 +135,7 @@ namespace xmath {
 
     template<typename T>
     bool polynomial<T>::is_integer() const {
-        return std::all_of(coefficients().begin(), coefficients().end(), [](double c) {
+        return std::all_of(coefficients().begin(), coefficients().end(), [](const value_type c) {
             return nearly_equal(c, std::round(c));
         });
     }
@@ -143,7 +143,7 @@ namespace xmath {
     template<typename T>
     polynomial<T> polynomial<T>::to_integer() const {
         auto q = polynomial<T>(degree());
-        for (auto i = 0; i < degree() + 1; ++i) {
+        for (size_type i = 0; i < degree() + 1; ++i) {
             q[i] = std::round(at(i));
         }
         return q.trim_coefficients();
@@ -265,7 +265,7 @@ namespace xmath {
     template<typename T>
     polynomial<T> polynomial<T>::operator+(const polynomial<T>& p) const {
         auto sum = polynomial(std::max(p.degree(), degree()));
-        for (auto i = 0; i < sum.degree() + 1; ++i) {
+        for (size_type i = 0; i < sum.degree() + 1; ++i) {
             sum[i] = at(i) + p[i];
         }
         return sum.trim_coefficients();
@@ -279,8 +279,8 @@ namespace xmath {
     template<typename T>
     polynomial<T> polynomial<T>::operator*(const polynomial<T>& p) const {
         auto product = polynomial(p.degree() + degree());
-        for (auto i = 0; i < p.degree() + 1; ++i) {
-            for (auto j = 0; j < degree() + 1; ++j) {
+        for (size_type i = 0; i < p.degree() + 1; ++i) {
+            for (size_type j = 0; j < degree() + 1; ++j) {
                 product[i + j] += p[i] * at(j);
             }
         }
@@ -290,7 +290,7 @@ namespace xmath {
     template<typename T>
     polynomial<T>& polynomial<T>::operator+=(const polynomial<T>& p) {
         coeffs_.resize(std::max(p.degree(), degree()) + 1);
-        for (auto i = 0; i < coeffs_.size(); ++i) {
+        for (size_type i = 0; i < coeffs_.size(); ++i) {
             at(i) += p[i];
         }
         return trim_coefficients();
@@ -299,7 +299,7 @@ namespace xmath {
     template<typename T>
     polynomial<T>& polynomial<T>::operator-=(const polynomial<T>& p) {
         coeffs_.resize(std::max(p.degree(), degree()) + 1);
-        for (auto i = 0; i < coeffs_.size(); ++i) {
+        for (size_type i = 0; i < coeffs_.size(); ++i) {
             at(i) -= p[i];
         }
         return trim_coefficients();

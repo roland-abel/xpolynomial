@@ -22,7 +22,6 @@ namespace xmath {
 
     template<typename T>
     std::vector<std::complex<T> > complex_polynomial_root_finder<T>::nth_roots_of_unity(int n) {
-        auto I = std::complex<T>(0., 1.);
         auto get_root = [=](int k) {
             return std::complex<T>(
                 std::cos(2. / static_cast<T>(n) * k * std::numbers::pi),
