@@ -7,7 +7,7 @@
 /// Copyright (c) 2026 Roland Abel
 
 #include <iostream>
-#include "square_free_decomposition.h"
+#include <xpolynomial.h>
 
 using namespace std;
 using namespace xmath;

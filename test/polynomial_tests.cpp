@@ -9,7 +9,7 @@
 #include <gtest/gtest.h>
 #include <cmath>
 #include <numbers>
-#include "polynomial.h"
+#include <xpolynomial.h>
 
 using namespace xmath;
 

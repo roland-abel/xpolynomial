@@ -8,8 +8,7 @@
 
 #include <gtest/gtest.h>
 #include <cmath>
-#include "polynomial.h"
-#include "square_free_decomposition.h"
+#include <xpolynomial.h>
 
 using namespace xmath;
 

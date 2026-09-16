@@ -11,6 +11,7 @@
 
 #include <ranges>
 #include <limits>
+#include <complex>
 #include <cmath>
 
 namespace xmath {

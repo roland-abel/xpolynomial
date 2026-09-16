@@ -8,7 +8,7 @@
 
 #include <gtest/gtest.h>
 #include <cmath>
-#include "euclidean_algorithm.h"
+#include <xpolynomial.h>
 
 using namespace xmath;
 

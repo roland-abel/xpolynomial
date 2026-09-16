@@ -8,7 +8,7 @@
 
 #include <gtest/gtest.h>
 #include "test_utilities.h"
-#include "chebyshev_polynomial.h"
+#include <xpolynomial.h>
 
 using namespace xmath;
 

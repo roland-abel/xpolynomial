@@ -7,7 +7,7 @@
 /// Copyright (c) 2026 Roland Abel
 
 #include <gtest/gtest.h>
-#include "legendre_polynomial.h"
+#include <xpolynomial.h>
 
 using namespace xmath;
 
