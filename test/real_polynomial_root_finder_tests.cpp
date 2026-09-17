@@ -220,3 +220,11 @@ TEST(RealPolynomialRootFinderTests, FindChebyshevRootsTest) {
     EXPECT_TRUE(T_n.has_roots(roots));
     EXPECT_UNIQUE(roots, epsilon);
 }
+
+TEST(RealPolynomialRootFinderTests, FindRootsWithNonIntegerCoefficients) {
+    const auto p = 0.5 * X + 1.0;
+    const auto [roots, multiplicities] = RootFinder::find_roots(p);
+
+    EXPECT_TRUE(roots.empty());
+    EXPECT_TRUE(multiplicities.empty());
+}
