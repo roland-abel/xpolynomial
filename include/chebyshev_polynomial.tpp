@@ -101,11 +101,15 @@ namespace xmath {
     typename chebyshev_polynomial<T>::value_type chebyshev_polynomial<T>::clenshaw(
         const values_type &alphas,
         const value_type &x) {
+        if (alphas.empty()) {
+            return polynomial<T>::spec::zero;
+        }
+
         auto beta1 = polynomial<T>::spec::zero;
         auto beta2 = polynomial<T>::spec::zero;
 
-        for (int k = alphas.size() - 1; k > 0; --k) {
-            auto beta = alphas[k] + 2. * x * beta1 - beta2;
+        for (size_t k = alphas.size(); k > 1; --k) {
+            const auto beta = alphas[k - 1] + 2. * x * beta1 - beta2;
 
             beta2 = beta1;
             beta1 = beta;
@@ -117,11 +121,15 @@ namespace xmath {
     polynomial<T> chebyshev_polynomial<T>::chebyshev_series(const values_type &alphas) {
         static auto X = polynomial<T>::monomial(1);
 
+        if (alphas.empty()) {
+            return polynomial<T>::zero();
+        }
+
         auto beta1 = polynomial<T>::zero();
         auto beta2 = polynomial<T>::zero();
 
-        for (int k = alphas.size() - 1; k > 0; --k) {
-            polynomial<T> beta = alphas[k] + 2. * X * beta1 - beta2;
+        for (size_t k = alphas.size(); k > 1; --k) {
+            polynomial<T> beta = alphas[k - 1] + 2. * X * beta1 - beta2;
 
             beta2 = beta1;
             beta1 = beta;

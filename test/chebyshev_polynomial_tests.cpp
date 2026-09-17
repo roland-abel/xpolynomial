@@ -128,6 +128,13 @@ TEST(ChebyshvPolynomialTest, ClenshawTest) {
     }
 }
 
+TEST(ChebyshvPolynomialTest, ClenshawWithEmptyAlphasTest) {
+    const auto alphas = std::vector<double>{};
+    EXPECT_NEAR(ChebyshevPolynomial::clenshaw(alphas, 2.5), 0., epsilon);
+    EXPECT_NEAR(ChebyshevPolynomial::clenshaw(alphas, 0.), 0., epsilon);
+    EXPECT_EQ(ChebyshevPolynomial::chebyshev_series(alphas), Polynomial::zero());
+}
+
 TEST(ChebyshvPolynomialTest, ChebyshevGaussQuadratureForMonomialsTest) {
     EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature(one), pi, epsilon);
     EXPECT_NEAR(ChebyshevPolynomial::chebyshev_quadrature(X), 0., epsilon);

@@ -141,7 +141,7 @@ headers, `lagrange` bounds) were dropped.
     continues to `(2. * k - 1.) / N` (`:86`) and the node transform with `N == 0`.
   - Add `return {};` (or `return xmath::chebyshev_polynomial<T>::values_type{};`). `[verified]`
 
-- [ ] **H7: `clenshaw()` / `chebyshev_series()` read `alphas[0]` on empty input (OOB)**
+- [x] **H7: `clenshaw()` / `chebyshev_series()` read `alphas[0]` on empty input (OOB)**
   - `include/chebyshev_polynomial.tpp:107-113`, `:123-129`
   - The loop is skipped for an empty vector but the final
     `return alphas[0] + x * beta1 - beta2;` still indexes element 0.
