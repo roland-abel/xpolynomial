@@ -34,6 +34,11 @@ auto check_polynomial_division = [](
     EXPECT_EQ(p, s_prim * q + r);
 };
 
+TEST(PolynomialTests, DivideByZeroPolynomialThrows) {
+    const auto p = X.pow(2) + 1.0;
+    EXPECT_THROW(p.divide(zero), std::invalid_argument);
+}
+
 // Tests for the default constructor.
 TEST(PolynomialTests, DefaultConstructor) {
     const auto p = Polynomial();
