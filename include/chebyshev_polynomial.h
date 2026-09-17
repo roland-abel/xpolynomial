@@ -33,7 +33,7 @@ namespace xmath {
         /// @return The Chebyshev polynomial of the first kind of the N.
         static polynomial<T> create_1st_kind(size_t N);
 
-        /// Creates first kind Chebyshev polynomial T_n for the given N.
+        /// @brief Creates first kind Chebyshev polynomial T_n for the given N.
         /// @param N The N of the polynomial.
         /// @param chebyshev_cache The Chebyshev polynomial cache is used to avoid repeated calculations.
         /// @return The Chebyshev polynomial of the first kind of the N.
@@ -45,12 +45,12 @@ namespace xmath {
         /// @return A vector containing the Chebyshev nodes for the specified N within the interval.
         static values_type chebyshev_nodes(size_t N, const interval<T> &I = interval<value_type>(-1., 1.));
 
-        /// Calculates the Chebyshev series of order n for the given point and the coefficients alphas.
+        /// @brief Calculates the Chebyshev series of order n for the given point and the coefficients alphas.
         /// @param alphas A vector containing the coefficients for the Chebyshev series polynomial.
         /// @return The Chebyshev series of order n for the given coefficients alphas as polynomial.
         static polynomial<T> chebyshev_series(const values_type &alphas);
 
-        /// Evaluates the Chebyshev series for the given coefficients and input value by using Clenshaw algorithm.
+        /// @brief Evaluates the Chebyshev series for the given coefficients and input value by using Clenshaw algorithm.
         /// @param alphas A vector containing the coefficients for the Chebyshev series polynomial.
         /// @param x The input x value.
         /// @return The value of the Chebyshev series of order n for the given coefficients alphas at x.

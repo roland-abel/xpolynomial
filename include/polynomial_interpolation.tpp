@@ -22,10 +22,10 @@ namespace xmath {
         const auto &one = polynomial<T>::one();
         const auto &X = polynomial<T>::monomial(1);
 
-        const uint16_t N = xs.size();
+        const size_t N = xs.size();
         auto lagrange = [&](const uint16_t j) {
             auto b = one;
-            for (int i = 0; i < N; ++i) {
+            for (size_t i = 0; i < N; ++i) {
                 if (i == j) {
                     continue;
                 }
@@ -35,7 +35,7 @@ namespace xmath {
         };
 
         polynomial_sequence basis;
-        for (int i = 0; i < N; ++i) {
+        for (size_t i = 0; i < N; ++i) {
             basis.push_back(lagrange(i));
         }
         return basis;

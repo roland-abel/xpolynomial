@@ -36,7 +36,7 @@ namespace xmath {
         /// auto X = polynomial<double>::monomial(1, 1.0);
         /// auto p = X.pow(4) - 2 * X.pow(3) - 6 * X.pow(2) + 12 * X + 15;
         /// auto q = X.pow(3) + X.pow(2) - 4 * X - 4;
-        /// auto [s, t, g] = EuclideanAlgorithm::extended_euclidean(p, q);
+        /// auto [s, t, g] = euclidean_algorithm<double>::extended_euclidean(p, q);
         /// assert(s * p + t * q == g);
         /// @endcode
         ///

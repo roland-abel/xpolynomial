@@ -119,7 +119,7 @@ Items are grouped by priority. Findings marked `[verified]` were re-checked by h
 - [x] **N5: Example gaps** - no examples for `interval`, `legendre_polynomial`,
   `complex_polynomial`, parser error handling, non-integer `find_roots`.
 
-- [ ] **N6: Minor issues**
+- [x] **N6: Minor issues**
   - `euclidean_algorithm.h:38` doc example uses `EuclideanAlgorithm` not `euclidean_algorithm`.
   - `square_free_decomposition.h:2` "for for" typo; `:40,45` "optional has not a value".
   - Missing `@brief` in `chebyshev_polynomial.h:36,48,53`, `polynomial_interpolation.h:27,32`.

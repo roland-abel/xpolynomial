@@ -1,5 +1,5 @@
 /// @file square_free_decomposition.h
-/// @brief Implements Yun's algorithm for for square-free decomposition.
+/// @brief Implements Yun's algorithm for square-free decomposition.
 /// @see https://en.wikipedia.org/wiki/Square-free_polynomial
 ///
 /// @author Roland Abel
@@ -37,12 +37,12 @@ namespace xmath {
         /// This method requires a polynomial whose coefficients are given exactly as integers.
         /// @param p The polynomial.
         /// @return The content of the polynomial, which is the greatest common divisor (gcd) of its coefficients,
-        /// or optional has not a value if p is not integral.
+        /// or nullopt if p is not integral.
         static std::optional<T> content(const polynomial<T> &p);
 
         /// Calculates the primitive part of a polynomial.
         /// @param p The polynomial.
-        /// @return The primitive part of the polynomial or optional has not a value if p is not integral.
+        /// @return The primitive part of the polynomial or nullopt if p is not integral.
         static std::optional<polynomial<T>> primitive_part(const polynomial<T> &p);
 
         /// @brief Gets the square-free decomposition of the polynomial p.

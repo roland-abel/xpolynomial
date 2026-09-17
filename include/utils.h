@@ -9,6 +9,7 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+#include <concepts>
 #include <ranges>
 #include <limits>
 #include <complex>
@@ -88,16 +89,20 @@ namespace xmath {
     }
 
     /// @brief Checks if a given integer is even.
+    /// @tparam T An integer type.
     /// @param a The integer value to check.
     /// @return True if the integer is even; otherwise, false.
-    inline constexpr bool is_even(long a) {
+    template<std::integral T>
+    constexpr bool is_even(T a) {
         return a % 2 == 0;
     }
 
     /// @brief Checks if a given integer is odd.
+    /// @tparam T An integer type.
     /// @param a The integer value to check.
     /// @return True if the integer is odd; otherwise, false.
-    inline constexpr bool is_odd(long a) {
+    template<std::integral T>
+    constexpr bool is_odd(T a) {
         return a % 2 != 0;
     }
 
