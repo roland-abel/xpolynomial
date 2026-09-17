@@ -51,5 +51,7 @@ install(FILES
         "${CMAKE_CURRENT_BINARY_DIR}/xpolynomialConfigVersion.cmake"
         DESTINATION lib/cmake/xpolynomial)
 
+enable_testing()
+
 add_subdirectory(examples)
 add_subdirectory(test)

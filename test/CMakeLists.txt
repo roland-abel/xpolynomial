@@ -8,9 +8,8 @@
 set(UNIT_TEST_NAME unit-tests)
 
 find_package(GTest CONFIG REQUIRED)
-enable_testing()
 
-file(GLOB TESTS "**_tests.cpp")
+file(GLOB TESTS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/*_tests.cpp")
 add_executable(${UNIT_TEST_NAME}
         ${TESTS}
         test_main.cpp)
@@ -18,7 +17,6 @@ add_executable(${UNIT_TEST_NAME}
 target_link_libraries(${UNIT_TEST_NAME}
         xpolynomial::xpolynomial
         GTest::gtest
-        GTest::gtest_main
-        GTest::gmock
-        GTest::gmock_main
 )
+
+add_test(NAME ${UNIT_TEST_NAME} COMMAND ${UNIT_TEST_NAME})
