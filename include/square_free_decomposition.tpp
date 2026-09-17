@@ -1,5 +1,5 @@
 /// @file square_free_decomposition.tpp
-/// @brief Implements Yun's algorithm for for square-free decomposition.
+/// @brief Implements Yun's algorithm for square-free decomposition.
 ///
 /// @author Roland Abel
 /// @date September 17, 2026

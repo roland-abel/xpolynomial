@@ -62,7 +62,7 @@ namespace xmath {
         /// @param epsilon The epsilon for the approximation to the root (default: 1e-15).
         /// @return The approximation of the solution for the equation.
         ///
-        /// @note If no solution is found, the returned optional<> has not a value.
+        /// @note If no solution is found, the returned optional<> has no value.
         template<typename F, typename G>
         static std::optional<T> newton_raphson(
                 F &&func,
