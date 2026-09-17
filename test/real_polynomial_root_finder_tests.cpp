@@ -8,7 +8,8 @@
 
 #include <gtest/gtest.h>
 #include <cmath>
-#include <xpolynomial.h>
+#include <chebyshev_polynomial.h>
+#include <real_polynomial_root_finder.h>
 #include "test_utilities.h"
 
 using namespace xmath;
@@ -30,7 +31,7 @@ TEST(RealPolynomialRootFinderTests, NotQuadraticPolynomialTest) {
     EXPECT_FALSE(RootFinder::quadratic_roots(X.pow(3)).has_value());
 }
 
-TEST(RealPolynomialRootFinderTests, QuadraticPolynomialWhitoutRealRootsTest) {
+TEST(RealPolynomialRootFinderTests, QuadraticPolynomialWithoutRealRootsTest) {
     EXPECT_FALSE(RootFinder::quadratic_roots(X.pow(2) + 1).has_value());
 }
 
@@ -95,16 +96,16 @@ TEST(RealPolynomialRootFinderTests, CubicPolynomialWithThreeEqualRootsTest) {
 
     auto roots = RootFinder::cubic_roots(p);
     EXPECT_NEAR(roots[0], 0., epsilon);
-    EXPECT_NEAR(roots[0], 0., epsilon);
-    EXPECT_NEAR(roots[0], 0., epsilon);
+    EXPECT_NEAR(roots[1], 0., epsilon);
+    EXPECT_NEAR(roots[2], 0., epsilon);
 
     p = -1.5 * (X + 7.5).pow(3);
     EXPECT_TRUE(p.has_roots({-7.5}));
 
     roots = RootFinder::cubic_roots(p);
     EXPECT_NEAR(roots[0], -7.5, epsilon);
-    EXPECT_NEAR(roots[0], -7.5, epsilon);
-    EXPECT_NEAR(roots[0], -7.5, epsilon);
+    EXPECT_NEAR(roots[1], -7.5, epsilon);
+    EXPECT_NEAR(roots[2], -7.5, epsilon);
 }
 
 TEST(RealPolynomialRootFinderTests, SignChangesOfCoefficients) {

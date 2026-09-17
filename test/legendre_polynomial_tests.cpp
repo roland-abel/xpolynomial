@@ -8,7 +8,7 @@
 
 #include <gtest/gtest.h>
 #include <cmath>
-#include <xpolynomial.h>
+#include <legendre_polynomial.h>
 
 using namespace xmath;
 

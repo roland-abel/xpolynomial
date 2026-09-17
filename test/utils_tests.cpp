@@ -7,7 +7,7 @@
 /// Copyright (c) 2026 Roland Abel
 
 #include <gtest/gtest.h>
-#include <xpolynomial.h>
+#include <utils.h>
 
 using namespace xmath;
 

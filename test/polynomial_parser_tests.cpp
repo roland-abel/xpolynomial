@@ -9,7 +9,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 
-#include <xpolynomial.h>
+#include <polynomial_parser.h>
 
 using namespace xmath;
 using namespace xmath::parser;

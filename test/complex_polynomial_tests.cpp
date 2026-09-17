@@ -10,7 +10,7 @@
 #include <cmath>
 #include <complex>
 #include "test_utilities.h"
-#include <xpolynomial.h>
+#include <complex_polynomial.h>
 
 using namespace xmath;
 
@@ -43,7 +43,7 @@ TEST(ComplexPolynomialTests, DefaultConstructor) {
     EXPECT_EQ(p, zero);
 }
 
-TEST(ComplexPolynomialTests, ZeroPloynomialTest) {
+TEST(ComplexPolynomialTests, ZeroPolynomialTest) {
     EXPECT_TRUE(ComplexPolynomial::zero().is_zero());
     EXPECT_TRUE(ComplexPolynomial().is_zero());
     EXPECT_TRUE(ComplexPolynomial({0, 0, 0, 0}).is_zero());
@@ -54,7 +54,7 @@ TEST(ComplexPolynomialTests, ZeroPloynomialTest) {
     EXPECT_EQ(ComplexPolynomial::zero().degree(), 0);
 }
 
-TEST(ComplexPolynomialTests, OnePloynomialTest) {
+TEST(ComplexPolynomialTests, OnePolynomialTest) {
     EXPECT_TRUE(ComplexPolynomial::one().is_constant());
     EXPECT_TRUE(ComplexPolynomial::one().is_linear());
     EXPECT_EQ(ComplexPolynomial::one(), one);

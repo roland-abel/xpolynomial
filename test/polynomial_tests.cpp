@@ -9,7 +9,8 @@
 #include <gtest/gtest.h>
 #include <cmath>
 #include <numbers>
-#include <xpolynomial.h>
+#include <complex_polynomial.h>
+#include <polynomial.h>
 
 using namespace xmath;
 
@@ -63,7 +64,7 @@ TEST(PolynomialTests, ConstructorWithCoefficients) {
 }
 
 // Tests for the zero polynomial.
-TEST(PolynomialTests, ZeroPloynomialTest) {
+TEST(PolynomialTests, ZeroPolynomialTest) {
     EXPECT_TRUE(Polynomial::zero().is_zero());
     EXPECT_TRUE(Polynomial().is_zero());
     EXPECT_TRUE(Polynomial({0, 0, 0, 0}).is_zero());
@@ -76,7 +77,7 @@ TEST(PolynomialTests, ZeroPloynomialTest) {
 }
 
 // Tests for the constant 1 polynomial.
-TEST(PolynomialTests, OnePloynomialTest) {
+TEST(PolynomialTests, OnePolynomialTest) {
     EXPECT_TRUE(Polynomial::one().is_one());
     EXPECT_TRUE(Polynomial::one().is_constant());
     EXPECT_TRUE(Polynomial::one().is_linear());
@@ -244,7 +245,7 @@ TEST(PolynomialTests, AdditionWithScalarTest) {
 }
 
 // Tests polynomial subtraction with a scalar.
-TEST(PolynomialTests, SubstrationWithScalarTest) {
+TEST(PolynomialTests, SubtractionWithScalarTest) {
     const auto p = Polynomial({1, 2, 3, 4}); // 1 + 2x + 3x^2 + 4x^3
     EXPECT_EQ(p - 3.5, Polynomial({-2.5, 2, 3, 4}));
 
@@ -294,7 +295,7 @@ TEST(PolynomialTests, CompoundAssignmentOperatorPolynomialAdditionTest) {
 }
 
 // Tests polynomial subtraction.
-TEST(PolynomialTests, PolynomialSubstractionTest) {
+TEST(PolynomialTests, PolynomialSubtractionTest) {
     const auto p = Polynomial({1, 2, 3, 4});
     const auto q = Polynomial({2, 2, 0});
 
@@ -307,7 +308,7 @@ TEST(PolynomialTests, CompoundAssignmentOperatorScalarSubstractionTest) {
     EXPECT_EQ(p -= 2.5, 3 * X.pow(4) - 2 * X.pow(3) + X.pow(2) - .5);
 }
 
-TEST(PolynomialTests, CompoundAssignmentOperatorPolynomialSubstractionTest) {
+TEST(PolynomialTests, CompoundAssignmentOperatorPolynomialSubtractionTest) {
     auto p = Polynomial({1, 2, 3, 4});
     const auto q = Polynomial({2, 2, 0});
 
@@ -474,10 +475,6 @@ TEST(PolynomialTests, DivideTest) {
 
     check_polynomial_division(X.pow(2) - 2 * X + 1., X - 1., X - 1, zero);
     check_polynomial_division(X.pow(2) - 2 * X + 1., X + 2., X - 4., 9. * one);
-
-    check_polynomial_division(
-            3 * X.pow(3) + X.pow(2) + X + 5, 5 * X.pow(2) + -3 * X + 1,
-            3. / 5 * X + (14. / 25), (52. / 25) * X + (111. / 25));
 
     check_polynomial_division(
             3 * X.pow(3) + X.pow(2) + X + 5, 5 * X.pow(2) + -3 * X + 1,

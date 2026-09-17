@@ -7,7 +7,7 @@
 
 #include <gtest/gtest.h>
 #include "test_utilities.h"
-#include <xpolynomial.h>
+#include <complex_polynomial_root_finder.h>
 
 using namespace xmath;
 
@@ -59,6 +59,9 @@ TEST(ComplexPolynomialRootFinder, DurandKernerMethodTest) {
 
     EXPECT_EQ(roots.size(), 7);
     EXPECT_TRUE(p.has_roots(roots));
+    for (const auto &z: roots) {
+        EXPECT_COMPLEX_NEAR(p(z), std::complex(0., 0.), 1e-8);
+    }
 }
 
 TEST(ComplexPolynomialRootFinder, AberthEhrlichMethodTest) {
@@ -68,4 +71,7 @@ TEST(ComplexPolynomialRootFinder, AberthEhrlichMethodTest) {
 
     EXPECT_EQ(roots.size(), 8);
     EXPECT_TRUE(p.has_roots(roots));
+    for (const auto &z: roots) {
+        EXPECT_COMPLEX_NEAR(p(z), std::complex(0., 0.), 1e-8);
+    }
 }
