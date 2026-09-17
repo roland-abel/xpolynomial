@@ -177,7 +177,7 @@ headers, `lagrange` bounds) were dropped.
     breaking the "degree == normalized size" invariant (cf. `operator==`).
   - Call `trim_coefficients()` before returning. `[verified]`
 
-- [ ] **M14: `normalize()` / scalar division lack a zero-leading-coefficient guard**
+- [x] **M14: `normalize()` / scalar division lack a zero-leading-coefficient guard**
   - `include/polynomial.tpp:255-267,451-453`
   - `normalize()` divides by `leading_coefficient()`; for the zero polynomial this is
     `0` -> NaN/Inf. Document the precondition (non-zero polynomial) or return `*this`. `[verified]`

@@ -358,6 +358,12 @@ TEST(PolynomialTests, NormalizeTest) {
     EXPECT_EQ(q, (1. / 4.) + (1. / 2.) * X + (3. / 4.) * X.pow(2) + X.pow(3));
 }
 
+TEST(PolynomialTests, NormalizeZeroPolynomialTest) {
+    EXPECT_TRUE(Polynomial::zero().normalize().is_zero());
+    EXPECT_TRUE(Polynomial({0.}).normalize().is_zero());
+    EXPECT_FALSE(Polynomial::zero().normalize().is_normalized());
+}
+
 TEST(PolynomialTests, IsIntegerTest) {
     ASSERT_TRUE(Polynomial({}).is_integer());
     ASSERT_TRUE(Polynomial({1.0, 2.0, 3.0}).is_integer());

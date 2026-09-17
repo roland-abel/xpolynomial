@@ -170,6 +170,7 @@ namespace xmath {
         static polynomial<T> from_roots(const values_type &roots);
 
         /// @brief Normalize the polynomial, i.e. the coefficients are divided by the leading coefficient.
+        /// The zero polynomial is returned unchanged since it has no leading coefficient.
         /// @return The normalized polynomial.
         polynomial<T> normalize() const;
 

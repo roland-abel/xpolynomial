@@ -449,7 +449,7 @@ namespace xmath {
 
     template<typename T>
     polynomial<T> polynomial<T>::normalize() const {
-        return *this / leading_coefficient();
+        return nearly_zero(leading_coefficient()) ? *this : *this / leading_coefficient();
     }
 
     template<typename T>
