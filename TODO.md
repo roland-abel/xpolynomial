@@ -195,7 +195,7 @@ headers, `lagrange` bounds) were dropped.
   - Add a `max_iterations` parameter (like `newton_raphson`) and guard the
     regula-falsi denominator. `[verified]`
 
-- [ ] **M17: Aberth-Ehrlich denominator can be zero**
+- [x] **M17: Aberth-Ehrlich denominator can be zero**
   - `include/complex_polynomial_root_finder.tpp:100`
   - `p_prim(z) - p_norm(z) * S(z)` is unguarded; for multiple/clustered roots it can
     vanish -> division by zero (Inf/NaN propagated into the fixed-point iteration).

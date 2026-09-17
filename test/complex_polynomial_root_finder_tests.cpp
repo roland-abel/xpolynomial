@@ -75,3 +75,17 @@ TEST(ComplexPolynomialRootFinder, AberthEhrlichMethodTest) {
         EXPECT_COMPLEX_NEAR(p(z), std::complex(0., 0.), 1e-8);
     }
 }
+
+TEST(ComplexPolynomialRootFinder, AberthEhrlichMethodWithMultipleRootStaysFiniteTest) {
+    // The Aberth correction has a vanishing denominator at the double root z = 1.
+    auto p = (Z - 1.).pow(2);
+    auto initial_points = std::vector{std::complex(1., 0.), std::complex(2., 0.)};
+    auto roots = RootFinder::aberth_ehrlich_method(p, initial_points);
+
+    ASSERT_EQ(roots.size(), 2);
+    for (const auto &z: roots) {
+        EXPECT_TRUE(std::isfinite(z.real()));
+        EXPECT_TRUE(std::isfinite(z.imag()));
+        EXPECT_COMPLEX_NEAR(z, std::complex(1., 0.), epsilon);
+    }
+}

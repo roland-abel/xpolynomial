@@ -61,7 +61,8 @@ namespace xmath {
 
             approx_roots = to_vector(approx_roots | transform([&p_norm, &q](auto &z) {
                 // Weierstrass’ correction
-                return z - (p_norm(z) / q(z));
+                    const auto derivative = q(z);
+                    return nearly_zero(std::abs(derivative)) ? z : z - (p_norm(z) / derivative);
             }));
         }
         return approx_roots;
@@ -97,7 +98,8 @@ namespace xmath {
 
                     return std::accumulate(r.begin(), r.end(), std::complex<T>());
                 };
-                return z - p_norm(z) * (1. / (p_prim(z) - p_norm(z) * S(z)));
+                const auto denominator = p_prim(z) - p_norm(z) * S(z);
+                return nearly_zero(std::abs(denominator)) ? z : z - p_norm(z) * (1. / denominator);
             }));
         }
         return approx_roots;
