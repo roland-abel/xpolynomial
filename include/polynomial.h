@@ -246,7 +246,7 @@ namespace xmath {
         /// @return The polynomial resulting from multiplying each coefficient by the scalar.
         polynomial<T> operator*(value_type scalar) const;
 
-        /// @brief Divides the polynomial with a scalar.
+        /// @brief Multiplication assignment operator (*=) that multiplies the polynomial by a scalar.
         /// @param scalar The scalar value to be multiplied with.
         /// @return The modified polynomial resulting from multiplication of each coefficient by the scalar.
         polynomial<T> &operator*=(value_type scalar);
@@ -281,7 +281,7 @@ namespace xmath {
         /// @return The polynomial that represents the result of the addition.
         polynomial<T> &operator+=(const polynomial<T> &p);
 
-        /// @brief Subtraction assignment operator (+=) for the polynomial class.
+        /// @brief Subtraction assignment operator (-=) for the polynomial class.
         /// @param p The polynomial to subtract from the current polynomial.
         /// @return The polynomial that represents the result of the subtraction.
         polynomial<T> &operator-=(const polynomial<T> &p);
@@ -334,8 +334,8 @@ namespace xmath {
         /// @return The resulting polynomial after raising to the given exponent.
         polynomial<T> pow(unsigned int exponent) const;
 
-        /// @brief Computes the derive of the polynomial.
-        /// @return The derive polynomial.
+        /// @brief Computes the derivative of the polynomial.
+        /// @return The derivative polynomial.
         polynomial<T> derive() const;
 
         /// @brief Computes the indefinite integral of the polynomial.
