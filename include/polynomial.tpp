@@ -467,6 +467,10 @@ namespace xmath {
 
     template<typename T>
     std::tuple<polynomial<T>, polynomial<T>> polynomial<T>::divide(const polynomial& divisor) const {
+        if (divisor == zero()) {
+            throw std::invalid_argument("polynomial::divide() called with the zero polynomial as divisor");
+        }
+
         auto q = zero();
         auto r = *this;
 

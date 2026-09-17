@@ -20,6 +20,8 @@
 #include "polynomial.h"
 
 namespace xmath::parser {
+    using std::views::transform;
+
     /// @brief Helper for creating an overloaded visitor from multiple lambdas.
     /// @tparam Ts The types of the callables.
     template<class... Ts>

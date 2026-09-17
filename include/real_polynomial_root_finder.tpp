@@ -295,6 +295,10 @@ namespace xmath {
         auto roots = std::vector<value_type>();
         auto multiplicities = std::vector<unsigned short>();
 
+        if (!p.is_integer()) {
+            return {};
+        }
+
         auto square_free_seq = square_free_decomposition<T>::yun_algorithm(p).value();
         for (size_t k = 0; k < square_free_seq.size(); ++k) {
             auto q = square_free_seq[k];

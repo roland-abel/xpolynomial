@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <type_traits>
 #include "interval.h"
 #include "polynomial.h"
 
