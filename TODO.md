@@ -182,7 +182,7 @@ headers, `lagrange` bounds) were dropped.
   - `normalize()` divides by `leading_coefficient()`; for the zero polynomial this is
     `0` -> NaN/Inf. Document the precondition (non-zero polynomial) or return `*this`. `[verified]`
 
-- [ ] **M15: `is_linear()` returns `degree() <= 1`**
+- [x] **M15: `is_linear()` returns `degree() <= 1`**
   - `include/polynomial.tpp:118-120`
   - Includes constants (degree 0) and the zero polynomial, contradicting the doc
     ("degree 1"); sibling `is_quadratic`/`is_cubic` use `== 2` / `== 3`.

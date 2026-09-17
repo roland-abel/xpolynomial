@@ -56,7 +56,7 @@ TEST(ComplexPolynomialTests, ZeroPolynomialTest) {
 
 TEST(ComplexPolynomialTests, OnePolynomialTest) {
     EXPECT_TRUE(ComplexPolynomial::one().is_constant());
-    EXPECT_TRUE(ComplexPolynomial::one().is_linear());
+    EXPECT_FALSE(ComplexPolynomial::one().is_linear());
     EXPECT_EQ(ComplexPolynomial::one(), one);
     EXPECT_EQ(ComplexPolynomial::one(), ComplexPolynomial({std::complex<double>(1, 0)}));
     EXPECT_EQ(ComplexPolynomial::one().degree(), 0);

@@ -80,7 +80,7 @@ TEST(PolynomialTests, ZeroPolynomialTest) {
 TEST(PolynomialTests, OnePolynomialTest) {
     EXPECT_TRUE(Polynomial::one().is_one());
     EXPECT_TRUE(Polynomial::one().is_constant());
-    EXPECT_TRUE(Polynomial::one().is_linear());
+    EXPECT_FALSE(Polynomial::one().is_linear());
     EXPECT_EQ(Polynomial::one(), one);
     EXPECT_EQ(Polynomial::one(), Polynomial({1}));
     EXPECT_EQ(Polynomial::one().degree(), 0);
@@ -101,6 +101,9 @@ TEST(PolynomialTests, LinearPolynomialTest) {
     EXPECT_TRUE(Polynomial({-1, 1}).is_linear());
 
     EXPECT_FALSE(Polynomial({1, 1, 2}).is_linear());
+    EXPECT_FALSE(Polynomial::zero().is_linear());
+    EXPECT_FALSE(Polynomial::one().is_linear());
+    EXPECT_FALSE(Polynomial({2}).is_linear());
 }
 
 // Tests for quadratic polynomials (degree = 2).

@@ -116,7 +116,7 @@ namespace xmath {
 
     template<typename T>
     bool polynomial<T>::is_linear() const noexcept {
-        return degree() <= 1;
+        return degree() == 1;
     }
 
     template<typename T>
