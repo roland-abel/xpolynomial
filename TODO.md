@@ -207,7 +207,7 @@ headers, `lagrange` bounds) were dropped.
     as `(2^3)^2 = 64` instead of the conventional right-associative `2^(3^2) = 512`.
   - Special-case right-associativity for `POWER` (`>` instead of `>=`). `[verified]`
 
-- [ ] **M19: CI lacks hardening (warnings-as-errors, sanitizers, coverage, MSVC)**
+- [x] **M19: CI hardened (warnings-as-errors, sanitizers, coverage, MSVC)**
   - `.github/workflows/ci.yml`
   - Builds GCC 14 / Clang 18 with `-Wall -Wextra -Wpedantic` but no `-Werror`, no
     ASan/UBSan job, no coverage, and no MSVC coverage despite the README claim.

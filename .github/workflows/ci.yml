@@ -38,7 +38,7 @@ jobs:
       - name: Configure
         env:
           CXX: ${{ matrix.cxx }}
-          CXXFLAGS: -Wall -Wextra -Wpedantic
+          CXXFLAGS: -Wall -Wextra -Wpedantic -Werror
         run: cmake -S . -B build -G Ninja -DCMAKE_PREFIX_PATH=/tmp/gtest
 
       - name: Build
@@ -46,3 +46,99 @@ jobs:
 
       - name: Test
         run: ctest --test-dir build --output-on-failure
+
+  sanitizers:
+    name: GCC 14 (ASan + UBSan)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build libgtest-dev g++-14
+
+      - name: Build and install GoogleTest
+        run: |
+          cmake -S /usr/src/googletest -B /tmp/gtest-build \
+                -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=/tmp/gtest -G Ninja
+          cmake --build /tmp/gtest-build
+          cmake --install /tmp/gtest-build
+
+      - name: Configure
+        env:
+          CXX: g++-14
+          CXXFLAGS: -g -O1 -fsanitize=address,undefined -fno-omit-frame-pointer
+        run: cmake -S . -B build -G Ninja -DCMAKE_PREFIX_PATH=/tmp/gtest
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Test
+        env:
+          ASAN_OPTIONS: detect_leaks=1
+          UBSAN_OPTIONS: print_stacktrace=1:halt_on_error=1
+        run: ctest --test-dir build --output-on-failure
+
+  coverage:
+    name: GCC 14 (coverage)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build libgtest-dev g++-14 lcov
+
+      - name: Build and install GoogleTest
+        run: |
+          cmake -S /usr/src/googletest -B /tmp/gtest-build \
+                -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=/tmp/gtest -G Ninja
+          cmake --build /tmp/gtest-build
+          cmake --install /tmp/gtest-build
+
+      - name: Configure
+        env:
+          CXX: g++-14
+          CXXFLAGS: --coverage -g -O0
+        run: cmake -S . -B build -G Ninja -DCMAKE_PREFIX_PATH=/tmp/gtest
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Generate coverage report
+        run: |
+          lcov --capture --directory build --output-file coverage.info --ignore-errors mismatch
+          lcov --remove coverage.info '/usr/*' '/tmp/*' '*/test/*' --output-file coverage.info
+          lcov --list coverage.info
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.info
+
+  msvc:
+    name: MSVC (C++23)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install GoogleTest
+        run: vcpkg install gtest:x64-windows
+
+      - name: Configure
+        run: >
+          cmake -S . -B build -A x64
+          -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+          -DCMAKE_CXX_FLAGS="/W4"
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Test
+        run: ctest --test-dir build -C Release --output-on-failure
