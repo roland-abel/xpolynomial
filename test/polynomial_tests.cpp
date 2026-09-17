@@ -517,6 +517,11 @@ static_assert(noexcept(zero.degree()));
 static_assert(noexcept(zero.leading_coefficient()));
 static_assert(noexcept(zero.coefficients()));
 
+// Compile-time check that only floating-point coefficient types are supported.
+static_assert(std::is_same_v<polynomial_specification<double>::value_type, double>);
+static_assert(std::is_same_v<polynomial_specification<float>::value_type, float>);
+static_assert(std::is_floating_point_v<polynomial_specification<std::complex<double>>::floating_point_type>);
+
 // Test for the compose function.
 TEST(PolynomialTests, ComposeTest) {
     const Polynomial r = X;

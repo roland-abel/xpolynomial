@@ -12,6 +12,7 @@
 #ifndef POLYNOMIAL_H_
 #define POLYNOMIAL_H_
 
+#include <type_traits>
 #include <utility>
 #include <vector>
 #include <ranges>
@@ -22,6 +23,8 @@ namespace xmath {
     /// @tparam T The data type of the coefficients.
     template<typename T>
     struct polynomial_specification {
+
+        static_assert(std::is_floating_point_v<T>, "The coefficient type parameter must be a floating point type.");
     };
 
     /// @brief Polynomial specification for `double`.
