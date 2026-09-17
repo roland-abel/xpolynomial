@@ -14,6 +14,7 @@
 
 #include <utility>
 #include <vector>
+#include <tuple>
 #include <ranges>
 #include <stdexcept>
 

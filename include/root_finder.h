@@ -11,6 +11,7 @@
 
 #include <functional>
 #include <optional>
+#include "interval.h"
 
 namespace xmath {
 
