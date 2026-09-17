@@ -13,9 +13,10 @@ project(xpolynomial
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(PROJECT_NAME xpolynomial)
+option(XPOLYNOMIAL_BUILD_EXAMPLES "Build the example applications" ON)
+include(CTest)
 
 file(GLOB XPOLYNOMIAL_HEADERS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
 file(GLOB XPOLYNOMIAL_TPL CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.tpp")
@@ -51,7 +52,10 @@ install(FILES
         "${CMAKE_CURRENT_BINARY_DIR}/xpolynomialConfigVersion.cmake"
         DESTINATION lib/cmake/xpolynomial)
 
-enable_testing()
+if(XPOLYNOMIAL_BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
 
-add_subdirectory(examples)
-add_subdirectory(test)
+if(BUILD_TESTING)
+    add_subdirectory(test)
+endif()
