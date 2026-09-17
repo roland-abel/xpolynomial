@@ -355,14 +355,17 @@ namespace xmath::parser {
         /// Gets `true` if the top item is a parenthesis; otherwise `false`. Only the "(" can be on the top of the stack.
         auto top_is_parenthesis = [&]() -> bool { return is_parenthesis_(operator_stack.top()); };
 
-        // Gets `true` if the top item is an operator and its precedence is greater than that of the given operators.
-        auto top_precedence_greater_or_equal = [&](const operator_t op) -> bool {
+        // Gets `true` if the top item is an operator and its precedence is greater than that of the given operator.
+        // When `or_equal` is set, an equal precedence is considered as well.
+        auto top_precedence_greater = [&](const operator_t op, bool or_equal) -> bool {
             const auto top_token = operator_stack.top();
             if (!is_operator_(top_token)) {
                 return false;
             }
             const auto top_operator = std::get<operator_t>(top_token);
-            return precedence(top_operator) >= precedence(op);
+            return or_equal
+                   ? precedence(top_operator) >= precedence(op)
+                   : precedence(top_operator) > precedence(op);
         };
 
         auto move_operator_stack_to_postfix = [&](const auto &condition) {
@@ -374,8 +377,10 @@ namespace xmath::parser {
         };
 
         auto process_operator = [&](const operator_t &op) {
+            // The power operator is right-associative; all other binary operators are left-associative.
+            const auto or_equal = op != operator_t::POWER;
             move_operator_stack_to_postfix([&]() {
-                return !operator_stack.empty() && top_precedence_greater_or_equal(op);
+                return !operator_stack.empty() && top_precedence_greater(op, or_equal);
             });
             operator_stack.emplace(op);
         };

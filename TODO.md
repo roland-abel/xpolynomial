@@ -201,7 +201,7 @@ headers, `lagrange` bounds) were dropped.
     vanish -> division by zero (Inf/NaN propagated into the fixed-point iteration).
   - Guard/skip or fall back to a different step when the denominator is ~0. `[verified]`
 
-- [ ] **M18: Parser treats `^` as left-associative**
+- [x] **M18: Parser treats `^` as left-associative**
   - `include/polynomial_parser.h:355-362`
   - `top_precedence_greater_or_equal` uses `>=` for every operator, so `"2^3^2"` parses
     as `(2^3)^2 = 64` instead of the conventional right-associative `2^(3^2) = 512`.

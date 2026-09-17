@@ -537,6 +537,8 @@ TEST(PolynomialParserTests, ParsePolynomialTest) {
             {"3*X + 5",                         3 * X + 5},
             {"3*X + 3",                         3 * X + 3},
             {"X^9 / X^2",                       X.pow(7)},
+            {"X^2^3",                           X.pow(8)},
+            {"2^3^2",                           P(512)},
             {"-1",                              -P(1)},
             {"-(-2)",                           -P(-2)},
             {"3 - (-2)",                        P(3) - P(-2)},
