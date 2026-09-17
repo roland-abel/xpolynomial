@@ -1,4 +1,4 @@
-/// @file sturm_sequence.cpp
+/// @file root_finder.cpp
 /// @brief Example to demonstrating polynomial creation and finding roots with multiplicities.
 ///
 /// This program creates a polynomial and finds its roots along with their multiplicities using

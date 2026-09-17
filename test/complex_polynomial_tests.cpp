@@ -1,4 +1,4 @@
-/// @file polynomial_tests.cpp
+/// @file complex_polynomial_tests.cpp
 /// @brief
 ///
 /// @author Roland Abel

@@ -1,4 +1,4 @@
-/// @file polynomial.tpp
+/// @file polynomial.ostream.tpp
 /// @brief Implementation of operator<< for the polynomial class.
 ///
 /// @author Roland Abel

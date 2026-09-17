@@ -1,4 +1,4 @@
-/// @file complex_polynomial_root_finder.h
+/// @file complex_polynomial.h
 /// @brief Defines template classes for polynomials with complex coefficients.
 ///
 /// @author Roland Abel

@@ -1,4 +1,4 @@
-/// @file quadratic_roots.cpp
+/// @file cubic_roots.cpp
 /// @brief Example to demonstrating polynomial creation and root finding.
 ///
 /// This program creates a cubic polynomial and finds its roots using the RootFinder class.

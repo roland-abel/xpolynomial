@@ -1,4 +1,4 @@
-/// @file complex_polynomial_root_finder.tpp
+/// @file complex_polynomial.tpp
 /// @brief Defines template classes for polynomials with complex coefficients.
 ///
 /// @author Roland Abel

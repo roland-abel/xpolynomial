@@ -1,4 +1,4 @@
-/// @file parser.tpp
+/// @file parser.cpp
 /// @brief
 ///
 /// @author Roland Abel
