@@ -65,7 +65,7 @@ namespace xmath::parser {
     };
 
     /// The end marker token.
-    static end_marker_t END{};
+    inline constexpr end_marker_t END{};
 
     /// @brief A variable token, e.g. 'X'.
     struct variable_t {
@@ -107,10 +107,10 @@ namespace xmath::parser {
     using polynomial_result_t = std::expected<polynomial_t, error_t>;
 
     /// The monomial X used by the parser.
-    const auto X = polynomial_t::monomial(1, 1.0);
+    inline const auto X = polynomial_t::monomial(1, 1.0);
 
     /// Maps a character to the corresponding operator.
-    static const auto operator_map = std::map<char8_t, operator_t>{
+    inline const auto operator_map = std::map<char8_t, operator_t>{
             {'+', operator_t::PLUS},
             {'-', operator_t::MINUS},
             {'*', operator_t::MULTIPLY},
@@ -119,13 +119,13 @@ namespace xmath::parser {
     };
 
     /// Maps a character to the corresponding parenthesis.
-    static const auto parenthesis_map = std::map<char8_t, parenthesis_t>{
+    inline const auto parenthesis_map = std::map<char8_t, parenthesis_t>{
             {'(', parenthesis_t::OPENED},
             {')', parenthesis_t::CLOSED}
     };
 
     /// Maps a plus/minus operator to the corresponding sign operator.
-    static const auto sign_operator_map = std::map<operator_t, operator_t>{
+    inline const auto sign_operator_map = std::map<operator_t, operator_t>{
             {operator_t::PLUS,  operator_t::SIGN_PLUS},
             {operator_t::MINUS, operator_t::SIGN_MINUS}
     };
@@ -337,7 +337,7 @@ namespace xmath::parser {
                     {operator_t::MULTIPLY,   2},
                     {operator_t::DIVIDE,     2},
                     {operator_t::SIGN_MINUS, 3},
-                    {operator_t::SIGN_MINUS, 3},
+                    {operator_t::SIGN_PLUS,  3},
                     {operator_t::POWER,      4}
             };
             return precedence_map.contains(op) ? precedence_map.at(op) : 0;
