@@ -2,7 +2,7 @@
 /// @brief This file contains the declaration of the polynomial class and related functions.
 ///
 /// @author Roland Abel
-/// @date August 19, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

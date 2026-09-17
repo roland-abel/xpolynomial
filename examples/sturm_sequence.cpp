@@ -6,7 +6,7 @@
 /// counting the number of distinct roots.
 ///
 /// @author Roland Abel
-/// @date October 11, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

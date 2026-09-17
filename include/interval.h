@@ -2,7 +2,7 @@
 /// @brief Interval over real numbers.
 ///
 /// @author Roland Abel
-/// @date November 7, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

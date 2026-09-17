@@ -5,7 +5,7 @@
 /// It then prints whether the polynomial has roots and the calculated n-th roots.
 ///
 /// @author Roland Abel
-/// @date October 28, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

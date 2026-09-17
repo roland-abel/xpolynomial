@@ -2,7 +2,7 @@
 /// @brief Implements the Euclidean algorithm for polynomials.
 ///
 /// @author Roland Abel
-/// @date October 20, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

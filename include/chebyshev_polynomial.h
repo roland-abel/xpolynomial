@@ -2,7 +2,7 @@
 /// @brief Template class provides a set of methods for working with Chebyshev polynomials of the first kind.
 ///
 /// @author Roland Abel
-/// @date October 8, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

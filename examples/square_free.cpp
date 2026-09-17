@@ -2,7 +2,7 @@
 /// @brief Example to demonstrating a square-free decomposition of a polynomial.
 ///
 /// @author Roland Abel
-/// @date November 28, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

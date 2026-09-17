@@ -2,7 +2,7 @@
 /// @brief Root finder class for polynomials with complex coefficients.
 ///
 /// @author Roland Abel
-/// @date October 20, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

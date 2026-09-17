@@ -4,7 +4,7 @@
 /// This program creates a quadratic polynomial and finds its roots using the `real_polynomial_root_finder<>` class.
 ///
 /// @author Roland Abel
-/// @date October 28, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

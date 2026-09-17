@@ -2,7 +2,7 @@
 /// @brief Umbrella header that includes all public headers of the library.
 ///
 /// @author Roland Abel
-/// @date September 16, 2026
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

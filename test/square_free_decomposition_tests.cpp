@@ -2,7 +2,7 @@
 /// @brief Unit test for `square_free_decomposition_tests`.
 ///
 /// @author Roland Abel
-/// @date October 8, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

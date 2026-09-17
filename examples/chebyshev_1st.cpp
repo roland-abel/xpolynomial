@@ -5,7 +5,7 @@
 /// It uses the `chebyshev_polynomial<>` class to generate the polynomials.
 ///
 /// @author Roland Abel
-/// @date October 14, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

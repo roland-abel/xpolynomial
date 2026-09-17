@@ -5,7 +5,7 @@
 /// It then prints the result of the polynomial evaluation for each value.
 ///
 /// @author Roland Abel
-/// @date December 4, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

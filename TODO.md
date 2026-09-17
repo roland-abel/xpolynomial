@@ -105,7 +105,7 @@ Items are grouped by priority. Findings marked `[verified]` were re-checked by h
   `complex_polynomial`/`separate`, `complex_polynomial_root_finder`, `polynomial_parser`;
   no error-handling notes; no API overview/changelog.
 
-- [ ] **N3: Stale `@date`/copyright years** - `LICENSE:3` says 2024, headers 2026;
+- [x] **N3: Stale `@date`/copyright years** - `LICENSE:3` says 2024, headers 2026;
   `@date` mostly 2023/2024.
 
 - [x] **N4: Test quality**

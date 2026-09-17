@@ -5,7 +5,7 @@
 /// It then prints the polynomial and the calculated roots.
 ///
 /// @author Roland Abel
-/// @date October 9, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

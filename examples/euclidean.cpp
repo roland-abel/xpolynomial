@@ -3,7 +3,7 @@
 /// the gcd is given by s * p + t * q.
 ///
 /// @author Roland Abel
-/// @date November 28, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

@@ -2,7 +2,7 @@
 /// @brief Lagrange polynomial interpolation.
 ///
 /// @author Roland Abel
-/// @date November 25, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 

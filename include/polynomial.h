@@ -5,7 +5,7 @@
 /// (addition, subtraction, multiplication, division), polynomial evaluation.
 ///
 /// @author Roland Abel
-/// @date August 19, 2023
+/// @date September 17, 2026
 ///
 /// Copyright (c) 2026 Roland Abel
 
