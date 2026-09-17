@@ -147,7 +147,7 @@ headers, `lagrange` bounds) were dropped.
     `return alphas[0] + x * beta1 - beta2;` still indexes element 0.
   - Guard against `alphas.empty()` and return zero. `[verified]`
 
-- [ ] **H8: Parser pops an empty operator stack on an unmatched `)` (UB)**
+- [x] **H8: Parser pops an empty operator stack on an unmatched `)` (UB)**
   - `include/polynomial_parser.h:384-389`
   - In `process_parenthesis` the `CLOSED` case calls `operator_stack.pop()`
     unconditionally. For input like `"1 + )"` the stack is empty (or holds only

@@ -15,6 +15,7 @@
 #include <regex>
 #include <ranges>
 #include <map>
+#include <optional>
 #include <functional>
 
 #include "polynomial.h"
@@ -56,7 +57,8 @@ namespace xmath::parser {
         INVALID_POWER_EXPONENT,
         INVALID_NUMBER,
         DIVISION_BY_ZERO,
-        OPERAND_EXPECTED
+        OPERAND_EXPECTED,
+        INVALID_PARENTHESIS
     };
 
     /// @brief Marks the end of the token list.
@@ -330,6 +332,8 @@ namespace xmath::parser {
     inline tokenize_result_t convert_to_postfix(const tokens_t &infix) {
         tokens_t postfix = {};
         std::stack<token_t> operator_stack = {};
+        auto execution_error = std::optional<error_t>{};
+        auto open_parentheses = 0u;
 
         // Gets the precedence of the given operator. The higher the number, the more priority it has.
         auto precedence = [](const operator_t op) -> uint8_t {
@@ -380,12 +384,18 @@ namespace xmath::parser {
             switch (parenthesis) {
                 case parenthesis_t::OPENED:
                     operator_stack.emplace(parenthesis);
+                    ++open_parentheses;
                     break;
                 case parenthesis_t::CLOSED:
-                    move_operator_stack_to_postfix([&]() {
-                        return !operator_stack.empty() && !top_is_parenthesis();
-                    });
-                    operator_stack.pop();
+                    if (open_parentheses == 0) {
+                        execution_error = error_t::INVALID_PARENTHESIS;
+                    } else {
+                        move_operator_stack_to_postfix([&]() {
+                            return !operator_stack.empty() && !top_is_parenthesis();
+                        });
+                        operator_stack.pop();
+                        --open_parentheses;
+                    }
                     break;
             }
         };
@@ -405,6 +415,16 @@ namespace xmath::parser {
         };
 
         std::for_each(infix.begin(), infix.end(), process_token);
+
+        if (execution_error) {
+            return std::unexpected<error_t>{*execution_error};
+        }
+
+        // Unclosed parentheses signal an error.
+        if (open_parentheses != 0) {
+            return std::unexpected<error_t>{error_t::INVALID_PARENTHESIS};
+        }
+
         move_operator_stack_to_postfix([&]() {
             return !operator_stack.empty();
         });

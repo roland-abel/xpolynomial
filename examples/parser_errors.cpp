@@ -36,6 +36,8 @@ namespace {
                 return "division by zero";
             case xmath::parser::error_t::OPERAND_EXPECTED:
                 return "operand expected";
+            case xmath::parser::error_t::INVALID_PARENTHESIS:
+                return "invalid parenthesis";
         }
         return "unknown error";
     }

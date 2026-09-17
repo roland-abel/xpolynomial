@@ -571,7 +571,10 @@ TEST(PolynomialParserTests, ParseInvalidPolynomialTest) {
             {" / X ",           parser::error_t::OPERAND_EXPECTED},
             {"X / 0",           parser::error_t::DIVISION_BY_ZERO},
             {"X / (X - X) + 5", parser::error_t::DIVISION_BY_ZERO},
-            {"Y^2 + 5",         parser::error_t::INVALID_VARIABLE}
+            {"Y^2 + 5",         parser::error_t::INVALID_VARIABLE},
+            {"1 + )",           parser::error_t::INVALID_PARENTHESIS},
+            {")(",              parser::error_t::INVALID_PARENTHESIS},
+            {"(X + 1",          parser::error_t::INVALID_PARENTHESIS}
     };
 
     for (const auto &[expression, error]: expected_values) {
