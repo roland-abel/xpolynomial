@@ -17,9 +17,11 @@ jobs:
           - name: GCC 14
             cxx: g++-14
             packages: g++-14
+            cxxflags: ""
           - name: Clang 18
             cxx: clang++-18
-            packages: clang-18
+            packages: clang-18 g++-14
+            cxxflags: --gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/14
     steps:
       - uses: actions/checkout@v4
 
@@ -38,7 +40,7 @@ jobs:
       - name: Configure
         env:
           CXX: ${{ matrix.cxx }}
-          CXXFLAGS: -Wall -Wextra -Wpedantic -Werror
+          CXXFLAGS: -Wall -Wextra -Wpedantic -Werror ${{ matrix.cxxflags }}
         run: cmake -S . -B build -G Ninja -DCMAKE_PREFIX_PATH=/tmp/gtest
 
       - name: Build
@@ -112,9 +114,9 @@ jobs:
 
       - name: Generate coverage report
         run: |
-          lcov --capture --directory build --output-file coverage.info --ignore-errors mismatch
-          lcov --remove coverage.info '/usr/*' '/tmp/*' '*/test/*' --output-file coverage.info
-          lcov --list coverage.info
+          lcov --capture --directory build --output-file coverage.info --ignore-errors mismatch,gcov,source
+          lcov --remove coverage.info '/usr/*' '/tmp/*' '*/test/*' --output-file coverage.info --ignore-errors mismatch,unused,empty
+          lcov --list coverage.info --ignore-errors mismatch,unused,empty
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
