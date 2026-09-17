@@ -15,6 +15,20 @@ namespace {
     constexpr auto epsilon = 1e-5;
 }
 
+namespace {
+    constexpr auto compile_time_check = [] {
+        return nearly_zero(0.00000001, epsilon) && !nearly_zero(0.1, epsilon)
+            && nearly_equal(0.1, 0.1, epsilon) && !nearly_equal(0.1, 0.2, epsilon)
+            && greater_than(1.0, 0.9, epsilon) && !greater_than(0.9, 1.0, epsilon)
+            && greater_than_or_equal(1.0, 0.9, epsilon) && greater_than_or_equal(1.0, 1.0, epsilon)
+            && less_than(0.9, 1.0, epsilon) && !less_than(1.0, 0.9, epsilon)
+            && less_than_or_equal(0.9, 1.0, epsilon) && less_than_or_equal(1.0, 1.0, epsilon)
+            && is_even(2) && is_even(0) && !is_even(1)
+            && is_odd(1) && !is_odd(2) && is_odd(-3);
+    }();
+    static_assert(compile_time_check, "utils helpers are not constexpr");
+}
+
 // Test cases for nearly_zero function
 TEST(UtilsTest, NearlyZeroWithPositiveValue) {
     EXPECT_TRUE(nearly_zero(0.00000001, epsilon));

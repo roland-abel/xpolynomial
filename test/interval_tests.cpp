@@ -21,6 +21,21 @@ namespace {
     constexpr double epsilon = 1e-9;
 }
 
+namespace {
+    constexpr auto compile_time_check = [] {
+        const auto closed_interval = Interval(2., 2., closed, closed);
+        const auto opened_interval = Interval(2., 2., opened, opened);
+        const auto half_open_interval = Interval(0., 1., opened, closed);
+
+        return closed_interval.is_closed() && !closed_interval.is_empty()
+            && opened_interval.is_opened() && opened_interval.is_empty() && opened_interval.is_degenerate()
+            && half_open_interval.is_lower_open() && half_open_interval.is_upper_closed()
+            && half_open_interval.is_half_open() && !half_open_interval.is_empty()
+            && Interval(-1., 1.).length() == 2.0 && Interval().lower() == 0.0 && Interval().upper() == 1.0;
+    }();
+    static_assert(compile_time_check, "interval methods are not constexpr");
+}
+
 TEST(IntervalTests, DefaultCtorTest) {
     const auto I = Interval{};
     EXPECT_NEAR(I.lower(), 0.0, epsilon);

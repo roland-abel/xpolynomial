@@ -23,7 +23,7 @@ namespace xmath {
     /// @param epsilon The epsilon value for comparison (default is machine epsilon).
     /// @return True if the value is nearly zero; otherwise, false.
     template<typename T, typename FP = T>
-    bool nearly_zero(T a, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+    constexpr bool nearly_zero(T a, FP epsilon = std::numeric_limits<FP>::epsilon()) {
         return std::abs(a) < epsilon;
     }
 
@@ -35,7 +35,7 @@ namespace xmath {
     /// @param epsilon The epsilon value for comparison (default is machine epsilon).
     /// @return True if the values are nearly equal; otherwise, false.
     template<typename T, typename FP = T>
-    bool nearly_equal(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+    constexpr bool nearly_equal(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
         return nearly_zero(a - b, epsilon);
     }
 
@@ -47,7 +47,7 @@ namespace xmath {
     /// @param epsilon The epsilon value for comparison (default is machine epsilon).
     /// @return True if the first value is greater than the second; otherwise, false.
     template<typename T, typename FP = T>
-    bool greater_than(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+    constexpr bool greater_than(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
         return a - epsilon > b;
     }
 
@@ -59,7 +59,7 @@ namespace xmath {
     /// @param epsilon The epsilon value for comparison (default is machine epsilon).
     /// @return True if the first value is greater than or equal to the second; otherwise, false.
     template<typename T, typename FP = T>
-    bool greater_than_or_equal(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+    constexpr bool greater_than_or_equal(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
         return a + epsilon > b;
     }
 
@@ -71,7 +71,7 @@ namespace xmath {
     /// @param epsilon The epsilon value for comparison (default is machine epsilon).
     /// @return True if the first value is less than the second; otherwise, false.
     template<typename T, typename FP = T>
-    bool less_than(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+    constexpr bool less_than(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
         return a + epsilon < b;
     }
 
@@ -83,21 +83,21 @@ namespace xmath {
     /// @param epsilon The epsilon value for comparison (default is machine epsilon).
     /// @return True if the first value is less than or equal to the second; otherwise, false.
     template<typename T, typename FP = T>
-    bool less_than_or_equal(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
+    constexpr bool less_than_or_equal(T a, T b, FP epsilon = std::numeric_limits<FP>::epsilon()) {
         return a - epsilon < b;
     }
 
     /// @brief Checks if a given integer is even.
     /// @param a The integer value to check.
     /// @return True if the integer is even; otherwise, false.
-    inline bool is_even(long a) {
+    inline constexpr bool is_even(long a) {
         return a % 2 == 0;
     }
 
     /// @brief Checks if a given integer is odd.
     /// @param a The integer value to check.
     /// @return True if the integer is odd; otherwise, false.
-    inline bool is_odd(long a) {
+    inline constexpr bool is_odd(long a) {
         return a % 2 != 0;
     }
 
@@ -106,7 +106,7 @@ namespace xmath {
     /// @param r The input range.
     /// @return A vector containing the elements of the input range.
     template<std::ranges::range R>
-    auto to_vector(R &&r) {
+    constexpr auto to_vector(R &&r) {
         auto r_common = r | std::views::common;
         return std::vector(r_common.begin(), r_common.end());
     }
