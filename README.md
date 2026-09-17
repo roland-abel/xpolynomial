@@ -172,6 +172,29 @@ int main() {
 }
 ```
 
+#### Compile-time evaluation
+
+The methods of the real `polynomial<T>` class (construction, arithmetic, evaluation, calculus,
+division and comparison) are `constexpr` and can be evaluated at compile time. A polynomial
+object itself cannot have static storage duration, because the coefficients live in a
+`std::vector` whose allocation would have to persist; constant evaluation is therefore only
+possible within a constant expression, for example inside a `constexpr` function or lambda.
+
+```c++
+constexpr bool check() {
+    const auto X = polynomial<double>::monomial(1, 1.0);
+    const auto p = (X - 1.0).pow(2);          // (X - 1)^2
+    return p(3.0) == 4.0                      // evaluation
+        && p.derive() == 2.0 * X - 2.0        // calculus
+        && p.is_root(1.0);                    // root check
+}
+
+static_assert(check());
+```
+
+`complex_polynomial<T>` is not `constexpr`, because `std::abs(std::complex<T>)` is not a
+constant expression.
+
 ### Interval
 
 The `interval<T>` class represents a real interval with configurable open/closed boundary

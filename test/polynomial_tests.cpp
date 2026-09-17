@@ -7,6 +7,7 @@
 /// Copyright (c) 2026 Roland Abel
 
 #include <gtest/gtest.h>
+#include <array>
 #include <cmath>
 #include <numbers>
 #include <complex_polynomial.h>
@@ -570,6 +571,96 @@ static_assert(noexcept(zero.coefficients()));
 static_assert(std::is_same_v<polynomial_specification<double>::value_type, double>);
 static_assert(std::is_same_v<polynomial_specification<float>::value_type, float>);
 static_assert(std::is_floating_point_v<polynomial_specification<std::complex<double>>::floating_point_type>);
+
+// Compile-time evaluation of the polynomial operations for real coefficient types.
+// A polynomial with static storage duration cannot be `constexpr`, because the underlying
+// std::vector allocation would have to persist. All checks are therefore performed inside
+// a constant expression, where the allocation is transient.
+constexpr bool polynomial_is_constexpr_evaluable() {
+    using P = polynomial<double>;
+
+    const P zero{};
+    const P one = P::one();
+    const P X = P::monomial(1, 1.0);
+    const P p = P({1.0, 2.0, 3.0});
+    const P q = P({-1.0, 1.0});
+
+    // Constructors and factories.
+    if (!zero.is_zero() || !zero.is_constant() || zero.degree() != 0) return false;
+    if (!one.is_one() || !X.is_linear()) return false;
+    if (!P({1.0, 2.0, 3.0}).is_quadratic()) return false;
+    if (!P(P::values_type{1.0, 2.0, 3.0, 4.0}).is_cubic()) return false;
+    if (!P(std::array<double, 2>{5.0, 6.0}).is_linear()) return false;
+
+    // Accessors.
+    if (p.leading_coefficient() != 3.0 || p.coefficients().size() != 3) return false;
+    if (p.at(0) != 1.0 || p.at(1) != 2.0 || p.at(2) != 3.0 || p.at(9) != 0.0) return false;
+    if (p[0] != 1.0 || p[1] != 2.0) return false;
+    if (!p.is_integer() || p.is_normalized()) return false;
+
+    // Evaluation.
+    if (p.evaluate(2.0) != 17.0 || p(2.0) != 17.0) return false;
+
+    // Equality and arithmetic.
+    if (!(p == P({1.0, 2.0, 3.0})) || p == q) return false;
+    if (!(p + q == P({0.0, 3.0, 3.0}))) return false;
+    if (!(p - q == P({2.0, 1.0, 3.0}))) return false;
+    if (!(q * q == P({1.0, -2.0, 1.0}))) return false;
+    if (!(p + 1.0 == P({2.0, 2.0, 3.0}))) return false;
+    if (!(p - 1.0 == P({0.0, 2.0, 3.0}))) return false;
+    if (!(2.0 * p == P({2.0, 4.0, 6.0}))) return false;
+    if (!(p * 2.0 == P({2.0, 4.0, 6.0}))) return false;
+    if (!(p / 2.0 == P({0.5, 1.0, 1.5}))) return false;
+    if (!(-p == P({-1.0, -2.0, -3.0})) || !(+p == p)) return false;
+
+    // Division, quotient and remainder.
+    const auto [quotient, remainder] = p.divide(q);
+    if (!(quotient == P({5.0, 3.0})) || !(remainder == P({6.0}))) return false;
+    if (!(p / q == quotient) || !(p % q == remainder)) return false;
+    if (!(p == quotient * q + remainder)) return false;
+
+    // Power, derivation, integration and composition.
+    if (!(X.pow(3) == P::monomial(3, 1.0)) || !p.pow(0).is_one()) return false;
+    if (!(q.pow(2) == P({1.0, -2.0, 1.0}))) return false;
+    if (!(p.derive() == P({2.0, 6.0}))) return false;
+    if (!(p.integrate() == P({0.0, 1.0, 1.0, 1.0}))) return false;
+    if (!(p.integrate().derive() == p)) return false;
+    if (!(p.compose(X) == p) || !(q.compose(q) == P({-2.0, 1.0}))) return false;
+    if (!(p.compose(q) == P({2.0, -4.0, 3.0}))) return false;
+
+    // Normalization, roots and rounding.
+    if (!(P({2.0, 4.0}).normalize() == P({0.5, 1.0})) || !zero.normalize().is_zero()) return false;
+    const P roots = P::from_roots({1.0, 2.0});
+    if (!roots.is_normalized() || !roots.has_roots({1.0, 2.0}) || roots.is_root(3.0)) return false;
+    if (!(P({1.4, 2.6}).to_integer() == P({1.0, 3.0}))) return false;
+
+    // Compound assignment operators.
+    P c = p;
+    if (!((c += q) == p + q)) return false;
+    c = p;
+    if (!((c -= q) == p - q)) return false;
+    c = p;
+    if (!((c *= q) == p * q)) return false;
+    c = p;
+    if (!((c /= q) == p / q)) return false;
+    c = p;
+    if (!((c %= q) == p % q)) return false;
+    c = p;
+    if (!((c += 1.0) == p + 1.0)) return false;
+    c = p;
+    if (!((c -= 1.0) == p - 1.0)) return false;
+    c = p;
+    if (!((c *= 2.0) == p * 2.0)) return false;
+    c = p;
+    if (!((c /= 2.0) == p / 2.0)) return false;
+
+    // The `float` specification is constexpr as well.
+    if (!polynomial<float>::monomial(1, 1.0f).is_linear()) return false;
+
+    return true;
+}
+
+static_assert(polynomial_is_constexpr_evaluable(), "polynomial operations must be usable in constant expressions");
 
 // Test for the compose function.
 TEST(PolynomialTests, ComposeTest) {

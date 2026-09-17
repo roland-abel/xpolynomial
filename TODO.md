@@ -42,10 +42,14 @@ Items are grouped by priority. Findings marked `[verified]` were re-checked by h
 ## Medium priority (design / maintenance / docs)
 
 - [x] **M1: Missing `constexpr` despite C++23 header-only positioning**
-  - Scope narrowed to the numeric helpers (`utils::nearly_*`) and `interval` methods,
-    which were made `constexpr` in `5767068`. The `polynomial`/`complex_polynomial`
-    classes are built on `std::vector` allocations and their operators are intentionally
-    left non-`constexpr`.
+  - Numeric helpers (`utils::nearly_*`) and `interval` methods were made `constexpr` in
+    `5767068`.
+  - The real `polynomial<T>` class is now fully `constexpr`: constructors, accessors,
+    arithmetic, evaluation, calculus, division and comparison. A `constexpr` polynomial
+    object with static storage duration remains impossible, because the coefficient
+    `std::vector` allocation would have to persist; constant evaluation therefore only
+    works inside a constant expression. `complex_polynomial<T>` stays non-`constexpr`,
+    because `std::abs(std::complex<T>)` is not a constant expression.
 
 - [x] **M2: Missing `noexcept` in a non-throwing library**
   - `noexcept` only on move ctor/assignment (`polynomial.h:77,179`) and parser lambdas.
@@ -217,14 +221,16 @@ headers, `lagrange` bounds) were dropped.
 
 ### Low priority (cosmetic / docs)
 
-- [ ] **N7: Residual N6 fixes were never applied**
+- [x] **N7: Residual N6 fixes were never applied**
   - `include/square_free_decomposition.tpp:2` still says "for for" (only the `.h` was fixed).
   - `include/root_finder.h:44,61` still say "the returned optional<> has not a value"
     (N6 only rewrote the copies in `square_free_decomposition.h`). `[verified]`
+  - Fixed in `6dc24a1`.
 
 - [x] **N8: `constexpr` (M1) only landed for helpers/`interval`**
   - `5767068` made numeric helpers and `interval` `constexpr`, but `polynomial` ctors,
     `evaluate`, `degree` and operators are still non-`constexpr` although the TODO
     item listed them. Either extend or narrow the M1 description. `[verified]`
-  - Resolved by narrowing the M1 description to the delivered scope; making the
-    vector-backed polynomial class `constexpr` is out of scope.
+  - Resolved by extending the M1 scope: the real `polynomial<T>` class is now fully
+    `constexpr` (see M1). `complex_polynomial<T>` is intentionally excluded for the
+    reason noted there.
