@@ -154,7 +154,7 @@ headers, `lagrange` bounds) were dropped.
     operators) and `pop()` / `top()` on an empty `std::stack` is undefined.
   - Validate `)` against a matching `(` (emit a parse error) before popping. `[verified]`
 
-- [ ] **H9: Cardano formula uses `std::pow(negative, 1./3.)` -> NaN**
+- [x] **H9: Cardano formula uses `std::pow(negative, 1./3.)` -> NaN**
   - `include/real_polynomial_root_finder.tpp:123-124`
   - `A`/`B` are computed with `std::pow(v, 1. / 3.)`. For `v < 0` this yields NaN
     even though the real cube root is well defined (casus irreducibilis aside).

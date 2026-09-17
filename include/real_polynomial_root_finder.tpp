@@ -11,6 +11,7 @@
 
 #include <numeric>
 #include <numbers>
+#include <cmath>
 #include "utils.h"
 #include "root_finder.h"
 #include "square_free_decomposition.h"
@@ -120,8 +121,8 @@ namespace xmath {
 
         if (w > 0) {
             // There are one real root and two conjugate imaginary roots
-            const auto A = std::pow(-b / 2. + std::sqrt(w), 1. / 3.);
-            const auto B = std::pow(-b / 2. - std::sqrt(w), 1. / 3.);
+            const auto A = std::cbrt(-b / 2. + std::sqrt(w));
+            const auto B = std::cbrt(-b / 2. - std::sqrt(w));
 
             return {A + B};
         }

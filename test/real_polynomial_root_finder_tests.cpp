@@ -59,6 +59,15 @@ TEST(RealPolynomialRootFinderTests, CubicPolynomialWithOneRootsTest) {
     EXPECT_NEAR(roots[0], std::pow(5., 1. / 3.), epsilon);
 }
 
+TEST(RealPolynomialRootFinderTests, CubicPolynomialWithNegativeCubeRootRadicandTest) {
+    const auto p = X.pow(3) - 3 * X + 4;
+    const auto roots = RootFinder::cubic_roots(p);
+
+    ASSERT_EQ(roots.size(), 1);
+    EXPECT_NEAR(p(roots[0]), 0., epsilon);
+    EXPECT_TRUE(p.has_roots(roots));
+}
+
 TEST(RealPolynomialRootFinderTests, CubicNormalFormPolynomialWithThreeUnequalRootsTest) {
     const auto p = X.pow(3) - 2 * X + 1;
 
