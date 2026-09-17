@@ -116,7 +116,7 @@ Items are grouped by priority. Findings marked `[verified]` were re-checked by h
     `SubstrationWithScalarTest`, `PolynomialSubstractionTest`,
     `QuadraticPolynomialWhitoutRealRootsTest`.
 
-- [ ] **N5: Example gaps** - no examples for `interval`, `legendre_polynomial`,
+- [x] **N5: Example gaps** - no examples for `interval`, `legendre_polynomial`,
   `complex_polynomial`, parser error handling, non-integer `find_roots`.
 
 - [ ] **N6: Minor issues**
