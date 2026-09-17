@@ -129,6 +129,27 @@ TEST(PolynomialTests, MonomialTest) {
     EXPECT_EQ(Polynomial::monomial(10, 3.5).degree(), 10);
 }
 
+// Tests for out-of-range mutable access (M7).
+TEST(PolynomialTests, OutOfRangeMutableAccessTest) {
+    Polynomial p = zero;
+    p[5] = 3.5;
+    EXPECT_EQ(p.degree(), 5);
+    EXPECT_EQ(p.at(5), 3.5);
+    EXPECT_EQ(p.at(3), 0.0);
+
+    p.at(7) = 1.0;
+    EXPECT_EQ(p.degree(), 7);
+    EXPECT_EQ(p.at(7), 1.0);
+    EXPECT_EQ(p, 3.5 * X.pow(5) + X.pow(7));
+}
+
+// Tests for out-of-range read access.
+TEST(PolynomialTests, OutOfRangeReadAccessTest) {
+    const Polynomial p = Polynomial({1.0, 2.0, 3.0});
+    EXPECT_EQ(p.at(10), 0.0);
+    EXPECT_EQ(p[10], 0.0);
+}
+
 TEST(PolynomialTests, ToStringTest) {
     EXPECT_EQ(zero.to_string(), "0");
     EXPECT_EQ(one.to_string(), "1");

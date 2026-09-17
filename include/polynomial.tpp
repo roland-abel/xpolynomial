@@ -167,6 +167,9 @@ namespace xmath {
 
     template<typename T>
     typename polynomial<T>::value_type& polynomial<T>::at(size_type index) {
+        if (index >= coeffs_.size()) {
+            coeffs_.resize(index + 1, spec::zero);
+        }
         return coeffs_[index];
     }
 

@@ -187,6 +187,7 @@ namespace xmath {
         value_type at(size_type index) const;
 
         /// @brief Gets the coefficient at the given index for modification.
+        /// If the index is beyond the current degree, the polynomial is extended with zero coefficients.
         /// @param index The index of the coefficient.
         /// @return A reference to the coefficient at the specified index.
         value_type &at(size_type index);
@@ -197,6 +198,7 @@ namespace xmath {
         value_type operator[](size_type index) const;
 
         /// @brief Accesses the coefficient at the specified index for modification.
+        /// If the index is beyond the current degree, the polynomial is extended with zero coefficients.
         /// @param index The index of the coefficient.
         /// @return A reference to the coefficient at the specified index.
         value_type &operator[](size_type index);
