@@ -1,0 +1,48 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    name: ${{ matrix.name }} (C++23)
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: GCC 14
+            cxx: g++-14
+            packages: g++-14
+          - name: Clang 18
+            cxx: clang++-18
+            packages: clang-18
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build libgtest-dev ${{ matrix.packages }}
+
+      - name: Build and install GoogleTest
+        run: |
+          cmake -S /usr/src/googletest -B /tmp/gtest-build \
+                -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=/tmp/gtest -G Ninja
+          cmake --build /tmp/gtest-build
+          cmake --install /tmp/gtest-build
+
+      - name: Configure
+        env:
+          CXX: ${{ matrix.cxx }}
+          CXXFLAGS: -Wall -Wextra -Wpedantic
+        run: cmake -S . -B build -G Ninja -DCMAKE_PREFIX_PATH=/tmp/gtest
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
