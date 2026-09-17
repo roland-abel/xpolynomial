@@ -12,6 +12,7 @@
 #include <utility>
 #include <iostream>
 #include <vector>
+#include <optional>
 #include "interval.h"
 #include "polynomial.h"
 

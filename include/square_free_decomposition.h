@@ -11,6 +11,7 @@
 #define SQUARE_FREE_DECOMPOSITION_H_
 
 #include <vector>
+#include <optional>
 #include "polynomial.h"
 
 namespace xmath {

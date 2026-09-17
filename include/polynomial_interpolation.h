@@ -9,6 +9,9 @@
 #ifndef POLYNOMIAL_INTERPOLATION_H_
 #define POLYNOMIAL_INTERPOLATION_H_
 
+#include <vector>
+#include <optional>
+#include <type_traits>
 #include "polynomial.h"
 
 namespace xmath {
