@@ -248,7 +248,7 @@ namespace xmath {
         for_each(coeffs_, [&](value_type& c) {
             c *= scalar;
         });
-        return *this;
+        return trim_coefficients();
     }
 
     template<typename T>
@@ -263,7 +263,7 @@ namespace xmath {
         for_each(coeffs_, [&](value_type& c) {
             c /= scalar;
         });
-        return *this;
+        return trim_coefficients();
     }
 
     template<typename T>

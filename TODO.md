@@ -170,7 +170,7 @@ headers, `lagrange` bounds) were dropped.
 
 ### Medium priority (design / maintenance / docs)
 
-- [ ] **M13: `operator*=(scalar)` / `operator/=(scalar)` skip `trim_coefficients()`**
+- [x] **M13: `operator*=(scalar)` / `operator/=(scalar)` skip `trim_coefficients()`**
   - `include/polynomial.tpp:247-252,262-267`
   - `operator*=` / `operator/=` mutate each coefficient in place but never trim, so
     multiplying by `0` leaves the degree unchanged while all coefficients are zero,

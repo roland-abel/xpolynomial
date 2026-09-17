@@ -511,6 +511,23 @@ TEST(PolynomialTests, CompoundAssignmentScalarDivisionOperatorTest) {
     EXPECT_EQ(p /= 2, (3. / 2) * X.pow(4) - X.pow(3) + .5 * X.pow(2) + 1);
 }
 
+TEST(PolynomialTests, CompoundAssignmentScalarMultiplicationWithZeroTrimsTest) {
+    auto p = 3 * X.pow(4) - 2 * X.pow(3) + X.pow(2) + 2;
+    p *= 0.;
+
+    EXPECT_TRUE(p.is_zero());
+    EXPECT_EQ(p.degree(), 0);
+}
+
+TEST(PolynomialTests, CompoundAssignmentScalarDivisionTrimsLeadingCoefficientTest) {
+    auto p = Polynomial({1.0, 0.0, 1e-3}); // 1 + 1e-3 x^2
+    EXPECT_EQ(p.degree(), 2);
+
+    p /= 1e6;
+    EXPECT_EQ(p.degree(), 0);
+    EXPECT_NEAR(p.at(0), 1e-6, 1e-12);
+}
+
 TEST(PolynomialTests, CompoundAssignmentPolynomialDivisionOperatorTest) {
     auto p = 3 * X.pow(3) + X.pow(2) + X + 5;
     const auto q = 5 * X.pow(2) + -3 * X + 1;
