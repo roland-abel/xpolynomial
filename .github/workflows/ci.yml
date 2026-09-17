@@ -15,13 +15,15 @@ jobs:
       matrix:
         include:
           - name: GCC 14
+            cc: gcc-14
             cxx: g++-14
             packages: g++-14
             cxxflags: ""
           - name: Clang 18
+            cc: clang-18
             cxx: clang++-18
-            packages: clang-18 g++-14
-            cxxflags: --gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/14
+            packages: clang-18 libc++-18-dev libc++abi-18-dev
+            cxxflags: -stdlib=libc++
     steps:
       - uses: actions/checkout@v4
 
@@ -31,6 +33,10 @@ jobs:
           sudo apt-get install -y cmake ninja-build libgtest-dev ${{ matrix.packages }}
 
       - name: Build and install GoogleTest
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+          CXXFLAGS: ${{ matrix.cxxflags }}
         run: |
           cmake -S /usr/src/googletest -B /tmp/gtest-build \
                 -DBUILD_GMOCK=OFF -DCMAKE_INSTALL_PREFIX=/tmp/gtest -G Ninja
@@ -39,6 +45,7 @@ jobs:
 
       - name: Configure
         env:
+          CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
           CXXFLAGS: -Wall -Wextra -Wpedantic -Werror ${{ matrix.cxxflags }}
         run: cmake -S . -B build -G Ninja -DCMAKE_PREFIX_PATH=/tmp/gtest
@@ -114,7 +121,7 @@ jobs:
 
       - name: Generate coverage report
         run: |
-          lcov --capture --directory build --output-file coverage.info --ignore-errors mismatch,gcov,source
+          lcov --capture --directory build --output-file coverage.info --gcov-tool gcov-14 --ignore-errors mismatch,gcov,source
           lcov --remove coverage.info '/usr/*' '/tmp/*' '*/test/*' --output-file coverage.info --ignore-errors mismatch,unused,empty
           lcov --list coverage.info --ignore-errors mismatch,unused,empty
 
