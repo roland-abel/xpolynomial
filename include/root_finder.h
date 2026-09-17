@@ -26,26 +26,30 @@ namespace xmath {
         /// @tparam F The type of the function for which the zero point needs to be found.
         /// @param func The function for which the zero point needs to be found.
         /// @param I The real interval.
+        /// @param max_iterations The maximum number of iterations (default: 100).
         /// @param epsilon The desired accuracy for the root approximation (default is 1e-15).
         /// @return The approximate zero point of the function within the given interval.
         template<typename F>
         static std::optional<T> bisection(
                 F &&func,
                 const interval<value_type> &I,
+                int max_iterations = 100,
                 value_type epsilon = 1e-15);
 
         /// @brief Perform the regula falsi method to find a zero point of the given function within the specified interval.
         /// @tparam F The type of the function for which the zero point needs to be found.
         /// @param func The function for which the zero point needs to be found.
         /// @param I The interval.
+        /// @param max_iterations The maximum number of iterations (default: 100).
         /// @param epsilon The desired accuracy for the root approximation (default is 1e-15).
         /// @return The approximate zero point of the function within the given interval.
         ///
-        /// @note If no solution is found, the returned optional<> has not a value.
+        /// @note If no solution is found, the returned optional<> has no value.
         template<typename F>
         static std::optional<T> regula_falsi(
                 F &&func,
                 const interval<value_type> &I,
+                int max_iterations = 100,
                 value_type epsilon = 1e-15);
 
         /// @brief Computes an approximation of a root for an equation using the Newton-Raphson method.

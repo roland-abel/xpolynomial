@@ -308,7 +308,7 @@ namespace xmath {
             for (auto I: intervals) {
                 multiplicities.push_back(k + 1);
 
-                auto root = root_finder<T>::bisection(q, I, epsilon);
+                auto root = root_finder<T>::bisection(q, I, 100, epsilon);
                 if (root.has_value()) {
                     roots.push_back(root.value());
                 }

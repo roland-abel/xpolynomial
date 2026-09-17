@@ -19,6 +19,7 @@ namespace xmath {
     std::optional<T> root_finder<T>::bisection(
             F &&func,
             const interval<value_type> &I,
+            int max_iterations,
             value_type epsilon) {
 
         if (greater_than_or_equal(func(I.lower()) * func(I.upper()), 0., epsilon)) {
@@ -27,7 +28,9 @@ namespace xmath {
 
         auto bisection = [&](value_type a, value_type b) {
             auto c = a;
-            while (!nearly_zero<value_type>(b - a, epsilon)) {
+            for (int iteration = 0;
+                 iteration < max_iterations && !nearly_zero<value_type>(b - a, epsilon);
+                 ++iteration) {
                 // Choose the middle point as the new estimation for the root
                 c = (b + a) / 2.;
                 if (nearly_zero<value_type>(func(c))) {
@@ -48,20 +51,31 @@ namespace xmath {
     std::optional<T> root_finder<T>::regula_falsi(
             F &&func,
             const interval<value_type> &I,
+            int max_iterations,
             value_type epsilon) {
 
         if (greater_than_or_equal(func(I.lower()) * func(I.upper()), 0., epsilon)) {
             return {}; // incorrect endpoints a and b.
         }
 
-        auto regula_falsi = [&](value_type a, value_type b) {
+        auto regula_falsi = [&](value_type a, value_type b) -> std::optional<value_type> {
             auto c = a;
-            while ((b - a) >= epsilon) {
-                c = (a * func(b) - b * func(a)) / (func(b) - func(a));
+            for (int iteration = 0;
+                 iteration < max_iterations && (b - a) >= epsilon;
+                 ++iteration) {
+                const auto f_a = func(a);
+                const auto f_b = func(b);
+                const auto denominator = f_b - f_a;
+
+                if (nearly_zero<value_type>(denominator, epsilon)) {
+                    return std::nullopt; // the secant is (almost) horizontal
+                }
+
+                c = (a * f_b - b * f_a) / denominator;
 
                 if (nearly_zero<value_type>(func(c), epsilon)) {
                     return c;
-                } else if (func(c) * func(a) < 0) {
+                } else if (func(c) * f_a < 0) {
                     b = c;
                 } else {
                     a = c;

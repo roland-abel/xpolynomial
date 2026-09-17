@@ -55,6 +55,14 @@ TEST(RootFinderTests, Bisection3Test) {
     EXPECT_TRUE(p.is_root(root));
 }
 
+TEST(RootFinderTests, BisectionStopsAfterMaxIterationsTest) {
+    const auto p = X.pow(2) - 2.;
+    const auto root = RootFinder::bisection(p, interval(0., 2.), 1).value();
+
+    EXPECT_NEAR(root, 1., epsilon);
+    EXPECT_GT(std::abs(p(root)), epsilon);
+}
+
 TEST(RootFinderTests, NewtonRaphsonForQudraticPolynomialTest) {
     const auto p1 = 4 * X.pow(2) + .5 * X - 4;
     const auto q1 = p1.derive();
@@ -105,4 +113,12 @@ TEST(RootFinderTests, RegulaFalsi2Test) {
     const auto root = RootFinder::regula_falsi(p, I).value();
 
     EXPECT_NEAR(root, 0.85130254011, epsilon);
+}
+
+TEST(RootFinderTests, RegulaFalsiStopsAfterMaxIterationsTest) {
+    const auto p = X.pow(2) - 2.;
+    const auto root = RootFinder::regula_falsi(p, interval(0., 2.), 1).value();
+
+    EXPECT_NEAR(root, 1., epsilon);
+    EXPECT_GT(std::abs(p(root)), epsilon);
 }

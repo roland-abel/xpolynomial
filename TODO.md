@@ -188,7 +188,7 @@ headers, `lagrange` bounds) were dropped.
     ("degree 1"); sibling `is_quadratic`/`is_cubic` use `== 2` / `== 3`.
   - Use `degree() == 1`. `[verified]`
 
-- [ ] **M16: Iterative root finders lack a maximum-iteration guard**
+- [x] **M16: Iterative root finders lack a maximum-iteration guard**
   - `include/root_finder.tpp:28-43` (bisection), `:57-72` (regula falsi)
   - `bisection`/`regula_falsi` loop only on interval width; for numeric edge cases
     (denominator `func(b) - func(a)` near zero, stagnation) they can diverge or spin.
