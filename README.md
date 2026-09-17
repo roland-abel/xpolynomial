@@ -30,6 +30,28 @@ The complete API is available through a single umbrella header:
 
 Individual headers such as `#include <polynomial.h>` can also be included.
 
+### API Overview
+
+| Header | Provides |
+|---|---|
+| `<polynomial.h>` | `polynomial<T>` with arithmetic, evaluation, calculus and polynomial division |
+| `<complex_polynomial.h>` | `complex_polynomial<T>`, `real_polynomial<T>`, utils like `separate()` |
+| `<interval.h>` | `interval<T>` with open/closed boundary handling and bisection |
+| `<real_polynomial_root_finder.h>` | real root finding (quadratic/cubic formulas, Newton, Sturm isolation) |
+| `<complex_polynomial_root_finder.h>` | Durand-Kerner, Aberth-Ehrlich and roots of unity |
+| `<root_finder.h>` | generic bisection / regula falsi / Newton-Raphson on arbitrary callables |
+| `<square_free_decomposition.h>` | Yun's square-free decomposition |
+| `<polynomial_interpolation.h>` | Lagrange interpolation |
+| `<chebyshev_polynomial.h>` | Chebyshev polynomials, nodes, Clenshaw, Gauss quadrature |
+| `<legendre_polynomial.h>` | Legendre polynomials |
+| `<euclidean_algorithm.h>` | (extended) Euclidean algorithm for polynomials |
+| `<polynomial_parser.h>` | `parser::parse_polynomial` to build polynomials from strings |
+| `<utils.h>` | numeric helpers (`nearly_*`, comparisons) |
+
+A note on error handling: functions returning `std::optional` or `std::expected` report
+failures without throwing (e.g. `parse_polynomial`, `find_roots`, root finders). Always
+check the result before calling `.value()`, which throws on error.
+
 ## Integration
 
 The library is built with CMake and is consumed either via `FetchContent` or by installing it
@@ -79,12 +101,13 @@ the umbrella header `<xpolynomial.h>`.
 ### Building the tests
 
 The project requires GoogleTest for its test suite. Point `CMAKE_PREFIX_PATH` to an
-installation of GoogleTest and run the tests afterwards:
+installation of GoogleTest and run the tests afterwards. Tests are enabled by default and can
+be turned off with `-DBUILD_TESTING=OFF`; examples with `-DXPOLYNOMIAL_BUILD_EXAMPLES=OFF`.
 
 ```sh
 cmake -S . -B build -DCMAKE_PREFIX_PATH=/path/to/gtest
 cmake --build build
-./build/test/unit-tests
+ctest --test-dir build --output-on-failure
 ```
 
 ### Example
@@ -145,6 +168,32 @@ int main() {
     for (auto x: values) {
         cout << "p(" << x << ") = " << p(x) << endl;
     }
+    return 0;
+}
+```
+
+### Interval
+
+The `interval<T>` class represents a real interval with configurable open/closed boundary
+types. It supports the usual queries (`is_open`, `is_degenerate`, `is_empty`, ...), bisection
+and a linear transform to another interval.
+
+```c++
+#include <iostream>
+#include <xpolynomial.h>
+
+using namespace std;
+using namespace xmath;
+
+int main() {
+    auto I = interval(0., 1.);
+    cout << "I = [" << I.lower() << ", " << I.upper() << "]" << endl;
+    cout << "length = " << I.length() << endl;
+    cout << "degenerate? " << boolalpha << I.is_degenerate() << endl;
+
+    auto [left, right] = I.bisect();
+    cout << "[" << left.lower() << ", " << left.upper() << "] "
+         << "[" << right.lower() << ", " << right.upper() << "]" << endl;
     return 0;
 }
 ```
@@ -213,6 +262,26 @@ int main() {
 }
 ```
 
+### Legendre Polynomial
+
+The `legendre_polynomial<>` class computes the Legendre polynomials `P_n(x)` via a recurrence
+relation. Results are cached, so repeated calls are cheap.
+
+```c++
+#include <iostream>
+#include <xpolynomial.h>
+
+using namespace std;
+using namespace xmath;
+
+int main() {
+    for (int n = 0; n <= 4; ++n) {
+        cout << "P_" << n << ": " << legendre_polynomial<double>::create(n) << endl;
+    }
+    return 0;
+}
+```
+
 ### Root Finding Algorithm
 
 The `real_polynomial_root_finder<>` and `complex_polynomial_root_finder<>` classes are utility classes specifically
@@ -238,6 +307,64 @@ int main() {
     for (int k = 0; k < roots.size(); ++k) {
         cout << "Root: r[" << k << "] = " << roots[k] << ", Multiplicity: "
              << multiplicities[k] << endl;
+    }
+    return 0;
+}
+```
+
+### Complex Polynomial
+
+The `complex_polynomial<T>` class is a `polynomial<std::complex<T>>` with specialized
+coefficient handling. It interoperates with real polynomials, and the `separate()` function
+splits a complex polynomial into its real and imaginary parts.
+
+```c++
+#include <complex>
+#include <iostream>
+#include <xpolynomial.h>
+
+using namespace std;
+using namespace xmath;
+
+namespace {
+    using ComplexPolynomial = complex_polynomial<double>;
+    using RealPolynomial = polynomial<double>;
+
+    constexpr auto i = std::complex(0., 1.);
+    auto Z = ComplexPolynomial::monomial(1, 1.0);
+}
+
+int main() {
+    auto p = ComplexPolynomial({1. - i, 2. + 3. * i, -1.}); // (2+3i)*x^2 + (1-i)*x - 1
+    cout << "p = " << p << endl;
+    cout << "p(1) = " << p(1.) << endl;
+
+    auto [real, imag] = separate(p);
+    cout << "Re(p) = " << real << ", Im(p) = " << imag << endl;
+    return 0;
+}
+```
+
+### Complex Polynomial Root Finding
+
+The `complex_polynomial_root_finder<>` class finds the complex roots of a polynomial with the
+Durand-Kerner and Aberth-Ehrlich methods, and provides the computed roots of unity.
+
+```c++
+#include <complex>
+#include <iostream>
+#include <xpolynomial.h>
+
+using namespace std;
+using namespace xmath;
+
+int main() {
+    using RootFinder = complex_polynomial_root_finder<double>;
+
+    auto roots = RootFinder::nth_roots_of_unity(5);
+    cout << "5-th roots of unity:" << endl;
+    for (auto z: roots) {
+        cout << "(" << z.real() << ", " << z.imag() << ")" << endl;
     }
     return 0;
 }
@@ -304,9 +431,44 @@ int main() {
 }
 ```
 
+### Polynomial Parser
+
+The `parser::parse_polynomial` function constructs a polynomial from a string expression. It
+supports `+`, `-`, `*`, `/`, `^`, parentheses, the variable `X` and unary signs. On failure it
+returns a `std::expected` with a descriptive `error_t`, so no exception is thrown.
+
+```c++
+#include <iostream>
+#include <xpolynomial.h>
+
+using namespace std;
+using namespace xmath;
+
+int main() {
+    auto result = parser::parse_polynomial("2*X^3 - 3*X + 1");
+    if (result.has_value()) {
+        cout << "p(x) = " << result.value() << endl;
+    } else {
+        cerr << "parse error" << endl;
+    }
+
+    auto invalid = parser::parse_polynomial("2*X^^3");
+    if (!invalid.has_value()) {
+        cerr << "expected error for invalid expression" << endl;
+    }
+    return 0;
+}
+```
+
 ## Author
 
 Roland Abel
+
+## Changelog
+
+- **2026** - Parser, complex/real root finders, Chebyshev, Legendre and interval support;
+  header-only C++23 rewrite.
+- **2024** - Initial release with polynomial arithmetic, Euclidean algorithm and root finding.
 
 ## License
 
