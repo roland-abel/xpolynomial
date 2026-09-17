@@ -78,7 +78,7 @@ namespace xmath {
         size_t N,
         const interval<T> &I) {
         if (N == 0) {
-            xmath::chebyshev_polynomial<T>::values_type();
+            return {};
         }
 
         constexpr auto pi_half = pi / 2.;

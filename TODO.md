@@ -126,3 +126,101 @@ Items are grouped by priority. Findings marked `[verified]` were re-checked by h
   - `polynomial_interpolation.tpp:24` truncates `size_t` to `uint16_t`.
   - `utils.h:93-102` `is_even`/`is_odd` only for `long`.
   - `.gitignore` still contains `/vcpkg_installed/` (dead entry).
+
+## Round 2 findings (re-analysis, hand-verified)
+
+A second full pass over the code base. Items below were re-checked by reading the
+actual source. Findings that turned out to be already fixed (e.g. self-contained
+headers, `lagrange` bounds) were dropped.
+
+### High priority (correctness)
+
+- [x] **H6: `chebyshev_nodes(N = 0)` falls through / divides by zero**
+  - `include/chebyshev_polynomial.tpp:80-82`
+  - The `N == 0` branch constructs a temporary but never `return`s it, so execution
+    continues to `(2. * k - 1.) / N` (`:86`) and the node transform with `N == 0`.
+  - Add `return {};` (or `return xmath::chebyshev_polynomial<T>::values_type{};`). `[verified]`
+
+- [ ] **H7: `clenshaw()` / `chebyshev_series()` read `alphas[0]` on empty input (OOB)**
+  - `include/chebyshev_polynomial.tpp:107-113`, `:123-129`
+  - The loop is skipped for an empty vector but the final
+    `return alphas[0] + x * beta1 - beta2;` still indexes element 0.
+  - Guard against `alphas.empty()` and return zero. `[verified]`
+
+- [ ] **H8: Parser pops an empty operator stack on an unmatched `)` (UB)**
+  - `include/polynomial_parser.h:384-389`
+  - In `process_parenthesis` the `CLOSED` case calls `operator_stack.pop()`
+    unconditionally. For input like `"1 + )"` the stack is empty (or holds only
+    operators) and `pop()` / `top()` on an empty `std::stack` is undefined.
+  - Validate `)` against a matching `(` (emit a parse error) before popping. `[verified]`
+
+- [ ] **H9: Cardano formula uses `std::pow(negative, 1./3.)` -> NaN**
+  - `include/real_polynomial_root_finder.tpp:123-124`
+  - `A`/`B` are computed with `std::pow(v, 1. / 3.)`. For `v < 0` this yields NaN
+    even though the real cube root is well defined (casus irreducibilis aside).
+  - Use `std::cbrt(v)` (or sign-aware `std::pow(std::abs(v), 1./3.)`). `[verified]`
+
+- [ ] **H10: FetchContent consumers without GoogleTest fail to configure**
+  - `CMakeLists.txt:19,59-61`; `README.md` integration section
+  - `include(CTest)` makes `BUILD_TESTING` default to `ON`; `add_subdirectory(test)`
+    then runs `find_package(GTest REQUIRED)`. A consumer using `FetchContent` (as the
+    README advertises) will abort at configure time unless it also has GoogleTest.
+  - Guard development-only targets with `if(PROJECT_IS_TOP_LEVEL)` (and keep
+    `BUILD_TESTING`/examples usable when built standalone). `[verified]`
+
+### Medium priority (design / maintenance / docs)
+
+- [ ] **M13: `operator*=(scalar)` / `operator/=(scalar)` skip `trim_coefficients()`**
+  - `include/polynomial.tpp:247-252,262-267`
+  - `operator*=` / `operator/=` mutate each coefficient in place but never trim, so
+    multiplying by `0` leaves the degree unchanged while all coefficients are zero,
+    breaking the "degree == normalized size" invariant (cf. `operator==`).
+  - Call `trim_coefficients()` before returning. `[verified]`
+
+- [ ] **M14: `normalize()` / scalar division lack a zero-leading-coefficient guard**
+  - `include/polynomial.tpp:255-267,451-453`
+  - `normalize()` divides by `leading_coefficient()`; for the zero polynomial this is
+    `0` -> NaN/Inf. Document the precondition (non-zero polynomial) or return `*this`. `[verified]`
+
+- [ ] **M15: `is_linear()` returns `degree() <= 1`**
+  - `include/polynomial.tpp:118-120`
+  - Includes constants (degree 0) and the zero polynomial, contradicting the doc
+    ("degree 1"); sibling `is_quadratic`/`is_cubic` use `== 2` / `== 3`.
+  - Use `degree() == 1`. `[verified]`
+
+- [ ] **M16: Iterative root finders lack a maximum-iteration guard**
+  - `include/root_finder.tpp:28-43` (bisection), `:57-72` (regula falsi)
+  - `bisection`/`regula_falsi` loop only on interval width; for numeric edge cases
+    (denominator `func(b) - func(a)` near zero, stagnation) they can diverge or spin.
+  - Add a `max_iterations` parameter (like `newton_raphson`) and guard the
+    regula-falsi denominator. `[verified]`
+
+- [ ] **M17: Aberth-Ehrlich denominator can be zero**
+  - `include/complex_polynomial_root_finder.tpp:100`
+  - `p_prim(z) - p_norm(z) * S(z)` is unguarded; for multiple/clustered roots it can
+    vanish -> division by zero (Inf/NaN propagated into the fixed-point iteration).
+  - Guard/skip or fall back to a different step when the denominator is ~0. `[verified]`
+
+- [ ] **M18: Parser treats `^` as left-associative**
+  - `include/polynomial_parser.h:355-362`
+  - `top_precedence_greater_or_equal` uses `>=` for every operator, so `"2^3^2"` parses
+    as `(2^3)^2 = 64` instead of the conventional right-associative `2^(3^2) = 512`.
+  - Special-case right-associativity for `POWER` (`>` instead of `>=`). `[verified]`
+
+- [ ] **M19: CI lacks hardening (warnings-as-errors, sanitizers, coverage, MSVC)**
+  - `.github/workflows/ci.yml`
+  - Builds GCC 14 / Clang 18 with `-Wall -Wextra -Wpedantic` but no `-Werror`, no
+    ASan/UBSan job, no coverage, and no MSVC coverage despite the README claim.
+  - Add a `-Werror` build, a sanitizer job, and (optionally) MSVC. `[verified]`
+
+### Low priority (cosmetic / docs)
+
+- [ ] **N7: Residual N6 fixes were never applied**
+  - `include/square_free_decomposition.tpp:2` still says "for for" (only the `.h` was fixed).
+  - `include/root_finder.h:44,61` still say "the returned optional<> has not a value"
+    (N6 only rewrote the copies in `square_free_decomposition.h`). `[verified]`
+
+- [ ] **N8: `constexpr` (M1) only landed for helpers/`interval`**
+  - `5767068` made numeric helpers and `interval` `constexpr`, but `polynomial` ctors,
+    `evaluate`, `degree` and operators are still non-`constexpr` although the TODO
+    item listed them. Either extend or narrow the M1 description. `[verified]`
