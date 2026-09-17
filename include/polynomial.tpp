@@ -79,7 +79,7 @@ namespace xmath {
     }
 
     template<typename T>
-    typename polynomial<T>::size_type polynomial<T>::degree() const {
+    typename polynomial<T>::size_type polynomial<T>::degree() const noexcept {
         return coeffs_.size() - 1;
     }
 
@@ -99,42 +99,42 @@ namespace xmath {
     }
 
     template<typename T>
-    bool polynomial<T>::is_zero() const {
+    bool polynomial<T>::is_zero() const noexcept {
         return degree() == 0 && nearly_zero(leading_coefficient());
     }
 
     template<typename T>
-    bool polynomial<T>::is_one() const {
+    bool polynomial<T>::is_one() const noexcept {
         return degree() == 0 && nearly_equal(leading_coefficient(), spec::one);
     }
 
     template<typename T>
-    bool polynomial<T>::is_constant() const {
+    bool polynomial<T>::is_constant() const noexcept {
         return degree() == 0;
     }
 
     template<typename T>
-    bool polynomial<T>::is_linear() const {
+    bool polynomial<T>::is_linear() const noexcept {
         return degree() <= 1;
     }
 
     template<typename T>
-    bool polynomial<T>::is_quadratic() const {
+    bool polynomial<T>::is_quadratic() const noexcept {
         return degree() == 2;
     }
 
     template<typename T>
-    bool polynomial<T>::is_cubic() const {
+    bool polynomial<T>::is_cubic() const noexcept {
         return degree() == 3;
     }
 
     template<typename T>
-    bool polynomial<T>::is_normalized() const {
+    bool polynomial<T>::is_normalized() const noexcept {
         return nearly_equal(leading_coefficient(), spec::one);
     }
 
     template<typename T>
-    bool polynomial<T>::is_integer() const {
+    bool polynomial<T>::is_integer() const noexcept {
         return std::all_of(coefficients().begin(), coefficients().end(), [](const value_type c) {
             return nearly_equal(c, std::round(c));
         });
@@ -150,12 +150,12 @@ namespace xmath {
     }
 
     template<typename T>
-    typename polynomial<T>::value_type polynomial<T>::leading_coefficient() const {
+    typename polynomial<T>::value_type polynomial<T>::leading_coefficient() const noexcept {
         return coeffs_.back();
     }
 
     template<typename T>
-    const typename polynomial<T>::values_type& polynomial<T>::coefficients() const {
+    const typename polynomial<T>::values_type& polynomial<T>::coefficients() const noexcept {
         return coeffs_;
     }
 

@@ -504,6 +504,19 @@ TEST(PolynomialTests, CompoundAssignmentPolynomialModuloOperatorTest) {
     EXPECT_EQ(p, (52. / 25) * X + (111. / 25));
 }
 
+// Compile-time check that the pure accessors are noexcept.
+static_assert(noexcept(zero.is_zero()));
+static_assert(noexcept(zero.is_one()));
+static_assert(noexcept(zero.is_constant()));
+static_assert(noexcept(zero.is_linear()));
+static_assert(noexcept(zero.is_quadratic()));
+static_assert(noexcept(zero.is_cubic()));
+static_assert(noexcept(zero.is_normalized()));
+static_assert(noexcept(zero.is_integer()));
+static_assert(noexcept(zero.degree()));
+static_assert(noexcept(zero.leading_coefficient()));
+static_assert(noexcept(zero.coefficients()));
+
 // Test for the compose function.
 TEST(PolynomialTests, ComposeTest) {
     const Polynomial r = X;

@@ -94,35 +94,35 @@ namespace xmath {
     public:
         /// @brief Checks if the polynomial is the zero polynomial.
         /// @return True if the polynomial is zero, false otherwise.
-        [[nodiscard]] bool is_zero() const;
+        [[nodiscard]] bool is_zero() const noexcept;
 
         /// @brief Checks if the polynomial is the 1 polynomial.
         /// @return True if the polynomial is 1, false otherwise.
-        [[nodiscard]] bool is_one() const;
+        [[nodiscard]] bool is_one() const noexcept;
 
         /// @brief Checks if the polynomial is a constant (degree 0) polynomial.
         /// @return True if the polynomial is a constant, false otherwise.
-        [[nodiscard]] bool is_constant() const;
+        [[nodiscard]] bool is_constant() const noexcept;
 
         /// @brief Checks if the polynomial is a linear (degree 1) polynomial.
         /// @return True if the polynomial is linear, false otherwise.
-        [[nodiscard]] bool is_linear() const;
+        [[nodiscard]] bool is_linear() const noexcept;
 
         /// @brief Checks if the polynomial is a quadratic (degree 2) polynomial.
         /// @return True if the polynomial is quadratic, false otherwise.
-        [[nodiscard]] bool is_quadratic() const;
+        [[nodiscard]] bool is_quadratic() const noexcept;
 
         /// @brief Checks if the polynomial is a cubic (degree 3) polynomial.
         /// @return True if the polynomial is cubic, false otherwise.
-        [[nodiscard]] bool is_cubic() const;
+        [[nodiscard]] bool is_cubic() const noexcept;
 
         /// @brief Checks if the polynomial is normalized, i.e. the leading coefficient is equal to 1.
         /// @return True if the polynomial is normalized, false otherwise.
-        [[nodiscard]] bool is_normalized() const;
+        [[nodiscard]] bool is_normalized() const noexcept;
 
         /// @brief Checks if all coefficients of a polynomial are integers.
         /// @return True if all coefficients are integers, false otherwise.
-        [[nodiscard]] bool is_integer() const;
+        [[nodiscard]] bool is_integer() const noexcept;
 
         /// @brief Transforms the polynomial to a polynomial with integer coefficients.
         /// @return A new polynomial with integer coefficients.
@@ -130,15 +130,15 @@ namespace xmath {
 
         /// @brief Returns the degree of the polynomial.
         /// @return The degree of the polynomial.
-        size_type degree() const;
+        size_type degree() const noexcept;
 
         /// @brief Returns the leading coefficient of the polynomial.
         /// @return The leading coefficient.
-        value_type leading_coefficient() const;
+        value_type leading_coefficient() const noexcept;
 
         /// @brief Returns the coefficients of the polynomial.
         /// @return The coefficients.
-        const values_type &coefficients() const;
+        const values_type &coefficients() const noexcept;
 
         /// @brief Evaluates the polynomial at a given value.
         /// @param x The value at which to evaluate the polynomial.
