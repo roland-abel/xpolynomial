@@ -10,7 +10,6 @@
 #define CHEBYSHEV_POLYNOMIAL_H_
 
 #include <vector>
-#include <functional>
 #include <cstdint>
 #include "interval.h"
 #include "polynomial.h"
@@ -58,11 +57,13 @@ namespace xmath {
 
         /// @brief Compute the numerical integral for a function defined in [-1., 1.] with the weight function
         /// 1/(1-x^2) by using the Chebyshev-Gauss quadrature rule.
+        /// @tparam F The type of the function f.
         /// @param func The function f defined in the interval [-1., 1.].
         /// @param N The number of iteration.
         /// @return The approximation of the integral ∑_i=1^N w_i f(x_i) where the weights are the constant
         /// w_i = π/N and x_i's are the Chebyshev nodes.
-        static value_type chebyshev_quadrature(std::function<value_type(value_type)> func, uint32_t N = 5);
+        template<typename F>
+        static value_type chebyshev_quadrature(F &&func, uint32_t N = 5);
 
     private:
         /// Cache of the calculated Chebyshev polynomials of the first kind.

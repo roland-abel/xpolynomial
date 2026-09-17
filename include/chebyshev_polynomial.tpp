@@ -130,8 +130,9 @@ namespace xmath {
     }
 
     template<typename T>
+    template<typename F>
     typename chebyshev_polynomial<T>::value_type chebyshev_polynomial<T>::chebyshev_quadrature(
-        std::function<value_type(value_type)> func,
+        F &&func,
         const uint32_t N) {
         auto value = polynomial<T>::spec::zero;
         for (uint32_t i = 1; i <= N; ++i) {

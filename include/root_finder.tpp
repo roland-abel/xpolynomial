@@ -15,8 +15,9 @@
 namespace xmath {
 
     template<typename T>
+    template<typename F>
     std::optional<T> root_finder<T>::bisection(
-            const std::function<value_type(value_type)> &func,
+            F &&func,
             const interval<value_type> &I,
             value_type epsilon) {
 
@@ -43,8 +44,9 @@ namespace xmath {
     }
 
     template<typename T>
+    template<typename F>
     std::optional<T> root_finder<T>::regula_falsi(
-            const std::function<value_type(value_type)> &func,
+            F &&func,
             const interval<value_type> &I,
             value_type epsilon) {
 
@@ -71,9 +73,10 @@ namespace xmath {
     }
 
     template<typename T>
+    template<typename F, typename G>
     std::optional<T> root_finder<T>::newton_raphson(
-            const std::function<value_type(const value_type &)> &func,
-            const std::function<value_type(const value_type &)> &derive,
+            F &&func,
+            G &&derivative,
             value_type initial,
             int max_iterations,
             value_type epsilon) {
@@ -82,7 +85,7 @@ namespace xmath {
         auto x = initial;
 
         auto y = func(x);
-        auto dfdx = derive(x);
+        auto dfdx = derivative(x);
 
         while (std::abs(y) >= epsilon && num_itr < max_iterations) {
             if (nearly_zero(dfdx, epsilon)) {
@@ -91,7 +94,7 @@ namespace xmath {
 
             x = x - (y / dfdx);
             y = func(x);
-            dfdx = derive(x);
+            dfdx = derivative(x);
 
             ++num_itr;
         }
