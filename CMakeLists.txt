@@ -52,10 +52,10 @@ install(FILES
         "${CMAKE_CURRENT_BINARY_DIR}/xpolynomialConfigVersion.cmake"
         DESTINATION lib/cmake/xpolynomial)
 
-if(XPOLYNOMIAL_BUILD_EXAMPLES)
+if(PROJECT_IS_TOP_LEVEL AND XPOLYNOMIAL_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
-if(BUILD_TESTING)
+if(PROJECT_IS_TOP_LEVEL AND BUILD_TESTING)
     add_subdirectory(test)
 endif()

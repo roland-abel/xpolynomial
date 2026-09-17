@@ -160,7 +160,7 @@ headers, `lagrange` bounds) were dropped.
     even though the real cube root is well defined (casus irreducibilis aside).
   - Use `std::cbrt(v)` (or sign-aware `std::pow(std::abs(v), 1./3.)`). `[verified]`
 
-- [ ] **H10: FetchContent consumers without GoogleTest fail to configure**
+- [x] **H10: FetchContent consumers without GoogleTest fail to configure**
   - `CMakeLists.txt:19,59-61`; `README.md` integration section
   - `include(CTest)` makes `BUILD_TESTING` default to `ON`; `add_subdirectory(test)`
     then runs `find_package(GTest REQUIRED)`. A consumer using `FetchContent` (as the
