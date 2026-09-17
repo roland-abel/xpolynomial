@@ -45,6 +45,6 @@ CTestTestfile.cmake
 _deps
 
 /build/
+/build-warn/
 /.idea/
 /cmake-build-debug/
-/vcpkg_installed/

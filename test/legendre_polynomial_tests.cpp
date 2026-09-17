@@ -7,6 +7,7 @@
 /// Copyright (c) 2026 Roland Abel
 
 #include <gtest/gtest.h>
+#include <cmath>
 #include <xpolynomial.h>
 
 using namespace xmath;
@@ -48,4 +49,51 @@ TEST(LegendrePolynomialTests, LegendrePolynomials) {
 
     auto p8 = LegendrePolynomial::create(8);
     EXPECT_EQ(p8, (1. / 128) * (6435 * X.pow(8) - 12012 * X.pow(6) + 6930 * X.pow(4) - 1260 * X.pow(2) + 35));
+}
+
+TEST(LegendrePolynomialTests, LegendrePolynomialsSkipUncachedOrders) {
+    const auto p = LegendrePolynomial::create(18);
+
+    EXPECT_EQ(p.degree(), 18);
+    for (const auto x : {-0.75, -0.25, 0.0, 0.25, 0.75}) {
+        EXPECT_NEAR(p(x), std::legendre(18, x), epsilon);
+    }
+
+    for (size_t order = 9; order <= 18; ++order) {
+        const auto cached = LegendrePolynomial::create(order);
+
+        EXPECT_EQ(cached.degree(), order);
+        for (const auto x : {-0.75, -0.25, 0.0, 0.25, 0.75}) {
+            EXPECT_NEAR(cached(x), std::legendre(static_cast<unsigned int>(order), x), epsilon);
+        }
+    }
+
+    EXPECT_EQ(LegendrePolynomial::create(18), p);
+}
+
+TEST(LegendrePolynomialTests, LegendrePolynomialsBeyondPrecomputedValues) {
+    for (size_t order = 9; order <= 15; ++order) {
+        const auto p = LegendrePolynomial::create(order);
+
+        EXPECT_NEAR(p(1.0), 1.0, epsilon);
+        EXPECT_NEAR(p(-1.0), (order % 2 == 0) ? 1.0 : -1.0, epsilon);
+
+        if (order % 2 == 1) {
+            EXPECT_NEAR(p(0.0), 0.0, epsilon);
+        }
+    }
+}
+
+TEST(LegendrePolynomialTests, LegendrePolynomialsSatisfyRecurrence) {
+    const auto x = 0.3;
+    for (size_t order = 10; order <= 15; ++order) {
+        const auto p_n = LegendrePolynomial::create(order);
+        const auto p_nm1 = LegendrePolynomial::create(order - 1);
+        const auto p_nm2 = LegendrePolynomial::create(order - 2);
+
+        const auto n = static_cast<double>(order);
+        const auto expected = (2. * n - 1.) / n * x * p_nm1(x) - (n - 1.) / n * p_nm2(x);
+
+        EXPECT_NEAR(p_n(x), expected, epsilon);
+    }
 }

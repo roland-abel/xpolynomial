@@ -14,7 +14,9 @@
 
 #include <utility>
 #include <vector>
+#include <tuple>
 #include <ranges>
+#include <stdexcept>
 
 namespace xmath {
 
@@ -322,6 +324,7 @@ namespace xmath {
         /// @param divisor The polynomial by which to divide.
         /// @return The result (q, r) of polynomial division containing quotient and remainder
         /// such that polynomial = divisor * q + r.
+        /// @throws std::invalid_argument if the divisor is the zero polynomial.
         std::tuple<polynomial<T>, polynomial<T>> divide(const polynomial<T> &divisor) const;
 
         /// @brief Composes the current polynomial with another polynomial, resulting in the composition p(q(x)).

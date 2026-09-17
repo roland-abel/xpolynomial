@@ -9,6 +9,7 @@
 #ifndef EUCLIDEAN_ALGORITHM_H_
 #define EUCLIDEAN_ALGORITHM_H_
 
+#include <tuple>
 #include "polynomial.h"
 
 namespace xmath {
