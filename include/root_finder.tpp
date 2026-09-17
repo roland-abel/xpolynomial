@@ -6,7 +6,8 @@
 ///
 /// Copyright (c) 2026 Roland Abel
 
-#pragma once
+#ifndef ROOT_FINDER_TPP_H_
+#define ROOT_FINDER_TPP_H_
 
 #include "utils.h"
 #include "root_finder.h"
@@ -99,3 +100,5 @@ namespace xmath {
 }
 
 
+
+#endif // ROOT_FINDER_TPP_H_

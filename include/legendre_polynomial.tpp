@@ -6,7 +6,8 @@
 ///
 /// Copyright (c) 2026 Roland Abel
 
-#pragma once
+#ifndef LEGENDRE_POLYNOMIAL_TPP_H_
+#define LEGENDRE_POLYNOMIAL_TPP_H_
 
 #include "legendre_polynomial.h"
 
@@ -62,3 +63,5 @@ namespace xmath {
         return P_n;
     }
 }
+
+#endif // LEGENDRE_POLYNOMIAL_TPP_H_

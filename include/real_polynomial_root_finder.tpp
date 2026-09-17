@@ -6,7 +6,8 @@
 ///
 /// Copyright (c) 2026 Roland Abel
 
-#pragma once
+#ifndef REAL_POLYNOMIAL_ROOT_FINDER_TPP_H_
+#define REAL_POLYNOMIAL_ROOT_FINDER_TPP_H_
 
 #include <numeric>
 #include <numbers>
@@ -311,3 +312,5 @@ namespace xmath {
         return std::make_tuple(roots, multiplicities);
     }
 }
+
+#endif // REAL_POLYNOMIAL_ROOT_FINDER_TPP_H_

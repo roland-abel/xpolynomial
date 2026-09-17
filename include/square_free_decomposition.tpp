@@ -6,7 +6,8 @@
 ///
 /// Copyright (c) 2026 Roland Abel
 
-#pragma once
+#ifndef SQUARE_FREE_DECOMPOSITION_TPP_H_
+#define SQUARE_FREE_DECOMPOSITION_TPP_H_
 
 #include <numeric>
 #include <ranges>
@@ -85,3 +86,5 @@ namespace xmath {
     }
 }
 
+
+#endif // SQUARE_FREE_DECOMPOSITION_TPP_H_

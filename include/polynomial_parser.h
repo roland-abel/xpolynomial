@@ -6,7 +6,8 @@
 ///
 /// Copyright (c) 2026 Roland Abel
 
-#pragma once
+#ifndef POLYNOMIAL_PARSER_H_
+#define POLYNOMIAL_PARSER_H_
 
 #include <expected>
 #include <variant>
@@ -569,3 +570,5 @@ namespace xmath::parser {
                 .and_then(evaluate);
     }
 }
+
+#endif // POLYNOMIAL_PARSER_H_

@@ -6,7 +6,8 @@
 ///
 /// Copyright (c) 2026 Roland Abel
 
-#pragma once
+#ifndef CHEBYSHEV_POLYNOMIAL_TPP_H_
+#define CHEBYSHEV_POLYNOMIAL_TPP_H_
 
 #include <ranges>
 #include <numbers>
@@ -139,3 +140,5 @@ namespace xmath {
         return pi / N * value;
     }
 }
+
+#endif // CHEBYSHEV_POLYNOMIAL_TPP_H_

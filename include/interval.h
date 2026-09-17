@@ -6,7 +6,8 @@
 ///
 /// Copyright (c) 2026 Roland Abel
 
-#pragma once
+#ifndef INTERVAL_H_
+#define INTERVAL_H_
 
 #include <cmath>
 #include <functional>
@@ -159,3 +160,5 @@ namespace xmath {
         interval_bounds upper_;
     };
 }
+
+#endif // INTERVAL_H_

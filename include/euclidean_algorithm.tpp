@@ -6,7 +6,8 @@
 ///
 /// Copyright (c) 2026 Roland Abel
 
-#pragma once
+#ifndef EUCLIDEAN_ALGORITHM_TPP_H_
+#define EUCLIDEAN_ALGORITHM_TPP_H_
 
 #include "euclidean_algorithm.h"
 
@@ -57,3 +58,5 @@ namespace xmath {
         return std::make_tuple(a1, a2, a);
     }
 }
+
+#endif // EUCLIDEAN_ALGORITHM_TPP_H_

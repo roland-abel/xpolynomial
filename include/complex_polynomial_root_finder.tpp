@@ -6,7 +6,8 @@
 ///
 /// Copyright (c) 2026 Roland Abel
 
-#pragma once
+#ifndef COMPLEX_POLYNOMIAL_ROOT_FINDER_TPP_H_
+#define COMPLEX_POLYNOMIAL_ROOT_FINDER_TPP_H_
 
 #include <ranges>
 #include <numbers>
@@ -102,3 +103,5 @@ namespace xmath {
         return approx_roots;
     }
 }
+
+#endif // COMPLEX_POLYNOMIAL_ROOT_FINDER_TPP_H_

@@ -6,7 +6,8 @@
 ///
 /// Copyright (c) 2026 Roland Abel
 
-#pragma once
+#ifndef COMPLEX_POLYNOMIAL_TPP_H_
+#define COMPLEX_POLYNOMIAL_TPP_H_
 
 #include "complex_polynomial.h"
 
@@ -26,3 +27,5 @@ namespace xmath {
         return std::pair<real_polynomial<T>, real_polynomial<T> >(real_coeffs, imag_coeffs);
     }
 }
+
+#endif // COMPLEX_POLYNOMIAL_TPP_H_

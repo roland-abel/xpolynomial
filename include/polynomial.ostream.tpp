@@ -6,7 +6,8 @@
 ///
 /// Copyright (c) 2026 Roland Abel
 
-#pragma once
+#ifndef POLYNOMIAL_OSTREAM_TPP_H_
+#define POLYNOMIAL_OSTREAM_TPP_H_
 
 #include <sstream>
 
@@ -69,3 +70,5 @@ namespace xmath {
         return os;
     }
 }
+
+#endif // POLYNOMIAL_OSTREAM_TPP_H_

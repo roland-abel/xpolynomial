@@ -6,7 +6,8 @@
 ///
 /// Copyright (c) 2026 Roland Abel
 
-#pragma once
+#ifndef POLYNOMIAL_INTERPOLATION_TPP_H_
+#define POLYNOMIAL_INTERPOLATION_TPP_H_
 
 #include <cstdint>
 #include "polynomial_interpolation.h"
@@ -57,3 +58,5 @@ namespace xmath {
         return p;
     }
 }
+
+#endif // POLYNOMIAL_INTERPOLATION_TPP_H_

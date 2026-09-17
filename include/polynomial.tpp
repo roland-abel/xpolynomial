@@ -6,7 +6,8 @@
 ///
 /// Copyright (c) 2026 Roland Abel
 
-#pragma once
+#ifndef POLYNOMIAL_TPP_H_
+#define POLYNOMIAL_TPP_H_
 
 #include <utility>
 #include <ranges>
@@ -478,3 +479,5 @@ namespace xmath {
         return std::make_tuple(q, r);
     }
 }
+
+#endif // POLYNOMIAL_TPP_H_
