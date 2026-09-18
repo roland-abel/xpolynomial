@@ -45,6 +45,7 @@ CTestTestfile.cmake
 _deps
 
 /build/
+/build-audit/
 /build-warn/
 /.idea/
 /cmake-build-debug/
