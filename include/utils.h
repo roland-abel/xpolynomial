@@ -14,8 +14,32 @@
 #include <limits>
 #include <complex>
 #include <cmath>
+#include <vector>
 
 namespace xmath {
+
+    /// @brief Rounds a floating-point value to the nearest integer, with halves away from zero.
+    /// @tparam T A floating-point type.
+    /// @param x The value to round.
+    /// @return The rounded value.
+    template<std::floating_point T>
+    constexpr T round_half_away_from_zero(T x) {
+        if (x != x) {
+            return x;
+        }
+
+        if (x < 0) {
+            return -round_half_away_from_zero(-x);
+        }
+
+        const auto half_rounded_up = x + static_cast<T>(0.5);
+
+        if (half_rounded_up >= static_cast<T>(std::numeric_limits<long long>::max())) {
+            return x;
+        }
+
+        return static_cast<T>(static_cast<long long>(half_rounded_up));
+    }
 
     /// @brief Checks if a value is nearly zero within a specified epsilon.
     /// @tparam T The data type of the value.
@@ -25,7 +49,11 @@ namespace xmath {
     /// @return True if the value is nearly zero; otherwise, false.
     template<typename T, typename FP = T>
     constexpr bool nearly_zero(T a, FP epsilon = std::numeric_limits<FP>::epsilon()) {
-        return std::abs(a) < epsilon;
+        if constexpr (std::floating_point<T>) {
+            return (a < 0 ? -a : a) < epsilon;
+        } else {
+            return std::abs(a) < epsilon;
+        }
     }
 
     /// @brief Checks if two values are nearly equal within a specified epsilon.

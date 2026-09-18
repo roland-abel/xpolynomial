@@ -137,7 +137,7 @@ namespace xmath {
     template<typename T>
     constexpr bool polynomial<T>::is_integer() const noexcept {
         return std::all_of(coefficients().begin(), coefficients().end(), [](const value_type c) {
-            return nearly_equal(c, std::round(c));
+            return nearly_equal(c, xmath::round_half_away_from_zero(c));
         });
     }
 
@@ -145,7 +145,7 @@ namespace xmath {
     constexpr polynomial<T> polynomial<T>::to_integer() const {
         auto q = polynomial<T>(degree());
         for (size_type i = 0; i < degree() + 1; ++i) {
-            q[i] = std::round(at(i));
+            q[i] = xmath::round_half_away_from_zero(at(i));
         }
         return q.trim_coefficients();
     }
