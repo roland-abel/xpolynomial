@@ -19,6 +19,27 @@ namespace {
     constexpr auto epsilon = Polynomial::epsilon;
     const auto one = Polynomial::one();
     const auto X = Polynomial::monomial(1, 1.0);
+
+#if defined(_LIBCPP_VERSION)
+    // libc++ does not implement std::legendre; use the standard three-term recurrence.
+    inline double reference_legendre(unsigned int n, double x) {
+        double p0 = 1.0;
+        double p1 = x;
+        if (n == 0) {
+            return p0;
+        }
+        for (unsigned int i = 1; i < n; ++i) {
+            double p2 = ((2.0 * i + 1.0) * x * p1 - static_cast<double>(i) * p0) / (i + 1.0);
+            p0 = p1;
+            p1 = p2;
+        }
+        return p1;
+    }
+#else
+    inline double reference_legendre(unsigned int n, double x) {
+        return std::legendre(n, x);
+    }
+#endif
 }
 
 TEST(LegendrePolynomialTests, LegendrePolynomials) {
@@ -55,7 +76,7 @@ TEST(LegendrePolynomialTests, LegendrePolynomialsSkipUncachedOrders) {
 
     EXPECT_EQ(p.degree(), 18);
     for (const auto x : {-0.75, -0.25, 0.0, 0.25, 0.75}) {
-        EXPECT_NEAR(p(x), std::legendre(18, x), epsilon);
+        EXPECT_NEAR(p(x), reference_legendre(18, x), epsilon);
     }
 
     for (size_t order = 9; order <= 18; ++order) {
@@ -63,7 +84,7 @@ TEST(LegendrePolynomialTests, LegendrePolynomialsSkipUncachedOrders) {
 
         EXPECT_EQ(cached.degree(), order);
         for (const auto x : {-0.75, -0.25, 0.0, 0.25, 0.75}) {
-            EXPECT_NEAR(cached(x), std::legendre(static_cast<unsigned int>(order), x), epsilon);
+            EXPECT_NEAR(cached(x), reference_legendre(static_cast<unsigned int>(order), x), epsilon);
         }
     }
 
