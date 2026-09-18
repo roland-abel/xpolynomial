@@ -17,7 +17,6 @@ namespace {
     using RootFinder = complex_polynomial_root_finder<double>;
 
     constexpr auto i = std::complex(0., 1.);
-    constexpr auto I = ComplexPolynomial::value_type(i);
 
     constexpr double epsilon = ComplexPolynomial::epsilon;
     const auto zero = ComplexPolynomial::zero();
