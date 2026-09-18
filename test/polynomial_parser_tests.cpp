@@ -15,7 +15,6 @@ using namespace xmath;
 using namespace xmath::parser;
 
 namespace {
-    constexpr double epsilon = 1e-9;
     auto P = [](double_t value) -> polynomial_t { return polynomial_t{value}; };
 }
 

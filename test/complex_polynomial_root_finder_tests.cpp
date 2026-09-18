@@ -13,17 +13,11 @@ using namespace xmath;
 
 namespace {
     using ComplexPolynomial = complex_polynomial<double>;
-    using RealPolynomial = polynomial<double, polynomial_specification<double>>;
     using RootFinder = complex_polynomial_root_finder<double>;
 
     constexpr auto i = std::complex(0., 1.);
-
     constexpr double epsilon = ComplexPolynomial::epsilon;
-    const auto zero = ComplexPolynomial::zero();
-    const auto one = ComplexPolynomial::one();
 
-    const auto X = RealPolynomial::monomial(1, 1.0);
-    const auto Y = RealPolynomial::monomial(1, 1.0);
     const auto Z = ComplexPolynomial::monomial(1, 1.0);
 }
 

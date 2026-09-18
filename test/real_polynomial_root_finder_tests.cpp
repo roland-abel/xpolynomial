@@ -224,7 +224,6 @@ TEST(RealPolynomialRootFinderTests, FindChebyshevRootsTest) {
 
     const auto T_n = ChebyshevPolynomial::create_1st_kind(n);
     const auto [roots, multiplicities] = RootFinder::find_roots(T_n);
-    const auto nodes = ChebyshevPolynomial::chebyshev_nodes(n);
 
     EXPECT_EQ(roots.size(), n);
     EXPECT_TRUE(T_n.has_roots(roots));

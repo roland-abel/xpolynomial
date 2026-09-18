@@ -17,7 +17,6 @@ namespace {
     using LegendrePolynomial = legendre_polynomial<double>;
 
     constexpr auto epsilon = Polynomial::epsilon;
-    const auto zero = Polynomial::zero();
     const auto one = Polynomial::one();
     const auto X = Polynomial::monomial(1, 1.0);
 }
